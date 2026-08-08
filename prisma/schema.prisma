@@ -1,0 +1,146 @@
+// Easy Way Driving School — TDLR 6-Hour Adult Course Platform
+// Prisma schema — mirrors the data model in the build plan (Section 4)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum EnrollmentStatus {
+  active
+  completed
+  expired
+}
+
+enum ContentType {
+  text
+  video
+  image
+}
+
+enum TopicStatus {
+  not_started
+  in_progress
+  complete
+}
+
+enum AdminRole {
+  admin
+  compliance_reviewer
+}
+
+model Student {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  fullName     String
+  // Age-eligibility flag only — avoid retaining raw DOB where possible (see build plan note).
+  isAgeEligible Boolean @default(true)
+  phone        String?
+  createdAt    DateTime @default(now())
+
+  enrollments Enrollment[]
+
+  @@map("students")
+}
+
+model Enrollment {
+  id            String            @id @default(cuid())
+  studentId     String
+  student       Student           @relation(fields: [studentId], references: [id])
+  status        EnrollmentStatus  @default(active)
+  startedAt     DateTime          @default(now())
+  completedAt   DateTime?
+
+  certificateId String?      @unique
+  certificate   Certificate? @relation(fields: [certificateId], references: [id])
+
+  topicProgress      TopicProgress[]
+  assessmentAttempts AssessmentAttempt[]
+
+  @@map("enrollments")
+}
+
+model Topic {
+  id         String   @id @default(cuid())
+  number     Int      @unique // 1-9
+  title      String
+  minMinutes Int
+  sortOrder  Int
+
+  content  TopicContent[]
+  progress TopicProgress[]
+
+  @@map("topics")
+}
+
+model TopicContent {
+  id          String      @id @default(cuid())
+  topicId     String
+  topic       Topic       @relation(fields: [topicId], references: [id])
+  contentType ContentType
+  body        String
+  sortOrder   Int
+
+  @@map("topic_content")
+}
+
+model TopicProgress {
+  id           String      @id @default(cuid())
+  enrollmentId String
+  enrollment   Enrollment  @relation(fields: [enrollmentId], references: [id])
+  topicId      String
+  topic        Topic       @relation(fields: [topicId], references: [id])
+
+  // Compliance-critical field: accumulated real foreground time, updated via
+  // periodic client heartbeat (~every 15s while tab is visible/focused).
+  secondsActive Int         @default(0)
+  startedAt     DateTime?
+  completedAt   DateTime?
+  status        TopicStatus @default(not_started)
+
+  @@unique([enrollmentId, topicId])
+  @@map("topic_progress")
+}
+
+model AssessmentAttempt {
+  id            String     @id @default(cuid())
+  enrollmentId  String
+  enrollment    Enrollment @relation(fields: [enrollmentId], references: [id])
+  attemptNumber Int
+  scorePercent  Float
+  passed        Boolean
+  startedAt     DateTime   @default(now())
+  submittedAt   DateTime?
+
+  // What was asked/answered, stored for audit purposes.
+  answers Json
+
+  @@map("assessment_attempts")
+}
+
+model Certificate {
+  id                String   @id @default(cuid())
+  certificateNumber String   @unique
+  issuedAt          DateTime @default(now())
+  pdfUrl            String?
+
+  enrollment Enrollment?
+
+  @@map("certificates")
+}
+
+model AdminUser {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  role         AdminRole @default(admin)
+  createdAt    DateTime  @default(now())
+
+  @@map("admin_users")
+}
