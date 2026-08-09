@@ -6,11 +6,14 @@ import Link from "next/link";
 
 export default function RegisterPage() {
   const router = useRouter();
-  const [fullName, setFullName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [middleInitial, setMiddleInitial] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [sex, setSex] = useState<"Male" | "Female" | "">("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
-  const [isAgeEligible, setIsAgeEligible] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -22,7 +25,16 @@ export default function RegisterPage() {
     const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ fullName, email, password, phone, isAgeEligible }),
+      body: JSON.stringify({
+        lastName,
+        firstName,
+        middleInitial,
+        dateOfBirth,
+        sex,
+        email,
+        password,
+        phone,
+      }),
     });
 
     setLoading(false);
@@ -42,20 +54,78 @@ export default function RegisterPage() {
 
   return (
     <div className="auth-page">
-      <div className="auth-card">
+      <div className="auth-card" style={{ maxWidth: 440 }}>
         <h1>Create your account</h1>
         <p className="subtitle">Start the 6-Hour Adult Driver Education course</p>
 
         <form onSubmit={handleSubmit}>
+          <div style={{ display: "flex", gap: 10 }}>
+            <div className="field" style={{ flex: 2 }}>
+              <label htmlFor="lastName">Last name</label>
+              <input
+                id="lastName"
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="field" style={{ flex: 2 }}>
+              <label htmlFor="firstName">First name</label>
+              <input
+                id="firstName"
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="field" style={{ flex: 1 }}>
+              <label htmlFor="middleInitial">MI</label>
+              <input
+                id="middleInitial"
+                type="text"
+                maxLength={1}
+                value={middleInitial}
+                onChange={(e) => setMiddleInitial(e.target.value)}
+              />
+            </div>
+          </div>
+
           <div className="field">
-            <label htmlFor="fullName">Full name</label>
+            <label htmlFor="dateOfBirth">Date of birth</label>
             <input
-              id="fullName"
-              type="text"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
+              id="dateOfBirth"
+              type="date"
+              value={dateOfBirth}
+              onChange={(e) => setDateOfBirth(e.target.value)}
               required
             />
+          </div>
+
+          <div className="field">
+            <label>Sex</label>
+            <div style={{ display: "flex", gap: 16, marginTop: 4 }}>
+              <label style={{ display: "flex", alignItems: "center", gap: 6, fontWeight: 400 }}>
+                <input
+                  type="radio"
+                  name="sex"
+                  checked={sex === "Male"}
+                  onChange={() => setSex("Male")}
+                  required
+                />
+                Male
+              </label>
+              <label style={{ display: "flex", alignItems: "center", gap: 6, fontWeight: 400 }}>
+                <input
+                  type="radio"
+                  name="sex"
+                  checked={sex === "Female"}
+                  onChange={() => setSex("Female")}
+                />
+                Female
+              </label>
+            </div>
           </div>
 
           <div className="field">
@@ -90,19 +160,6 @@ export default function RegisterPage() {
               required
             />
           </div>
-
-          <label className="field-checkbox">
-            <input
-              type="checkbox"
-              checked={isAgeEligible}
-              onChange={(e) => setIsAgeEligible(e.target.checked)}
-              required
-            />
-            <span>
-              I confirm I am eligible to take this course under TDLR&rsquo;s age
-              requirements for the 6-Hour Adult Driver Education course.
-            </span>
-          </label>
 
           {error && <p className="error-text">{error}</p>}
 

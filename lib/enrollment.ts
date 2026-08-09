@@ -1,5 +1,18 @@
 import { prisma } from "@/lib/prisma";
 
+export async function getSchoolSettings() {
+  const settings = await prisma.schoolSettings.findUnique({ where: { id: "default" } });
+  return {
+    tdlrNumber: settings?.tdlrNumber ?? null,
+    schoolName: settings?.schoolName ?? null,
+    driverEdSchoolNumber: settings?.driverEdSchoolNumber ?? null,
+    instructorName: settings?.instructorName ?? null,
+    instructorSignatureImage: settings?.instructorSignatureImage ?? null,
+    chiefOfficialName: settings?.chiefOfficialName ?? null,
+    chiefOfficialSignatureImage: settings?.chiefOfficialSignatureImage ?? null,
+  };
+}
+
 export async function getOrCreateActiveEnrollment(studentId: string) {
   let enrollment = await prisma.enrollment.findFirst({
     where: { studentId, status: "active" },

@@ -40,7 +40,8 @@ export async function POST(req: NextRequest) {
   const res = NextResponse.json({
     id: student.id,
     email: student.email,
-    fullName: student.fullName,
+    firstName: student.firstName,
+    lastName: student.lastName,
   });
   res.cookies.set(sessionCookieOptions.name, token, sessionCookieOptions);
   return res;

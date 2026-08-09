@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
 import { getOrCreateActiveEnrollment, getTopicsWithProgress } from "@/lib/enrollment";
 import LogoutButton from "./logout-button";
+import type { Enrollment } from "@prisma/client";
 
 const STATUS_LABEL: Record<string, string> = {
   not_started: "Not started",
@@ -20,14 +21,18 @@ export default async function DashboardPage() {
   const student = await prisma.student.findUnique({ where: { id: session.sub } });
   if (!student) redirect("/login");
 
-  const enrollment = await getOrCreateActiveEnrollment(student.id);
+  const enrollment: Enrollment = await getOrCreateActiveEnrollment(student.id);
   const topics = await getTopicsWithProgress(enrollment.id);
 
   const completedCount = topics.filter((t) => t.status === "complete").length;
+  const topic9 = topics.find((t) => t.number === 9);
+  const allTopicsComplete = topic9?.status === "complete";
+  const hasCertificate = Boolean(enrollment.certificateId);
+  const certificatePending = Boolean(enrollment.assessmentPassedAt) && !hasCertificate;
 
   return (
     <div style={{ maxWidth: 680, margin: "40px auto", padding: "0 24px" }}>
-      <h1>Welcome, {student.fullName}</h1>
+      <h1>Welcome, {student.firstName}</h1>
       <p style={{ color: "#666" }}>
         {completedCount} of {topics.length} topics complete. Work through them in
         order — each one unlocks the next once its required time is logged.
@@ -74,6 +79,51 @@ export default async function DashboardPage() {
           );
         })}
       </ol>
+
+      {hasCertificate && (
+        <div className="topic-content-placeholder" style={{ marginTop: 24, borderStyle: "solid" }}>
+          <p style={{ fontWeight: 600, marginTop: 0 }}>Course complete 🎉</p>
+          <p>Your certificate has been issued.</p>
+          <a
+            href="/api/certificate/download"
+            className="primary"
+            style={{
+              display: "inline-block",
+              width: "auto",
+              padding: "8px 16px",
+              textDecoration: "none",
+            }}
+          >
+            Download certificate
+          </a>
+        </div>
+      )}
+
+      {certificatePending && (
+        <div className="topic-content-placeholder" style={{ marginTop: 24, borderStyle: "solid" }}>
+          <p style={{ fontWeight: 600, marginTop: 0 }}>You passed! 🎉</p>
+          <p>Your certificate number is being processed and will be ready soon.</p>
+        </div>
+      )}
+
+      {!hasCertificate && !certificatePending && allTopicsComplete && (
+        <div className="topic-content-placeholder" style={{ marginTop: 24, borderStyle: "solid" }}>
+          <p style={{ fontWeight: 600, marginTop: 0 }}>All 9 topics complete</p>
+          <p>Ready for the final assessment.</p>
+          <Link
+            href="/dashboard/assessment"
+            className="primary"
+            style={{
+              display: "inline-block",
+              width: "auto",
+              padding: "8px 16px",
+              textDecoration: "none",
+            }}
+          >
+            Take the assessment
+          </Link>
+        </div>
+      )}
 
       <div style={{ marginTop: 32 }}>
         <LogoutButton />

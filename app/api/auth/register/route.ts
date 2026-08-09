@@ -7,13 +7,25 @@ import {
   sessionCookieOptions,
 } from "@/lib/auth";
 
+function calculateAge(dob: Date): number {
+  const today = new Date();
+  let age = today.getFullYear() - dob.getFullYear();
+  const monthDiff = today.getMonth() - dob.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+    age--;
+  }
+  return age;
+}
+
 const RegisterSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8, "Password must be at least 8 characters"),
-  fullName: z.string().min(1, "Full name is required"),
-  // Confirms the student is in the eligible age range without us storing
-  // raw date of birth (see build-plan note on minimizing retained PII).
-  isAgeEligible: z.boolean(),
+  lastName: z.string().min(1, "Last name is required"),
+  firstName: z.string().min(1, "First name is required"),
+  middleInitial: z.string().max(1).optional().or(z.literal("")),
+  // Sent as "YYYY-MM-DD" from a native date input.
+  dateOfBirth: z.string().refine((v) => !isNaN(Date.parse(v)), "Invalid date of birth"),
+  sex: z.enum(["Male", "Female"]),
   phone: z.string().optional(),
 });
 
@@ -28,7 +40,16 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { email, password, fullName, isAgeEligible, phone } = parsed.data;
+  const { email, password, lastName, firstName, middleInitial, dateOfBirth, sex, phone } =
+    parsed.data;
+
+  const dob = new Date(dateOfBirth);
+  if (calculateAge(dob) < 18) {
+    return NextResponse.json(
+      { error: "You must be at least 18 years old to take this course." },
+      { status: 400 }
+    );
+  }
 
   const existing = await prisma.student.findUnique({ where: { email } });
   if (existing) {
@@ -41,7 +62,16 @@ export async function POST(req: NextRequest) {
   const passwordHash = await hashPassword(password);
 
   const student = await prisma.student.create({
-    data: { email, passwordHash, fullName, isAgeEligible, phone },
+    data: {
+      email,
+      passwordHash,
+      lastName,
+      firstName,
+      middleInitial: middleInitial || null,
+      dateOfBirth: dob,
+      sex,
+      phone,
+    },
   });
 
   const token = await createSessionToken({ sub: student.id, email: student.email });
@@ -49,7 +79,8 @@ export async function POST(req: NextRequest) {
   const res = NextResponse.json({
     id: student.id,
     email: student.email,
-    fullName: student.fullName,
+    firstName: student.firstName,
+    lastName: student.lastName,
   });
   res.cookies.set(sessionCookieOptions.name, token, sessionCookieOptions);
   return res;

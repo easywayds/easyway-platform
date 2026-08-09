@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
 
   const student = await prisma.student.findUnique({
     where: { id: session.sub },
-    select: { id: true, email: true, fullName: true, createdAt: true },
+    select: { id: true, email: true, firstName: true, lastName: true, createdAt: true },
   });
 
   if (!student) {
