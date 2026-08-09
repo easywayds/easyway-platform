@@ -102,3 +102,107 @@ button.primary:disabled {
   text-decoration: none;
   font-weight: 600;
 }
+
+.topic-list {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.topic-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.topic-row {
+  background: #fff;
+  border-radius: 10px;
+  padding: 14px 16px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.15s ease;
+}
+
+.topic-link:hover .topic-row {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.topic-row-locked {
+  opacity: 0.55;
+}
+
+.topic-row-main {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.topic-number {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #eef1f6;
+  color: #444;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.topic-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.topic-meta {
+  font-size: 0.8rem;
+  color: #777;
+  margin-top: 2px;
+}
+
+.status-badge {
+  font-weight: 600;
+}
+
+.status-not_started {
+  color: #888;
+}
+
+.status-in_progress {
+  color: #b45309;
+}
+
+.status-complete {
+  color: #15803d;
+}
+
+.progress-track {
+  margin-top: 10px;
+  height: 6px;
+  background: #eef1f6;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #1a56db;
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.topic-content-placeholder {
+  margin-top: 24px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px dashed #d0d0d5;
+  color: #555;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
