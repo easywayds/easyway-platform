@@ -52,19 +52,22 @@ export default async function AdminDashboardPage() {
         </p>
 
         <div className="admin-card-grid">
-          {cards.map((card) => (
-            <Link
-              key={card.title}
-              href={card.disabled ? "#" : card.href}
-              className={`admin-card ${card.disabled ? "admin-card-disabled" : ""}`}
-              onClick={(e) => card.disabled && e.preventDefault()}
-            >
-              <h2>{card.title}</h2>
-              <p>{card.description}</p>
-              {card.stat && <div className="admin-card-stat">{card.stat}</div>}
-              {card.alert && <div className="admin-card-alert">{card.alert}</div>}
-            </Link>
-          ))}
+          {cards.map((card) =>
+            card.disabled ? (
+              <div key={card.title} className="admin-card admin-card-disabled">
+                <h2>{card.title}</h2>
+                <p>{card.description}</p>
+                {card.stat && <div className="admin-card-stat">{card.stat}</div>}
+              </div>
+            ) : (
+              <Link key={card.title} href={card.href} className="admin-card">
+                <h2>{card.title}</h2>
+                <p>{card.description}</p>
+                {card.stat && <div className="admin-card-stat">{card.stat}</div>}
+                {card.alert && <div className="admin-card-alert">{card.alert}</div>}
+              </Link>
+            )
+          )}
         </div>
       </div>
     </div>
