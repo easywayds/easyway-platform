@@ -1,0 +1,79 @@
+import { prisma } from "@/lib/prisma";
+import AdminNav from "../admin-nav";
+
+export default async function StudentsAdminPage() {
+  const students = await prisma.student.findMany({
+    orderBy: { createdAt: "desc" },
+    include: {
+      enrollments: {
+        orderBy: { startedAt: "desc" },
+        include: {
+          topicProgress: true,
+          certificate: true,
+          assessmentAttempts: { orderBy: { attemptNumber: "desc" }, take: 1 },
+        },
+      },
+    },
+  });
+
+  return (
+    <div>
+      <AdminNav />
+      <div style={{ maxWidth: 1000, margin: "40px auto", padding: "0 24px" }}>
+        <h1>Students</h1>
+        <p style={{ color: "#666" }}>{students.length} total.</p>
+
+        <div style={{ overflowX: "auto", marginTop: 16 }}>
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Topics</th>
+                <th>Assessment</th>
+                <th>Certificate</th>
+              </tr>
+            </thead>
+            <tbody>
+              {students.map((student) => {
+                const enrollment = student.enrollments[0];
+                const topicsComplete =
+                  enrollment?.topicProgress.filter((t) => t.status === "complete").length ?? 0;
+                const lastAttempt = enrollment?.assessmentAttempts[0];
+                const hasCertificate = Boolean(enrollment?.certificate);
+                const isPending = Boolean(enrollment?.assessmentPassedAt) && !hasCertificate;
+
+                return (
+                  <tr key={student.id}>
+                    <td>
+                      {student.lastName}, {student.firstName}
+                      {student.middleInitial ? ` ${student.middleInitial}` : ""}
+                    </td>
+                    <td>{student.email}</td>
+                    <td>{topicsComplete} / 9</td>
+                    <td>
+                      {lastAttempt
+                        ? `${lastAttempt.scorePercent}% (${lastAttempt.passed ? "passed" : "failed"})`
+                        : "—"}
+                    </td>
+                    <td>
+                      {hasCertificate ? (
+                        <span className="status-badge status-complete">
+                          {enrollment?.certificate?.certificateNumber}
+                        </span>
+                      ) : isPending ? (
+                        <span className="status-badge status-in_progress">Pending number</span>
+                      ) : (
+                        <span className="status-badge status-not_started">—</span>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}

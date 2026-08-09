@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import AdminNav from "../admin-nav";
 
 function fileToDataUrl(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -13,8 +13,6 @@ function fileToDataUrl(file: File): Promise<string> {
 }
 
 export default function SchoolSettingsAdminPage() {
-  const [secret, setSecret] = useState("");
-  const [loaded, setLoaded] = useState(false);
   const [tdlrNumber, setTdlrNumber] = useState("");
   const [schoolName, setSchoolName] = useState("");
   const [driverEdSchoolNumber, setDriverEdSchoolNumber] = useState("");
@@ -26,23 +24,20 @@ export default function SchoolSettingsAdminPage() {
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  async function loadSettings() {
-    setError(null);
-    const res = await fetch(`/api/admin/school-settings?secret=${encodeURIComponent(secret)}`);
-    const data = await res.json();
-    if (!res.ok) {
-      setError(data.error || "Couldn't load settings.");
-      return;
-    }
-    setTdlrNumber(data.tdlrNumber || "");
-    setSchoolName(data.schoolName || "");
-    setDriverEdSchoolNumber(data.driverEdSchoolNumber || "");
-    setInstructorName(data.instructorName || "");
-    setInstructorSignatureImage(data.instructorSignatureImage || "");
-    setChiefOfficialName(data.chiefOfficialName || "");
-    setChiefOfficialSignatureImage(data.chiefOfficialSignatureImage || "");
-    setLoaded(true);
-  }
+  useEffect(() => {
+    fetch("/api/admin/school-settings")
+      .then((res) => res.json())
+      .then((data) => {
+        setTdlrNumber(data.tdlrNumber || "");
+        setSchoolName(data.schoolName || "");
+        setDriverEdSchoolNumber(data.driverEdSchoolNumber || "");
+        setInstructorName(data.instructorName || "");
+        setInstructorSignatureImage(data.instructorSignatureImage || "");
+        setChiefOfficialName(data.chiefOfficialName || "");
+        setChiefOfficialSignatureImage(data.chiefOfficialSignatureImage || "");
+      })
+      .catch(() => setError("Couldn't load settings."));
+  }, []);
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
@@ -54,7 +49,6 @@ export default function SchoolSettingsAdminPage() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        secret,
         tdlrNumber,
         schoolName,
         driverEdSchoolNumber,
@@ -83,132 +77,100 @@ export default function SchoolSettingsAdminPage() {
     setter(dataUrl);
   }
 
-  if (!loaded) {
-    return (
-      <div style={{ maxWidth: 480, margin: "60px auto", padding: "0 24px" }}>
+  return (
+    <div>
+      <AdminNav />
+      <div style={{ maxWidth: 560, margin: "40px auto", padding: "0 24px 80px" }}>
         <h1>School certificate settings</h1>
         <p style={{ color: "#666" }}>
-          Enter the admin password to view or update these settings.
+          These details are stamped onto every certificate a student is issued —
+          set them once here.
         </p>
-        <div className="field">
-          <label htmlFor="secret">Admin password</label>
-          <input
-            id="secret"
-            type="password"
-            value={secret}
-            onChange={(e) => setSecret(e.target.value)}
-          />
-        </div>
-        {error && <p className="error-text">{error}</p>}
-        <button className="primary" style={{ width: "auto", padding: "10px 20px" }} onClick={loadSettings}>
-          Continue
-        </button>
-        <div style={{ marginTop: 16 }}>
-          <Link href="/admin/certificate-numbers" style={{ fontSize: "0.85rem", color: "#666" }}>
-            Go to certificate numbers →
-          </Link>
-        </div>
-      </div>
-    );
-  }
 
-  return (
-    <div style={{ maxWidth: 560, margin: "60px auto", padding: "0 24px 80px" }}>
-      <h1>School certificate settings</h1>
-      <p style={{ color: "#666" }}>
-        These details are stamped onto every certificate a student is issued —
-        set them once here.
-      </p>
+        <form onSubmit={handleSave} style={{ marginTop: 24 }}>
+          <div className="field">
+            <label htmlFor="tdlrNumber">TDLR Number</label>
+            <input id="tdlrNumber" type="text" value={tdlrNumber} onChange={(e) => setTdlrNumber(e.target.value)} />
+          </div>
 
-      <form onSubmit={handleSave} style={{ marginTop: 24 }}>
-        <div className="field">
-          <label htmlFor="tdlrNumber">TDLR Number</label>
-          <input id="tdlrNumber" type="text" value={tdlrNumber} onChange={(e) => setTdlrNumber(e.target.value)} />
-        </div>
+          <div className="field">
+            <label htmlFor="schoolName">Name of School</label>
+            <input id="schoolName" type="text" value={schoolName} onChange={(e) => setSchoolName(e.target.value)} />
+          </div>
 
-        <div className="field">
-          <label htmlFor="schoolName">Name of School</label>
-          <input id="schoolName" type="text" value={schoolName} onChange={(e) => setSchoolName(e.target.value)} />
-        </div>
-
-        <div className="field">
-          <label htmlFor="driverEdSchoolNumber">Driver Education School Number</label>
-          <input
-            id="driverEdSchoolNumber"
-            type="text"
-            value={driverEdSchoolNumber}
-            onChange={(e) => setDriverEdSchoolNumber(e.target.value)}
-          />
-        </div>
-
-        <hr style={{ margin: "24px 0", border: "none", borderTop: "1px solid #eee" }} />
-
-        <div className="field">
-          <label htmlFor="instructorName">Driver Education Instructor name</label>
-          <input
-            id="instructorName"
-            type="text"
-            value={instructorName}
-            onChange={(e) => setInstructorName(e.target.value)}
-          />
-        </div>
-        <div className="field">
-          <label htmlFor="instructorSig">Instructor signature image</label>
-          <input
-            id="instructorSig"
-            type="file"
-            accept="image/png,image/jpeg"
-            onChange={(e) => handleSignatureUpload(e.target.files?.[0], setInstructorSignatureImage)}
-          />
-          {instructorSignatureImage && (
-            <img
-              src={instructorSignatureImage}
-              alt="Instructor signature preview"
-              style={{ marginTop: 8, maxHeight: 50, background: "#f5f5f5", padding: 4, borderRadius: 4 }}
+          <div className="field">
+            <label htmlFor="driverEdSchoolNumber">Driver Education School Number</label>
+            <input
+              id="driverEdSchoolNumber"
+              type="text"
+              value={driverEdSchoolNumber}
+              onChange={(e) => setDriverEdSchoolNumber(e.target.value)}
             />
-          )}
-        </div>
+          </div>
 
-        <hr style={{ margin: "24px 0", border: "none", borderTop: "1px solid #eee" }} />
+          <hr style={{ margin: "24px 0", border: "none", borderTop: "1px solid #eee" }} />
 
-        <div className="field">
-          <label htmlFor="chiefOfficialName">Chief School Official name</label>
-          <input
-            id="chiefOfficialName"
-            type="text"
-            value={chiefOfficialName}
-            onChange={(e) => setChiefOfficialName(e.target.value)}
-          />
-        </div>
-        <div className="field">
-          <label htmlFor="chiefSig">Chief Official signature image</label>
-          <input
-            id="chiefSig"
-            type="file"
-            accept="image/png,image/jpeg"
-            onChange={(e) => handleSignatureUpload(e.target.files?.[0], setChiefOfficialSignatureImage)}
-          />
-          {chiefOfficialSignatureImage && (
-            <img
-              src={chiefOfficialSignatureImage}
-              alt="Chief official signature preview"
-              style={{ marginTop: 8, maxHeight: 50, background: "#f5f5f5", padding: 4, borderRadius: 4 }}
+          <div className="field">
+            <label htmlFor="instructorName">Driver Education Instructor name</label>
+            <input
+              id="instructorName"
+              type="text"
+              value={instructorName}
+              onChange={(e) => setInstructorName(e.target.value)}
             />
-          )}
-        </div>
+          </div>
+          <div className="field">
+            <label htmlFor="instructorSig">Instructor signature image</label>
+            <input
+              id="instructorSig"
+              type="file"
+              accept="image/png,image/jpeg"
+              onChange={(e) => handleSignatureUpload(e.target.files?.[0], setInstructorSignatureImage)}
+            />
+            {instructorSignatureImage && (
+              <img
+                src={instructorSignatureImage}
+                alt="Instructor signature preview"
+                style={{ marginTop: 8, maxHeight: 50, background: "#f5f5f5", padding: 4, borderRadius: 4 }}
+              />
+            )}
+          </div>
 
-        {error && <p className="error-text">{error}</p>}
-        {saved && <p style={{ color: "#15803d", fontSize: "0.9rem", marginBottom: 16 }}>Saved.</p>}
+          <hr style={{ margin: "24px 0", border: "none", borderTop: "1px solid #eee" }} />
 
-        <button className="primary" type="submit" disabled={loading} style={{ width: "auto", padding: "10px 20px" }}>
-          {loading ? "Saving…" : "Save settings"}
-        </button>
-      </form>
+          <div className="field">
+            <label htmlFor="chiefOfficialName">Chief School Official name</label>
+            <input
+              id="chiefOfficialName"
+              type="text"
+              value={chiefOfficialName}
+              onChange={(e) => setChiefOfficialName(e.target.value)}
+            />
+          </div>
+          <div className="field">
+            <label htmlFor="chiefSig">Chief Official signature image</label>
+            <input
+              id="chiefSig"
+              type="file"
+              accept="image/png,image/jpeg"
+              onChange={(e) => handleSignatureUpload(e.target.files?.[0], setChiefOfficialSignatureImage)}
+            />
+            {chiefOfficialSignatureImage && (
+              <img
+                src={chiefOfficialSignatureImage}
+                alt="Chief official signature preview"
+                style={{ marginTop: 8, maxHeight: 50, background: "#f5f5f5", padding: 4, borderRadius: 4 }}
+              />
+            )}
+          </div>
 
-      <div style={{ marginTop: 24 }}>
-        <Link href="/admin/certificate-numbers" style={{ fontSize: "0.85rem", color: "#666" }}>
-          Go to certificate numbers →
-        </Link>
+          {error && <p className="error-text">{error}</p>}
+          {saved && <p style={{ color: "#15803d", fontSize: "0.9rem", marginBottom: 16 }}>Saved.</p>}
+
+          <button className="primary" type="submit" disabled={loading} style={{ width: "auto", padding: "10px 20px" }}>
+            {loading ? "Saving…" : "Save settings"}
+          </button>
+        </form>
       </div>
     </div>
   );
