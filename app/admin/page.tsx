@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import AdminNav from "./admin-nav";
+import AdminShell from "./admin-shell";
 
 export default async function AdminDashboardPage() {
   const [studentCount, certificatesIssued, numbersAvailable, pendingStudents] =
@@ -34,17 +34,15 @@ export default async function AdminDashboardPage() {
       stat: null,
     },
     {
-      href: "#",
+      href: "/admin/course-content",
       title: "Course Content",
-      description: "Manage lesson content for the 9 topics.",
-      stat: "Coming in Phase 5",
-      disabled: true,
+      description: "Manage lesson text, images, and videos for the 9 topics.",
+      stat: null,
     },
   ];
 
   return (
-    <div>
-      <AdminNav />
+    <AdminShell>
       <div style={{ maxWidth: 900, margin: "40px auto", padding: "0 24px" }}>
         <h1>Dashboard</h1>
         <p style={{ color: "#666" }}>
@@ -70,6 +68,6 @@ export default async function AdminDashboardPage() {
           )}
         </div>
       </div>
-    </div>
+    </AdminShell>
   );
 }

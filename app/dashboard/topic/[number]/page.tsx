@@ -36,6 +36,14 @@ export default async function TopicPage({
 
   const nextTopic = topics.find((t) => t.number === topicNumber + 1) ?? null;
 
+  const topicRecord = await prisma.topic.findUnique({ where: { number: topicNumber } });
+  const content = topicRecord
+    ? await prisma.topicContent.findMany({
+        where: { topicId: topicRecord.id },
+        orderBy: { sortOrder: "asc" },
+      })
+    : [];
+
   return (
     <TopicViewer
       topic={{
@@ -45,6 +53,11 @@ export default async function TopicPage({
         secondsActive: topic.secondsActive,
         status: topic.status,
       }}
+      content={content.map((c) => ({
+        id: c.id,
+        contentType: c.contentType as "text" | "video" | "image",
+        body: c.body,
+      }))}
       nextTopicNumber={nextTopic?.number ?? null}
     />
   );

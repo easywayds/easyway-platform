@@ -12,14 +12,45 @@ type Topic = {
   status: "not_started" | "in_progress" | "complete";
 };
 
+type ContentBlock = {
+  id: string;
+  contentType: "text" | "video" | "image";
+  body: string;
+};
+
 const HEARTBEAT_INTERVAL_MS = 15000;
 const HEARTBEAT_SECONDS = 15;
 
+function VideoEmbed({ url }: { url: string }) {
+  const isYouTube = url.includes("youtube.com") || url.includes("youtu.be");
+  if (isYouTube) {
+    const videoId = url.includes("youtu.be")
+      ? url.split("/").pop()?.split("?")[0]
+      : new URL(url).searchParams.get("v");
+    return (
+      <div style={{ position: "relative", paddingBottom: "56.25%", height: 0, marginTop: 8 }}>
+        <iframe
+          src={`https://www.youtube.com/embed/${videoId}`}
+          style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: 0, borderRadius: 8 }}
+          allowFullScreen
+        />
+      </div>
+    );
+  }
+  return (
+    <video controls style={{ width: "100%", borderRadius: 8, marginTop: 8 }}>
+      <source src={url} />
+    </video>
+  );
+}
+
 export default function TopicViewer({
   topic,
+  content,
   nextTopicNumber,
 }: {
   topic: Topic;
+  content: ContentBlock[];
   nextTopicNumber: number | null;
 }) {
   const router = useRouter();
@@ -99,14 +130,29 @@ export default function TopicViewer({
         {isComplete && " — complete"}
       </p>
 
-      <div className="topic-content-placeholder">
-        <p>
-          Lesson content for this topic will live here once it&rsquo;s migrated
-          from the existing course material (Phase 5). For now, keep this tab
-          open and focused to log time toward the {topic.minMinutes}-minute
-          requirement.
-        </p>
-      </div>
+      {content.length > 0 ? (
+        <div style={{ marginTop: 24, display: "flex", flexDirection: "column", gap: 16 }}>
+          {content.map((block) => (
+            <div key={block.id} className="topic-content-placeholder" style={{ borderStyle: "solid" }}>
+              {block.contentType === "text" && (
+                <p style={{ margin: 0, whiteSpace: "pre-wrap" }}>{block.body}</p>
+              )}
+              {block.contentType === "image" && (
+                <img src={block.body} alt="" style={{ maxWidth: "100%", borderRadius: 8 }} />
+              )}
+              {block.contentType === "video" && <VideoEmbed url={block.body} />}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="topic-content-placeholder">
+          <p>
+            Lesson content for this topic hasn&rsquo;t been added yet. Keep this tab
+            open and focused to log time toward the {topic.minMinutes}-minute
+            requirement.
+          </p>
+        </div>
+      )}
 
       <button
         className="primary"

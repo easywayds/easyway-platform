@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import AdminNav from "../admin-nav";
+import AdminShell from "../admin-shell";
 
 function fileToDataUrl(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -78,8 +78,7 @@ export default function SchoolSettingsAdminPage() {
   }
 
   return (
-    <div>
-      <AdminNav />
+    <AdminShell>
       <div style={{ maxWidth: 560, margin: "40px auto", padding: "0 24px 80px" }}>
         <h1>School certificate settings</h1>
         <p style={{ color: "#666" }}>
@@ -172,6 +171,6 @@ export default function SchoolSettingsAdminPage() {
           </button>
         </form>
       </div>
-    </div>
+    </AdminShell>
   );
 }

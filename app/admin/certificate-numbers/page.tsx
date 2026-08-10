@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import AdminNav from "../admin-nav";
+import AdminShell from "../admin-shell";
 
 export default function CertificateNumbersAdminPage() {
   const [numbers, setNumbers] = useState("");
@@ -61,8 +61,7 @@ export default function CertificateNumbersAdminPage() {
   }
 
   return (
-    <div>
-      <AdminNav />
+    <AdminShell>
       <div style={{ maxWidth: 560, margin: "40px auto", padding: "0 24px" }}>
         <h1>Certificate numbers</h1>
         <p style={{ color: "#666" }}>
@@ -112,6 +111,6 @@ export default function CertificateNumbersAdminPage() {
           </div>
         )}
       </div>
-    </div>
+    </AdminShell>
   );
 }

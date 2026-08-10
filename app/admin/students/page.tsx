@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import AdminNav from "../admin-nav";
+import AdminShell from "../admin-shell";
 
 export default async function StudentsAdminPage() {
   const students = await prisma.student.findMany({
@@ -17,8 +17,7 @@ export default async function StudentsAdminPage() {
   });
 
   return (
-    <div>
-      <AdminNav />
+    <AdminShell>
       <div style={{ maxWidth: 1000, margin: "40px auto", padding: "0 24px" }}>
         <h1>Students</h1>
         <p style={{ color: "#666" }}>{students.length} total.</p>
@@ -74,6 +73,6 @@ export default async function StudentsAdminPage() {
           </table>
         </div>
       </div>
-    </div>
+    </AdminShell>
   );
 }

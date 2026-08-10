@@ -207,59 +207,83 @@ button.primary:disabled {
   line-height: 1.5;
 }
 
-.admin-nav {
-  background: #fff;
-  border-bottom: 1px solid #eee;
-}
-
-.admin-nav-inner {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 14px 24px;
+.admin-shell {
   display: flex;
-  align-items: center;
-  gap: 24px;
+  min-height: 100vh;
 }
 
-.admin-nav-brand {
+.admin-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: #fff;
+  border-right: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.admin-sidebar-brand {
   font-weight: 700;
   font-size: 0.95rem;
-  color: #1a1a1a;
-  margin-right: 8px;
+  padding: 0 20px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 12px;
 }
 
-.admin-nav-links {
-  display: flex;
-  gap: 18px;
+.admin-sidebar-nav {
   flex: 1;
+  overflow-y: auto;
 }
 
-.admin-nav-link {
+.admin-sidebar-group {
+  padding: 6px 12px;
+}
+
+.admin-sidebar-group-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #999;
+  padding: 10px 8px 4px;
+}
+
+.admin-sidebar-link {
+  display: block;
+  padding: 8px 8px;
+  border-radius: 6px;
   font-size: 0.88rem;
-  color: #666;
+  color: #444;
   text-decoration: none;
-  padding: 4px 0;
-  border-bottom: 2px solid transparent;
 }
 
-.admin-nav-link:hover {
-  color: #1a1a1a;
+.admin-sidebar-link:hover {
+  background: #f3f4f6;
 }
 
-.admin-nav-link-active {
+.admin-sidebar-link-active {
+  background: #e8edfc;
   color: #1a56db;
-  border-bottom-color: #1a56db;
   font-weight: 600;
 }
 
-.admin-nav-logout {
+.admin-sidebar-logout {
+  margin: 12px 12px 0;
+  padding: 8px;
   background: none;
   border: 1px solid #d0d0d5;
   border-radius: 6px;
-  padding: 6px 12px;
   font-size: 0.85rem;
   cursor: pointer;
   color: #555;
+}
+
+.admin-main {
+  flex: 1;
+  min-width: 0;
 }
 
 .admin-card-grid {
