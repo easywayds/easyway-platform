@@ -3,6 +3,11 @@ import { prisma } from "@/lib/prisma";
 import { getCoursePriceUsd } from "@/lib/stripe";
 import "./home.css";
 
+// This page reads live data (topics, school settings, price) from the
+// database on every visit — it should never be baked into a static file
+// at build time.
+export const dynamic = "force-dynamic";
+
 const TOPIC_BLURBS: Record<number, string> = {
   1: "Get oriented — what the course covers and how it works.",
   2: "Licensing rules, requirements, and what to expect.",
