@@ -13,7 +13,14 @@ export default async function AdminDashboardPage() {
       }),
     ]);
 
-  const cards = [
+  const cards: {
+    href: string;
+    title: string;
+    description: string;
+    stat: string | null;
+    alert?: string | null;
+    disabled?: boolean;
+  }[] = [
     {
       href: "/admin/students",
       title: "Students",
