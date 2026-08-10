@@ -51,6 +51,22 @@ function LoginForm() {
         <h1>Log in</h1>
         <p className="subtitle">Continue your 6-Hour Adult Driver Education course</p>
 
+        {searchParams.get("enrolled") === "success" && (
+          <p
+            style={{
+              background: "#f0fdf4",
+              color: "#15803d",
+              border: "1px solid #bbf7d0",
+              borderRadius: 8,
+              padding: "10px 14px",
+              fontSize: "0.88rem",
+              marginBottom: 16,
+            }}
+          >
+            Payment successful! Log in below to start your course.
+          </p>
+        )}
+
         <form onSubmit={handleSubmit}>
           <div className="field">
             <label htmlFor="email">Email</label>
@@ -82,7 +98,7 @@ function LoginForm() {
         </form>
 
         <p className="switch-link">
-          Don&rsquo;t have an account? <Link href="/register">Create one</Link>
+          Don&rsquo;t have an account? <Link href="/cart">Enroll now</Link>
         </p>
       </div>
     </div>

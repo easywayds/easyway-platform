@@ -51,7 +51,7 @@ export default async function Home() {
             completion certificate when you pass.
           </p>
           <div className="hero-ctas">
-            <Link href="/register" className="btn btn-primary">
+            <Link href="/cart" className="btn btn-primary">
               Enroll now — {`$${coursePriceUsd}`}
             </Link>
             <Link href="/login" className="btn btn-outline">
@@ -151,7 +151,7 @@ export default async function Home() {
         <h2>Ready to get started?</h2>
         <p>Create your account and begin Topic 1 today.</p>
         <div className="hero-ctas">
-          <Link href="/register" className="btn btn-primary">
+          <Link href="/cart" className="btn btn-primary">
             Enroll now — {`$${coursePriceUsd}`}
           </Link>
         </div>
