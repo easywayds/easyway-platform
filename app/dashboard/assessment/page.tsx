@@ -6,6 +6,9 @@ import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
 import { getOrCreateActiveEnrollment, getTopicsWithProgress } from "@/lib/enrollment";
 import AssessmentRunner from "./assessment-runner";
 
+// Live, per-student assessment state — never statically prerendered.
+export const dynamic = "force-dynamic";
+
 export default async function AssessmentPage() {
   const token = cookies().get(SESSION_COOKIE)?.value;
   const session = token ? await verifySessionToken(token) : null;

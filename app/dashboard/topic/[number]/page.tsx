@@ -5,6 +5,9 @@ import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
 import { getOrCreateActiveEnrollment, getTopicsWithProgress } from "@/lib/enrollment";
 import TopicViewer from "./topic-viewer";
 
+// Live, per-student progress and content — never statically prerendered.
+export const dynamic = "force-dynamic";
+
 export default async function TopicPage({
   params,
 }: {

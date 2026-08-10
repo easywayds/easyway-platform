@@ -1,6 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import AdminShell from "../admin-shell";
 
+// Live student roster — never statically prerendered.
+export const dynamic = "force-dynamic";
+
 export default async function StudentsAdminPage() {
   const students = await prisma.student.findMany({
     orderBy: { createdAt: "desc" },

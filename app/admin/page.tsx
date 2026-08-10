@@ -2,6 +2,9 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import AdminShell from "./admin-shell";
 
+// Live counts — never statically prerendered.
+export const dynamic = "force-dynamic";
+
 export default async function AdminDashboardPage() {
   const [studentCount, certificatesIssued, numbersAvailable, pendingStudents] =
     await Promise.all([

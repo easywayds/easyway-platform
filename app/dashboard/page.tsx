@@ -9,6 +9,9 @@ import LogoutButton from "./logout-button";
 import PayButton from "./pay-button";
 import type { Enrollment } from "@prisma/client";
 
+// Always live, per-student data — never statically prerendered.
+export const dynamic = "force-dynamic";
+
 const STATUS_LABEL: Record<string, string> = {
   not_started: "Not started",
   in_progress: "In progress",
