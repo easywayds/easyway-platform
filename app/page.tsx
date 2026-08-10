@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { getCoursePriceUsd } from "@/lib/stripe";
+import { getCoursePriceUsd } from "@/lib/square";
 import "./home.css";
 
 // This page reads live data (topics, school settings, price) from the

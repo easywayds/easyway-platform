@@ -69,11 +69,11 @@ model Enrollment {
   assessmentPassedAt DateTime?
 
   // Payment gate — no topic unlocks (not even Topic 1) until this is set.
-  // Set only by the Stripe webhook confirming a completed checkout, never
+  // Set only by the Square webhook confirming a completed payment, never
   // by the client, so a student can't unlock the course without actually
   // paying.
-  paidAt                    DateTime?
-  stripeCheckoutSessionId   String?   @unique
+  paidAt                DateTime?
+  squarePaymentLinkId   String?   @unique
 
   certificateId String?      @unique
   certificate   Certificate? @relation(fields: [certificateId], references: [id])
@@ -194,7 +194,7 @@ model SchoolSettings {
   chiefOfficialName            String?
   chiefOfficialSignatureImage  String?
   // Course price in whole US dollars (e.g. 25 = $25.00). Falls back to
-  // the default in lib/stripe.ts if not set.
+  // the default in lib/square.ts if not set.
   coursePriceUsd               Int?
 
   @@map("school_settings")

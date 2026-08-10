@@ -1,8 +1,9 @@
+import { randomUUID } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
 import { getOrCreateActiveEnrollment } from "@/lib/enrollment";
-import { getStripeClient, getCoursePriceUsd, COURSE_NAME } from "@/lib/stripe";
+import { getSquareClient, getSquareLocationId, getCoursePriceUsd, COURSE_NAME } from "@/lib/square";
 
 export async function POST(req: NextRequest) {
   const token = req.cookies.get(SESSION_COOKIE)?.value;
@@ -24,28 +25,39 @@ export async function POST(req: NextRequest) {
   const origin = req.nextUrl.origin;
   const priceUsd = await getCoursePriceUsd();
 
-  const stripe = getStripeClient();
-  const checkoutSession = await stripe.checkout.sessions.create({
-    mode: "payment",
-    payment_method_types: ["card"],
-    customer_email: student.email,
-    line_items: [
-      {
-        price_data: {
-          currency: "usd",
-          unit_amount: Math.round(priceUsd * 100),
-          product_data: { name: COURSE_NAME },
-        },
-        quantity: 1,
+  try {
+    const client = getSquareClient();
+    const response = await client.checkout.paymentLinks.create({
+      idempotencyKey: randomUUID(),
+      order: {
+        locationId: getSquareLocationId(),
+        // Ties this order back to the enrollment it's paying for — the
+        // webhook reads this to know which student to unlock.
+        referenceId: enrollment.id,
+        lineItems: [
+          {
+            name: COURSE_NAME,
+            quantity: "1",
+            basePriceMoney: {
+              amount: BigInt(Math.round(priceUsd * 100)),
+              currency: "USD",
+            },
+          },
+        ],
       },
-    ],
-    metadata: {
-      enrollmentId: enrollment.id,
-      studentId: student.id,
-    },
-    success_url: `${origin}/dashboard?payment=success`,
-    cancel_url: `${origin}/dashboard?payment=cancelled`,
-  });
+      checkoutOptions: {
+        redirectUrl: `${origin}/dashboard?payment=success`,
+      },
+    });
 
-  return NextResponse.json({ url: checkoutSession.url });
+    const url = response.paymentLink?.url;
+    if (!url) {
+      return NextResponse.json({ error: "Couldn't create checkout link." }, { status: 500 });
+    }
+
+    return NextResponse.json({ url });
+  } catch (err) {
+    console.error("Square checkout creation failed:", err);
+    return NextResponse.json({ error: "Couldn't start checkout. Please try again." }, { status: 500 });
+  }
 }

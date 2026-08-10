@@ -4,7 +4,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
 import { getOrCreateActiveEnrollment, getTopicsWithProgress } from "@/lib/enrollment";
-import { getCoursePriceUsd } from "@/lib/stripe";
+import { getCoursePriceUsd } from "@/lib/square";
 import LogoutButton from "./logout-button";
 import PayButton from "./pay-button";
 import type { Enrollment } from "@prisma/client";
