@@ -20,8 +20,6 @@ export default async function Home() {
     prisma.schoolSettings.findUnique({ where: { id: "default" } }),
   ]);
 
-  const totalMinutes = topics.reduce((sum, t) => sum + t.minMinutes, 0);
-
   return (
     <div className="home">
       <nav className="home-nav">
@@ -56,7 +54,7 @@ export default async function Home() {
 
           <div className="hero-stats">
             <div className="hero-stat">
-              <span className="num">{Math.round(totalMinutes / 60)} HRS</span>
+              <span className="num">6 HRS</span>
               <span className="label">Required course time</span>
             </div>
             <div className="hero-stat">
