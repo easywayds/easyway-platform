@@ -33,14 +33,12 @@ export async function POST(req: NextRequest) {
   }
 
   // Server-side unlock check — mirrors the UI's rule, but this is the copy
-  // that actually matters. A student can't POST directly to a later topic
-  // and rack up time on it before earlier topics are done.
-  if (topicNumber > 1) {
-    const topics = await getTopicsWithProgress(enrollment.id);
-    const current = topics.find((t) => t.number === topicNumber);
-    if (!current?.unlocked) {
-      return NextResponse.json({ error: "Topic is locked" }, { status: 403 });
-    }
+  // that actually matters. A student can't POST directly to any topic
+  // (including Topic 1) without having paid and completed earlier topics.
+  const topics = await getTopicsWithProgress(enrollment.id, Boolean(enrollment.paidAt));
+  const current = topics.find((t) => t.number === topicNumber);
+  if (!current?.unlocked) {
+    return NextResponse.json({ error: "Topic is locked" }, { status: 403 });
   }
 
   const existing = await prisma.topicProgress.findUnique({

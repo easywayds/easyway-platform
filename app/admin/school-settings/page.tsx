@@ -20,6 +20,7 @@ export default function SchoolSettingsAdminPage() {
   const [instructorSignatureImage, setInstructorSignatureImage] = useState("");
   const [chiefOfficialName, setChiefOfficialName] = useState("");
   const [chiefOfficialSignatureImage, setChiefOfficialSignatureImage] = useState("");
+  const [coursePriceUsd, setCoursePriceUsd] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -35,6 +36,7 @@ export default function SchoolSettingsAdminPage() {
         setInstructorSignatureImage(data.instructorSignatureImage || "");
         setChiefOfficialName(data.chiefOfficialName || "");
         setChiefOfficialSignatureImage(data.chiefOfficialSignatureImage || "");
+        setCoursePriceUsd(data.coursePriceUsd != null ? String(data.coursePriceUsd) : "");
       })
       .catch(() => setError("Couldn't load settings."));
   }, []);
@@ -56,6 +58,7 @@ export default function SchoolSettingsAdminPage() {
         instructorSignatureImage,
         chiefOfficialName,
         chiefOfficialSignatureImage,
+        coursePriceUsd: coursePriceUsd ? Number(coursePriceUsd) : undefined,
       }),
     });
     const data = await res.json();
@@ -104,6 +107,23 @@ export default function SchoolSettingsAdminPage() {
               type="text"
               value={driverEdSchoolNumber}
               onChange={(e) => setDriverEdSchoolNumber(e.target.value)}
+            />
+          </div>
+
+          <hr style={{ margin: "24px 0", border: "none", borderTop: "1px solid #eee" }} />
+
+          <hr style={{ margin: "24px 0", border: "none", borderTop: "1px solid #eee" }} />
+
+          <div className="field">
+            <label htmlFor="coursePriceUsd">Course price (USD)</label>
+            <input
+              id="coursePriceUsd"
+              type="number"
+              min={0}
+              step="0.01"
+              value={coursePriceUsd}
+              onChange={(e) => setCoursePriceUsd(e.target.value)}
+              placeholder="25"
             />
           </div>
 

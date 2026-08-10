@@ -68,6 +68,13 @@ model Enrollment {
   // Easy Way adds more to the pool.
   assessmentPassedAt DateTime?
 
+  // Payment gate — no topic unlocks (not even Topic 1) until this is set.
+  // Set only by the Stripe webhook confirming a completed checkout, never
+  // by the client, so a student can't unlock the course without actually
+  // paying.
+  paidAt                    DateTime?
+  stripeCheckoutSessionId   String?   @unique
+
   certificateId String?      @unique
   certificate   Certificate? @relation(fields: [certificateId], references: [id])
 
@@ -186,6 +193,9 @@ model SchoolSettings {
   instructorSignatureImage     String?
   chiefOfficialName            String?
   chiefOfficialSignatureImage  String?
+  // Course price in whole US dollars (e.g. 25 = $25.00). Falls back to
+  // the default in lib/stripe.ts if not set.
+  coursePriceUsd               Int?
 
   @@map("school_settings")
 }

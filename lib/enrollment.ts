@@ -38,7 +38,8 @@ export type TopicWithProgress = {
 };
 
 export async function getTopicsWithProgress(
-  enrollmentId: string
+  enrollmentId: string,
+  paid: boolean
 ): Promise<TopicWithProgress[]> {
   const topics = await prisma.topic.findMany({
     orderBy: { sortOrder: "asc" },
@@ -59,12 +60,13 @@ export async function getTopicsWithProgress(
     };
   });
 
-  // Sequential unlock: topic 1 is always open; topic N unlocks once
-  // topic N-1 is marked complete. This mirrors the same rule enforced
-  // server-side in the heartbeat route, so the UI and the API never
-  // disagree about what a student is allowed to access.
+  // Sequential unlock: topic 1 opens once the course is paid for; topic N
+  // unlocks once topic N-1 is complete. Nothing unlocks at all — not even
+  // Topic 1 — until payment is confirmed. This mirrors the same rule
+  // enforced server-side in the heartbeat route, so the UI and the API
+  // never disagree about what a student is allowed to access.
   return withProgress.map((t, idx) => ({
     ...t,
-    unlocked: idx === 0 || withProgress[idx - 1].status === "complete",
+    unlocked: paid && (idx === 0 || withProgress[idx - 1].status === "complete"),
   }));
 }

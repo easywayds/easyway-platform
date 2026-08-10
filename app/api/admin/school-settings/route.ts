@@ -23,6 +23,7 @@ export async function GET(req: NextRequest) {
       instructorSignatureImage: null,
       chiefOfficialName: null,
       chiefOfficialSignatureImage: null,
+      coursePriceUsd: null,
     }
   );
 }
@@ -35,6 +36,7 @@ const SettingsSchema = z.object({
   instructorSignatureImage: z.string().optional(),
   chiefOfficialName: z.string().optional(),
   chiefOfficialSignatureImage: z.string().optional(),
+  coursePriceUsd: z.number().min(0).optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -48,9 +50,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 
-  const data: Record<string, string> = {};
-  for (const [key, value] of Object.entries(parsed.data)) {
+  const { coursePriceUsd, ...stringFields } = parsed.data;
+
+  const data: Record<string, string | number> = {};
+  for (const [key, value] of Object.entries(stringFields)) {
     if (value !== undefined && value !== "") data[key] = value;
+  }
+  if (coursePriceUsd !== undefined) {
+    data.coursePriceUsd = coursePriceUsd;
   }
 
   await prisma.schoolSettings.upsert({

@@ -23,7 +23,7 @@ export default async function TopicPage({
   }
 
   const enrollment = await getOrCreateActiveEnrollment(student.id);
-  const topics = await getTopicsWithProgress(enrollment.id);
+  const topics = await getTopicsWithProgress(enrollment.id, Boolean(enrollment.paidAt));
   const topic = topics.find((t) => t.number === topicNumber);
   if (!topic) notFound();
 

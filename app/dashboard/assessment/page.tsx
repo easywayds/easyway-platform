@@ -15,7 +15,7 @@ export default async function AssessmentPage() {
   if (!student) redirect("/login");
 
   const enrollment = await getOrCreateActiveEnrollment(student.id);
-  const topics = await getTopicsWithProgress(enrollment.id);
+  const topics = await getTopicsWithProgress(enrollment.id, Boolean(enrollment.paidAt));
   const topic9 = topics.find((t) => t.number === 9);
 
   if (!topic9 || topic9.status !== "complete") {

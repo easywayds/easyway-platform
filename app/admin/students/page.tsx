@@ -28,6 +28,7 @@ export default async function StudentsAdminPage() {
               <tr>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Paid</th>
                 <th>Topics</th>
                 <th>Assessment</th>
                 <th>Certificate</th>
@@ -49,6 +50,13 @@ export default async function StudentsAdminPage() {
                       {student.middleInitial ? ` ${student.middleInitial}` : ""}
                     </td>
                     <td>{student.email}</td>
+                    <td>
+                      {enrollment?.paidAt ? (
+                        <span className="status-badge status-complete">Paid</span>
+                      ) : (
+                        <span className="status-badge status-not_started">Unpaid</span>
+                      )}
+                    </td>
                     <td>{topicsComplete} / 9</td>
                     <td>
                       {lastAttempt

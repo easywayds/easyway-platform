@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
   }
 
   const enrollment = await getOrCreateActiveEnrollment(session.sub);
-  const topics = await getTopicsWithProgress(enrollment.id);
+  const topics = await getTopicsWithProgress(enrollment.id, Boolean(enrollment.paidAt));
   const topic9 = topics.find((t) => t.number === 9);
   if (!topic9 || topic9.status !== "complete") {
     return NextResponse.json(

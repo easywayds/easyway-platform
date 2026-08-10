@@ -4,7 +4,9 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
 import { getOrCreateActiveEnrollment, getTopicsWithProgress } from "@/lib/enrollment";
+import { getCoursePriceUsd } from "@/lib/stripe";
 import LogoutButton from "./logout-button";
+import PayButton from "./pay-button";
 import type { Enrollment } from "@prisma/client";
 
 const STATUS_LABEL: Record<string, string> = {
@@ -22,7 +24,9 @@ export default async function DashboardPage() {
   if (!student) redirect("/login");
 
   const enrollment: Enrollment = await getOrCreateActiveEnrollment(student.id);
-  const topics = await getTopicsWithProgress(enrollment.id);
+  const isPaid = Boolean(enrollment.paidAt);
+  const topics = await getTopicsWithProgress(enrollment.id, isPaid);
+  const coursePriceUsd = await getCoursePriceUsd();
 
   const completedCount = topics.filter((t) => t.status === "complete").length;
   const topic9 = topics.find((t) => t.number === 9);
@@ -33,6 +37,20 @@ export default async function DashboardPage() {
   return (
     <div style={{ maxWidth: 680, margin: "40px auto", padding: "0 24px" }}>
       <h1>Welcome, {student.firstName}</h1>
+
+      {!isPaid && (
+        <div
+          className="topic-content-placeholder"
+          style={{ borderStyle: "solid", borderColor: "#1a56db", background: "#f0f5ff" }}
+        >
+          <p style={{ fontWeight: 600, marginTop: 0 }}>
+            Unlock your course — ${coursePriceUsd.toFixed(2)}
+          </p>
+          <p>Pay once to start Topic 1 and work through the full course.</p>
+          <PayButton />
+        </div>
+      )}
+
       <p style={{ color: "#666" }}>
         {completedCount} of {topics.length} topics complete. Work through them in
         order — each one unlocks the next once its required time is logged.

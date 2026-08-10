@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { getCoursePriceUsd } from "@/lib/stripe";
 import "./home.css";
 
 const TOPIC_BLURBS: Record<number, string> = {
@@ -15,9 +16,10 @@ const TOPIC_BLURBS: Record<number, string> = {
 };
 
 export default async function Home() {
-  const [topics, schoolSettings] = await Promise.all([
+  const [topics, schoolSettings, coursePriceUsd] = await Promise.all([
     prisma.topic.findMany({ orderBy: { sortOrder: "asc" } }),
     prisma.schoolSettings.findUnique({ where: { id: "default" } }),
+    getCoursePriceUsd(),
   ]);
 
   return (
@@ -45,7 +47,7 @@ export default async function Home() {
           </p>
           <div className="hero-ctas">
             <Link href="/register" className="btn btn-primary">
-              Enroll now
+              Enroll now — {`$${coursePriceUsd}`}
             </Link>
             <Link href="/login" className="btn btn-outline">
               Student login
@@ -145,7 +147,7 @@ export default async function Home() {
         <p>Create your account and begin Topic 1 today.</p>
         <div className="hero-ctas">
           <Link href="/register" className="btn btn-primary">
-            Enroll now
+            Enroll now — {`$${coursePriceUsd}`}
           </Link>
         </div>
       </section>
