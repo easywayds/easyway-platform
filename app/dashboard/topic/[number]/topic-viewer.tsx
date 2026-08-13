@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import ContentBlockView, { type ContentBlockData } from "./content-block";
+import TopicQuiz from "./topic-quiz";
 
 type Topic = {
   number: number;
@@ -12,45 +14,26 @@ type Topic = {
   status: "not_started" | "in_progress" | "complete";
 };
 
-type ContentBlock = {
+type QuizQuestion = {
   id: string;
-  contentType: "text" | "video" | "image";
-  body: string;
+  question: string;
+  options: string[];
+  correctIndex: number;
+  visualKey: string | null;
 };
 
 const HEARTBEAT_INTERVAL_MS = 15000;
 const HEARTBEAT_SECONDS = 15;
 
-function VideoEmbed({ url }: { url: string }) {
-  const isYouTube = url.includes("youtube.com") || url.includes("youtu.be");
-  if (isYouTube) {
-    const videoId = url.includes("youtu.be")
-      ? url.split("/").pop()?.split("?")[0]
-      : new URL(url).searchParams.get("v");
-    return (
-      <div style={{ position: "relative", paddingBottom: "56.25%", height: 0, marginTop: 8 }}>
-        <iframe
-          src={`https://www.youtube.com/embed/${videoId}`}
-          style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: 0, borderRadius: 8 }}
-          allowFullScreen
-        />
-      </div>
-    );
-  }
-  return (
-    <video controls style={{ width: "100%", borderRadius: 8, marginTop: 8 }}>
-      <source src={url} />
-    </video>
-  );
-}
-
 export default function TopicViewer({
   topic,
   content,
+  quiz,
   nextTopicNumber,
 }: {
   topic: Topic;
-  content: ContentBlock[];
+  content: ContentBlockData[];
+  quiz: QuizQuestion[];
   nextTopicNumber: number | null;
 }) {
   const router = useRouter();
@@ -113,7 +96,7 @@ export default function TopicViewer({
   }
 
   return (
-    <div style={{ maxWidth: 680, margin: "40px auto", padding: "0 24px" }}>
+    <div style={{ maxWidth: 680, margin: "40px auto", padding: "0 24px 80px" }}>
       <Link href="/dashboard" style={{ fontSize: "0.85rem", color: "#666" }}>
         ← Back to dashboard
       </Link>
@@ -133,15 +116,7 @@ export default function TopicViewer({
       {content.length > 0 ? (
         <div style={{ marginTop: 24, display: "flex", flexDirection: "column", gap: 16 }}>
           {content.map((block) => (
-            <div key={block.id} className="topic-content-placeholder" style={{ borderStyle: "solid" }}>
-              {block.contentType === "text" && (
-                <p style={{ margin: 0, whiteSpace: "pre-wrap" }}>{block.body}</p>
-              )}
-              {block.contentType === "image" && (
-                <img src={block.body} alt="" style={{ maxWidth: "100%", borderRadius: 8 }} />
-              )}
-              {block.contentType === "video" && <VideoEmbed url={block.body} />}
-            </div>
+            <ContentBlockView key={block.id} block={block} />
           ))}
         </div>
       ) : (
@@ -153,6 +128,8 @@ export default function TopicViewer({
           </p>
         </div>
       )}
+
+      <TopicQuiz questions={quiz} />
 
       <button
         className="primary"

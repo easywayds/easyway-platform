@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
   // entirely against server-side data, ignoring anything about
   // correctness the client might have sent.
   const questionIds = parsed.data.answers.map((a) => a.questionId);
-  const questions = await prisma.question.findMany({ where: { id: { in: questionIds } } });
+  const questions = await prisma.examQuestion.findMany({ where: { id: { in: questionIds } } });
   const questionMap = new Map(questions.map((q) => [q.id, q]));
 
   let correctCount = 0;
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
     if (isCorrect) correctCount++;
     return {
       questionId: a.questionId,
-      questionText: q?.questionText ?? "(question no longer available)",
+      questionText: q?.question ?? "(question no longer available)",
       selectedIndex: a.selectedIndex,
       correctIndex: q?.correctIndex ?? null,
       isCorrect,

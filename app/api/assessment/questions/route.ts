@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  const pool = await prisma.question.findMany({ where: { active: true } });
+  const pool = await prisma.examQuestion.findMany();
   if (pool.length === 0) {
     return NextResponse.json({ error: "No questions available yet." }, { status: 503 });
   }
@@ -47,8 +47,8 @@ export async function GET(req: NextRequest) {
   // in /api/assessment/submit using each question's real stored answer.
   const questions = selected.map((q) => ({
     id: q.id,
-    questionText: q.questionText,
-    choices: q.choices,
+    questionText: q.question,
+    choices: q.options,
   }));
 
   return NextResponse.json({ questions });

@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
 import { getOrCreateActiveEnrollment, getTopicsWithProgress } from "@/lib/enrollment";
 import TopicViewer from "./topic-viewer";
+import type { ContentBlockData } from "./content-block";
 
 // Live, per-student progress and content — never statically prerendered.
 export const dynamic = "force-dynamic";
@@ -40,12 +41,18 @@ export default async function TopicPage({
   const nextTopic = topics.find((t) => t.number === topicNumber + 1) ?? null;
 
   const topicRecord = await prisma.topic.findUnique({ where: { number: topicNumber } });
-  const content = topicRecord
-    ? await prisma.topicContent.findMany({
-        where: { topicId: topicRecord.id },
-        orderBy: { sortOrder: "asc" },
-      })
-    : [];
+  const [content, quiz] = topicRecord
+    ? await Promise.all([
+        prisma.topicContent.findMany({
+          where: { topicId: topicRecord.id },
+          orderBy: { sortOrder: "asc" },
+        }),
+        prisma.topicQuizQuestion.findMany({
+          where: { topicId: topicRecord.id },
+          orderBy: { sortOrder: "asc" },
+        }),
+      ])
+    : [[], []];
 
   return (
     <TopicViewer
@@ -58,8 +65,19 @@ export default async function TopicPage({
       }}
       content={content.map((c) => ({
         id: c.id,
-        contentType: c.contentType as "text" | "video" | "image",
+        contentType: c.contentType as ContentBlockData["contentType"],
+        tag: c.tag,
+        route: c.route,
+        heading: c.heading,
         body: c.body,
+        meta: c.meta as Record<string, unknown> | null,
+      }))}
+      quiz={quiz.map((q) => ({
+        id: q.id,
+        question: q.question,
+        options: q.options as string[],
+        correctIndex: q.correctIndex,
+        visualKey: q.visualKey,
       }))}
       nextTopicNumber={nextTopic?.number ?? null}
     />

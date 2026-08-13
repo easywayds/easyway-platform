@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/apple/Desktop/**)",
+      "Read(//c/Users/apple/Downloads/**)",
+      "Bash(npm -v)",
+      "PowerShell(node -v)",
+      "PowerShell(npm -v)",
+      "PowerShell(Get-ChildItem \"C:\\\\Program Files\\\\nodejs\" -ErrorAction SilentlyContinue; Get-ChildItem \"$env:LOCALAPPDATA\\\\Programs\" -ErrorAction SilentlyContinue | Select-Object Name; where.exe node 2>$null; where.exe npm 2>$null)",
+      "PowerShell(winget --version 2>&1)",
+      "PowerShell(winget install -e --id OpenJS.NodeJS.LTS --accept-package-agreements --accept-source-agreements --silent)",
+      "PowerShell($env:Path = [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"User\"\\); node -v; npm -v)",
+      "Bash(unzip -l \"easyway-platform-v9.zip\")",
+      "Bash(echo \"--- Easy Way DS ---\"; find \"C:\\\\Users\\\\apple\\\\Desktop\\\\Easy Way DS\" -maxdepth 2 2>&1 | head -40 *)",
+      "Bash(curl -sI \"https://course.easywaydriving.com/\")"
+    ]
+  }
+}

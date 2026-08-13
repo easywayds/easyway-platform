@@ -21,6 +21,10 @@ enum ContentType {
   text
   video
   image
+  bullets
+  stat
+  custom_visual
+  check
 }
 
 enum TopicStatus {
@@ -93,6 +97,7 @@ model Topic {
 
   content  TopicContent[]
   progress TopicProgress[]
+  quiz     TopicQuizQuestion[]
 
   @@map("topics")
 }
@@ -102,7 +107,16 @@ model TopicContent {
   topicId     String
   topic       Topic       @relation(fields: [topicId], references: [id])
   contentType ContentType
-  body        String
+  // Small eyebrow label shown above the heading, e.g. "Welcome".
+  tag         String?
+  // true = style the tag with the teal "route" accent instead of amber
+  // "signal" — a visual grouping cue only, not a functional flag.
+  route       Boolean     @default(false)
+  heading     String?
+  body        String?
+  // Type-specific extra data: bullets.bullets[], stat.number, custom_visual.{visualKey,caption},
+  // video.{videoKey,caption}, check.answer.
+  meta        Json?
   sortOrder   Int
 
   @@map("topic_content")
@@ -208,4 +222,40 @@ model AdminUser {
   createdAt    DateTime  @default(now())
 
   @@map("admin_users")
+}
+
+// ============================================================================
+// Additive, from the phase1-seed-handoff content model (not part of the
+// original v9 build — layered on top of the live DB in a later session).
+// ============================================================================
+
+// Ungraded, per-topic engagement quiz — separate from the graded Module 9
+// final exam (which uses `Question` above).
+model TopicQuizQuestion {
+  id      String @id @default(cuid())
+  topicId String
+  topic   Topic  @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  question     String
+  options      Json // string[], always 4 options in current content
+  correctIndex Int
+  visualKey    String? // optional reference to an illustration shown with the question
+  sortOrder    Int
+
+  @@index([topicId, sortOrder])
+  @@map("topic_quiz_questions")
+}
+
+// Reserved for a richer graded exam bank; the live Module 9 exam currently
+// uses `Question` instead. Kept because the table already exists in the DB.
+model ExamQuestion {
+  id                String @id @default(cuid())
+  sourceTopicNumber Int
+  question          String
+  options           Json // string[]
+  correctIndex      Int
+  sortOrder         Int
+
+  @@index([sortOrder])
+  @@map("exam_questions")
 }
