@@ -47,3 +47,22 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
   return NextResponse.json({ admin });
 }
+
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+  const session = await requireAdmin(req);
+  if (!session || session.role !== "master_admin") {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  if (params.id === session.sub) {
+    return NextResponse.json({ error: "You can't delete your own account." }, { status: 400 });
+  }
+
+  const target = await prisma.adminUser.findUnique({ where: { id: params.id } });
+  if (!target) {
+    return NextResponse.json({ error: "Admin not found." }, { status: 404 });
+  }
+
+  await prisma.adminUser.delete({ where: { id: params.id } });
+  return NextResponse.json({ ok: true });
+}

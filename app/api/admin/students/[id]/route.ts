@@ -54,3 +54,42 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
   return NextResponse.json({ student });
 }
+
+// Permanent delete — restricted to students who never paid. Once an
+// enrollment has paidAt set, everything under it (topic progress, exam
+// attempts, certificate) is the real TDLR compliance record and this route
+// refuses to touch it. This is for cleaning up test/duplicate signups, not
+// for removing a real student's history.
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+  const session = await requireAdmin(req, ["student_admin"]);
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const student = await prisma.student.findUnique({
+    where: { id: params.id },
+    include: { enrollments: true },
+  });
+  if (!student) {
+    return NextResponse.json({ error: "Student not found." }, { status: 404 });
+  }
+
+  const hasPaidEnrollment = student.enrollments.some((e) => e.paidAt);
+  if (hasPaidEnrollment) {
+    return NextResponse.json(
+      { error: "This student has a paid enrollment, which is a compliance record and can't be deleted." },
+      { status: 400 }
+    );
+  }
+
+  await prisma.$transaction(async (tx) => {
+    for (const enrollment of student.enrollments) {
+      await tx.topicProgress.deleteMany({ where: { enrollmentId: enrollment.id } });
+      await tx.assessmentAttempt.deleteMany({ where: { enrollmentId: enrollment.id } });
+    }
+    await tx.enrollment.deleteMany({ where: { studentId: student.id } });
+    await tx.student.delete({ where: { id: student.id } });
+  });
+
+  return NextResponse.json({ ok: true });
+}

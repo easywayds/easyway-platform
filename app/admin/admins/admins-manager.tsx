@@ -88,6 +88,18 @@ export default function AdminsManager({ currentAdminId }: { currentAdminId: stri
     load();
   }
 
+  async function deleteAdmin(id: string, name: string) {
+    if (!confirm(`Permanently delete ${name}'s admin account? This can't be undone.`)) return;
+    setError(null);
+    const res = await fetch(`/api/admin/admins/${id}`, { method: "DELETE" });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      setError(typeof data.error === "string" ? data.error : "Couldn't delete admin.");
+      return;
+    }
+    load();
+  }
+
   return (
     <div style={{ marginTop: 24 }}>
       {error && <p className="error-text">{error}</p>}
@@ -102,6 +114,7 @@ export default function AdminsManager({ currentAdminId }: { currentAdminId: stri
               <th>Status</th>
               <th>Last login</th>
               <th>Reset password</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -188,6 +201,16 @@ export default function AdminsManager({ currentAdminId }: { currentAdminId: stri
                         Set
                       </button>
                     </div>
+                  </td>
+                  <td>
+                    <button
+                      className="admin-btn admin-btn-danger"
+                      disabled={isSelf}
+                      title={isSelf ? "You can't delete your own account" : undefined}
+                      onClick={() => deleteAdmin(a.id, a.name)}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               );

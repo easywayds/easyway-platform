@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdminPage } from "@/lib/admin-auth";
 import AdminShell from "../../admin-shell";
 import StudentEditForm from "./student-edit-form";
+import StudentDeleteButton from "./student-delete-button";
 
 export const dynamic = "force-dynamic";
 
@@ -27,6 +28,7 @@ export default async function StudentDetailPage({ params }: { params: { id: stri
   if (!student) notFound();
 
   const enrollment = student.enrollments[0];
+  const hasPaidEnrollment = student.enrollments.some((e) => e.paidAt);
 
   return (
     <AdminShell session={session}>
@@ -46,6 +48,11 @@ export default async function StudentDetailPage({ params }: { params: { id: stri
               compliance record and are read-only.
             </p>
             <StudentEditForm student={student} />
+            <StudentDeleteButton
+              studentId={student.id}
+              studentName={`${student.firstName} ${student.lastName}`}
+              hasPaidEnrollment={hasPaidEnrollment}
+            />
           </div>
 
           <div>
