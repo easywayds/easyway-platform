@@ -3,55 +3,55 @@
     {
       "number": 1,
       "title": "Course Introduction",
-      "minMinutes": 10,
+      "minMinutes": 12,
       "sortOrder": 1
     },
     {
       "number": 2,
       "title": "Your License to Drive",
-      "minMinutes": 20,
+      "minMinutes": 24,
       "sortOrder": 2
     },
     {
       "number": 3,
       "title": "Right-of-Way",
-      "minMinutes": 45,
+      "minMinutes": 53,
       "sortOrder": 3
     },
     {
       "number": 4,
       "title": "Traffic Control Devices",
-      "minMinutes": 40,
+      "minMinutes": 47,
       "sortOrder": 4
     },
     {
       "number": 5,
       "title": "Controlling Traffic Flow",
-      "minMinutes": 35,
+      "minMinutes": 41,
       "sortOrder": 5
     },
     {
       "number": 6,
       "title": "Alcohol and Other Drugs",
-      "minMinutes": 40,
+      "minMinutes": 47,
       "sortOrder": 6
     },
     {
       "number": 7,
       "title": "Cooperating with Other Roadway Users",
-      "minMinutes": 50,
+      "minMinutes": 59,
       "sortOrder": 7
     },
     {
       "number": 8,
       "title": "Managing Risk",
-      "minMinutes": 40,
+      "minMinutes": 47,
       "sortOrder": 8
     },
     {
       "number": 9,
       "title": "Classroom Progress Assessment (Final Exam)",
-      "minMinutes": 25,
+      "minMinutes": 30,
       "sortOrder": 9
     }
   ],
@@ -75,7 +75,7 @@
       "meta": {
         "bullets": [
           "You'll go through 9 short modules covering everything Texas requires",
-          "Each one builds on the last \u2014 traffic laws, right-of-way, staying safe, staying legal",
+          "Each one builds on the last — traffic laws, right-of-way, staying safe, staying legal",
           "At the end, you'll take the same exam the DPS uses for their written test",
           "Pass it here, and you can skip the written test at the DPS office entirely"
         ]
@@ -91,7 +91,7 @@
       "body": null,
       "meta": {
         "videoKey": "module1-welcome-web.mp4",
-        "caption": "Real instructor, real local school \u2014 not a stock avatar."
+        "caption": "Real instructor, real local school — not a stock avatar."
       },
       "sortOrder": 2,
       "topicNumber": 1
@@ -101,9 +101,9 @@
       "tag": "Quick check",
       "route": false,
       "heading": null,
-      "body": "True or false \u2014 completing this course replaces the DPS written test.",
+      "body": "True or false — completing this course replaces the DPS written test.",
       "meta": {
-        "answer": "Mostly true \u2014 passing the exam in Module 9 lets you skip the written test at DPS entirely."
+        "answer": "Mostly true — passing the exam in Module 9 lets you skip the written test at DPS entirely."
       },
       "sortOrder": 3,
       "topicNumber": 1
@@ -113,7 +113,7 @@
       "tag": "Why this matters",
       "route": true,
       "heading": "New drivers get into more crashes.",
-      "body": "Not because of recklessness \u2014 because the instincts that come from time behind the wheel just aren't there yet.",
+      "body": "Not because of recklessness — because the instincts that come from time behind the wheel just aren't there yet.",
       "meta": null,
       "sortOrder": 4,
       "topicNumber": 1
@@ -123,9 +123,9 @@
       "tag": "Why this matters",
       "route": true,
       "heading": "The real gap between new and experienced drivers",
-      "body": "Drivers age 16-19 have a fatal crash rate of 4.8 per 100 million miles \u2014 over 3x the rate of drivers in their 30s-50s. (Source: NHTSA / IIHS, 2021)",
+      "body": "Drivers age 16-19 have a fatal crash rate of 4.8 per 100 million miles — over 3x the rate of drivers in their 30s-50s. (Source: NHTSA / IIHS, 2021)",
       "meta": {
-        "number": "4.8\u00d7"
+        "number": "4.8×"
       },
       "sortOrder": 5,
       "topicNumber": 1
@@ -148,7 +148,7 @@
       "tag": "Why this matters",
       "route": true,
       "heading": "That's exactly why this course exists.",
-      "body": "Every module from here on is built to close that gap \u2014 not by lecturing you, but by giving you the judgment that usually only comes with experience.",
+      "body": "Every module from here on is built to close that gap — not by lecturing you, but by giving you the judgment that usually only comes with experience.",
       "meta": null,
       "sortOrder": 7,
       "topicNumber": 1
@@ -175,170 +175,210 @@
     },
     {
       "contentType": "text",
-      "tag": "Licensing",
+      "tag": "License basics",
       "route": false,
       "heading": "Getting licensed is a real process.",
-      "body": "Getting a license isn't just showing up with cash and a photo. There's a real sequence: learner license, practice, testing, then a standard license. Skipping a step costs you time, not just money.",
+      "body": "Getting a license isn't just showing up with cash and a photo. For most first-time adult applicants (18 and up), the path is: complete this course, pass the vision and knowledge exams, complete the Impact Texas Drivers (ITD) course, then pass the driving exam — no separate learner permit stage the way minors go through.",
       "meta": null,
-      "sortOrder": 0,
-      "topicNumber": 2
+      "topicNumber": 2,
+      "sortOrder": 0
     },
     {
       "contentType": "bullets",
-      "tag": "Licensing",
+      "tag": "License basics",
       "route": false,
       "heading": "The path, step by step",
       "body": null,
       "meta": {
         "bullets": [
-          "Apply for and hold a Learner License first",
-          "Log practice time before testing (see program requirements)",
-          "Pass the required knowledge and skills tests",
-          "Receive your standard Texas driver license"
+          "Complete this driver education course",
+          "Pass the vision and knowledge (written) exams, plus the Impact Texas Drivers (ITD) course",
+          "Pass the driving exam",
+          "Receive your Texas driver license"
         ]
       },
-      "sortOrder": 1,
-      "topicNumber": 2
+      "topicNumber": 2,
+      "sortOrder": 1
     },
     {
       "contentType": "text",
-      "tag": "License details",
+      "tag": "License basics",
       "route": false,
       "heading": "What's actually on your license",
-      "body": "Every Texas license carries specific info beyond your photo: a license type, any restrictions (like corrective lenses), and sometimes endorsements. Restriction codes matter \u2014 driving without meeting one is a real violation, not a technicality.",
+      "body": "Every Texas license carries specific info beyond your photo: a license class (A, B, C, or M), any restriction codes (like corrective lenses or an automatic-transmission-only restriction), and sometimes an endorsement — the most common one for non-commercial drivers is adding a Class M motorcycle endorsement to an existing license. Restriction codes and endorsements aren't optional extras; driving outside them is its own violation, separate from anything else.",
       "meta": null,
-      "sortOrder": 2,
-      "topicNumber": 2
+      "topicNumber": 2,
+      "sortOrder": 2
     },
     {
       "contentType": "text",
-      "tag": "License details",
+      "tag": "License basics",
+      "route": false,
+      "heading": "The Texas Driving with Disabilities Program",
+      "body": "If communicating with a peace officer during a traffic stop could be a challenge for you, Texas lets you add a \"Communication Impediment\" notation to your license or ID. Your doctor completes form DL-101, which you present at a driver license office — the notation goes on the back of your card, the same way an organ-donor or corrective-lenses code would. You can also disclose a communication impediment when you register a vehicle (form VTR-216), which flags it in the state's law enforcement system so an officer knows before they even approach your window.",
+      "meta": null,
+      "topicNumber": 2,
+      "sortOrder": 3
+    },
+    {
+      "contentType": "text",
+      "tag": "License basics",
       "route": false,
       "heading": "Registration and insurance",
-      "body": "Along with a license, Texas requires your vehicle to be registered and insured before it touches public roads. Both exist for the same reason: so there's accountability if something goes wrong.",
+      "body": "As of January 1, 2025, Texas eliminated the annual safety inspection requirement for ordinary non-commercial vehicles before registration — you no longer need a passing inspection to register your car. Some counties still require an emissions test in its place, and commercial vehicles still have their own inspection requirements. New owners have 30 days to register a vehicle after buying it, through their county tax assessor-collector. Separately, the Texas Motor Vehicle Safety Responsibility Act requires you to carry at least $30,000 of coverage per injured or killed person, $60,000 per crash, and $25,000 in property damage — and to be able to show evidence of it to a law enforcement officer or another driver after a crash.",
       "meta": null,
-      "sortOrder": 3,
-      "topicNumber": 2
+      "topicNumber": 2,
+      "sortOrder": 4
     },
     {
       "contentType": "text",
-      "tag": "License details",
+      "tag": "License basics",
       "route": false,
       "heading": "Suspensions and revocations",
-      "body": "Driving privileges can be suspended or revoked \u2014 not just from a criminal conviction, but from things like accumulating too many violation points or failing to maintain required insurance. It's worth knowing this can happen administratively, not only through a courtroom.",
+      "body": "Certain convictions trigger automatic suspension — DWI, intoxication manslaughter or assault, failure to stop and render aid, evading arrest, and driving while your license is already invalid, among others. DPS can also suspend a license administratively, without a court conviction: for repeated violations (four in 12 months, or seven in 24), for causing a serious crash, or through Administrative License Revocation (ALR) — which kicks in automatically if you fail a breath or blood test at 0.08 BAC or higher, or refuse the test entirely.",
       "meta": null,
-      "sortOrder": 4,
-      "topicNumber": 2
+      "topicNumber": 2,
+      "sortOrder": 5
     },
     {
       "contentType": "check",
-      "tag": "",
+      "tag": "Quick check",
       "route": false,
       "heading": null,
       "body": "True or false: a license can only be suspended after a criminal conviction.",
       "meta": {
-        "answer": "False. Administrative actions (like an insurance lapse or point accumulation) can suspend a license without a criminal conviction."
+        "answer": "False. Administrative actions — like failing or refusing a breath/blood test (ALR), or racking up repeated violations — can suspend a license with no criminal conviction at all."
       },
-      "sortOrder": 5,
-      "topicNumber": 2
+      "topicNumber": 2,
+      "sortOrder": 6
     },
     {
       "contentType": "text",
-      "tag": "Right-of-way basics",
+      "tag": "Right-of-way",
       "route": false,
       "heading": "Right-of-way is given, not taken.",
-      "body": "Almost every serious intersection crash comes down to one thing: someone got right-of-way wrong. Here's the single most useful reframe: right-of-way is something you yield to someone else \u2014 it's never something you can simply claim.",
+      "body": "Almost every serious intersection crash comes down to one thing: someone got right-of-way wrong. Here's the single most useful reframe: right-of-way is something the law grants or requires you to yield — never something to take by force of speed or size. If another driver fails to follow the rules, the safe move is still to yield to them rather than insist on what's technically yours.",
       "meta": null,
-      "sortOrder": 0,
-      "topicNumber": 3
+      "topicNumber": 3,
+      "sortOrder": 0
     },
     {
       "contentType": "text",
-      "tag": "Right-of-way basics",
+      "tag": "Right-of-way",
       "route": false,
       "heading": "Controlled vs. uncontrolled",
-      "body": "A controlled intersection has a signal or sign telling you what to do. An uncontrolled one has nothing \u2014 no stop sign, no light. That's exactly where right-of-way rules matter most, because nothing is telling drivers what to do except the law itself.",
+      "body": "A controlled intersection has a signal or sign telling you what to do — obey it. An uncontrolled one has nothing: no stop sign, no light. That's exactly where most right-of-way confusion happens, so know the fallback rule: yield to whoever is already in the intersection or approaching from your right.",
       "meta": null,
-      "sortOrder": 1,
-      "topicNumber": 3
+      "topicNumber": 3,
+      "sortOrder": 1
     },
     {
       "contentType": "custom_visual",
-      "tag": "Right-of-way basics",
+      "tag": "Right-of-way",
       "route": false,
       "heading": "The classic case: four-way stops",
       "body": null,
       "meta": {
         "visualKey": "fourway",
-        "caption": "First to stop, first to go. If two cars arrive together, the driver on the right goes first."
+        "caption": "First to stop, first to go. If it's a tie, the driver on the right goes first."
       },
-      "sortOrder": 2,
-      "topicNumber": 3
+      "topicNumber": 3,
+      "sortOrder": 2
+    },
+    {
+      "contentType": "text",
+      "tag": "Right-of-way",
+      "route": false,
+      "heading": "Turning and entering traffic",
+      "body": "When you're turning left, you yield to any oncoming vehicle going straight through — a green light doesn't change that, since the straight-through driver still has priority over your turn. The same yield-first rule applies whenever you're entering a road from a private driveway, parking lot, or alley: stop before the sidewalk and let approaching traffic and pedestrians go first.",
+      "meta": null,
+      "topicNumber": 3,
+      "sortOrder": 3
     },
     {
       "contentType": "bullets",
-      "tag": "Right-of-way basics",
+      "tag": "Right-of-way",
       "route": false,
       "heading": "A few more patterns worth knowing",
       "body": null,
       "meta": {
         "bullets": [
           "T-intersections: traffic on the through road generally has the right-of-way",
-          "Unequal lanes or different pavement: the road that looks 'major' isn't always legally right \u2014 go by signage, not appearance",
+          "Unequal lanes or different pavement: the road that looks \"major\" isn't always legally right — go by signage, not appearance",
           "Controlled-access roads (like freeway ramps): entering traffic yields to traffic already on the road"
         ]
       },
-      "sortOrder": 3,
-      "topicNumber": 3
+      "topicNumber": 3,
+      "sortOrder": 4
     },
     {
       "contentType": "text",
-      "tag": "High-stakes cases",
+      "tag": "Right-of-way",
+      "route": true,
+      "heading": "Roundabouts work differently",
+      "body": "Modern roundabouts use yield signs instead of signals: slow down, yield to traffic already circling, enter when there's a safe gap, then exit right without changing lanes inside the circle. It's not just courtesy — a well-used roundabout cuts severe crashes at that intersection by about 80% compared to a traditional signaled one, because there are far fewer points where two vehicles' paths can actually cross.",
+      "meta": null,
+      "topicNumber": 3,
+      "sortOrder": 5
+    },
+    {
+      "contentType": "text",
+      "tag": "Right-of-way",
       "route": false,
       "heading": "Railroad crossings",
-      "body": "At a railroad crossing, the train always has the right-of-way \u2014 no exceptions, no judgment calls. If a crossing signal is active or a gate is down, stop and wait it out completely.",
+      "body": "At a railroad crossing, the train always has the right-of-way — no exceptions, no judgment calls. If a crossing signal is active or a gate is down, stop and stay stopped until it's clear. Never stop on the tracks, even in traffic — if you're stuck, pull through rather than block the crossing.",
       "meta": null,
-      "sortOrder": 4,
-      "topicNumber": 3
+      "topicNumber": 3,
+      "sortOrder": 6
     },
     {
       "contentType": "text",
-      "tag": "High-stakes cases",
+      "tag": "Right-of-way",
       "route": false,
       "heading": "Emergency vehicles",
-      "body": "Texas's Move Over/Slow Down law requires drivers to move over a lane (when safe) or slow down significantly for stopped emergency vehicles with lights active. This applies to police, fire, EMS, and tow trucks working a scene.",
+      "body": "Texas's Move Over/Slow Down law requires drivers to move over a lane (when safe) or slow down significantly for stopped emergency, tow, utility, and TxDOT vehicles with their lights on. If you can't change lanes, the specific rule is: slow to at least 20 mph under the posted limit on roads at 25 mph or higher, or below 5 mph on slower roads. This applies to police cars, fire trucks, ambulances, tow trucks, and highway maintenance vehicles alike.",
       "meta": null,
-      "sortOrder": 5,
-      "topicNumber": 3
+      "topicNumber": 3,
+      "sortOrder": 7
     },
     {
       "contentType": "text",
-      "tag": "High-stakes cases",
+      "tag": "Right-of-way",
+      "route": false,
+      "heading": "Yielding to motorcyclists",
+      "body": "Motorcyclists get the exact same right-of-way protections as any other vehicle — no less. The most common car-motorcycle crash happens when a driver turns left in front of an oncoming rider, often because a motorcycle's smaller profile makes its distance and speed harder to judge at a glance. Take the extra half-second to look again before you turn.",
+      "meta": null,
+      "topicNumber": 3,
+      "sortOrder": 8
+    },
+    {
+      "contentType": "text",
+      "tag": "Right-of-way",
       "route": false,
       "heading": "Pedestrians and school buses",
-      "body": "Pedestrians in a crosswalk always have the right-of-way. A school bus with its stop arm extended means traffic in both directions must stop \u2014 this is one of the most strictly enforced rules on Texas roads.",
+      "body": "A driver must yield to a pedestrian in a crosswalk, marked or unmarked — but Texas law isn't a blanket \"pedestrians always win\": pedestrians also have duties, like not stepping into traffic so suddenly a driver can't safely stop. Treat it as yield, don't assume, not as an unconditional right-of-way in every situation. A school bus with its stop arm extended means traffic in both directions must stop — this is one of the few right-of-way rules that overrides even a divided road, except where a physical median separates the lanes.",
       "meta": null,
-      "sortOrder": 6,
-      "topicNumber": 3
+      "topicNumber": 3,
+      "sortOrder": 9
     },
     {
       "contentType": "check",
-      "tag": "",
+      "tag": "Quick check",
       "route": false,
       "heading": null,
       "body": "Two cars arrive at a 4-way stop at the same time. Who goes first?",
       "meta": {
         "answer": "The driver on the right goes first, when both arrive at the same time."
       },
-      "sortOrder": 7,
-      "topicNumber": 3
+      "topicNumber": 3,
+      "sortOrder": 10
     },
     {
       "contentType": "text",
       "tag": "Reading the road",
       "route": false,
       "heading": "Signs are a language without words.",
-      "body": "Every sign, signal, and painted line is a driver talking to you without saying anything. Learn the underlying system \u2014 shapes and colors mean specific things \u2014 and you can read almost any sign correctly the first time you see it, even ones you've never memorized.",
+      "body": "Every sign, signal, and painted line is a driver talking to you without saying anything. Learn the underlying system — shapes and colors mean specific things — and you can read almost any sign correctly the first time you see it, even ones you've never memorized.",
       "meta": null,
       "sortOrder": 0,
       "topicNumber": 4
@@ -361,7 +401,7 @@
       "tag": "Reading the road",
       "route": false,
       "heading": "Regulatory vs. warning signs",
-      "body": "Regulatory signs (mostly white/red or white/black rectangles) tell you what the law requires \u2014 speed limits, no turns, one-way. Warning signs (yellow diamonds) tell you what's ahead \u2014 curves, crossings, merges. Confusing the two categories is a common new-driver mistake.",
+      "body": "Regulatory signs (mostly white/red or white/black rectangles) tell you what the law requires — speed limits, no turns, one-way. Warning signs (yellow diamonds) tell you what's ahead — curves, crossings, merges. Confusing the two categories is a common new-driver mistake.",
       "meta": null,
       "sortOrder": 2,
       "topicNumber": 4
@@ -371,7 +411,7 @@
       "tag": "Reading the road",
       "route": false,
       "heading": "Signals, including the confusing ones",
-      "body": "A steady red means stop, full stop. A flashing red works like a stop sign \u2014 stop, then proceed when clear. A flashing yellow means slow down and proceed with caution, no full stop required. Mixing these two up is one of the most common signal mistakes.",
+      "body": "A steady red means stop, full stop. A flashing red works like a stop sign — stop, then proceed when clear. A flashing yellow means slow down and proceed with caution, no full stop required. Mixing these two up is one of the most common signal mistakes.",
       "meta": null,
       "sortOrder": 3,
       "topicNumber": 4
@@ -400,833 +440,1021 @@
     },
     {
       "contentType": "text",
-      "tag": "Traffic flow",
+      "tag": "Controlling traffic flow",
       "route": false,
       "heading": "The small rules that prevent chaos.",
-      "body": "This module is a grab-bag of the rules that quietly keep traffic from becoming chaos: following distance, speed, merging, and passing. Small rules, but they're doing more work than they get credit for.",
+      "body": "This module is a grab-bag of the rules that quietly keep traffic from becoming chaos: following distance, speed, signaling, merging, and passing. Small rules, but they're the ones you use every single mile you drive.",
       "meta": null,
-      "sortOrder": 0,
-      "topicNumber": 5
+      "topicNumber": 5,
+      "sortOrder": 0
     },
     {
       "contentType": "text",
-      "tag": "Traffic flow",
+      "tag": "Controlling traffic flow",
       "route": false,
       "heading": "Following distance",
-      "body": "The 3-4 second rule beats a fixed number of car-lengths, because it automatically scales with your speed. Pick a fixed point ahead \u2014 when the car in front passes it, count. If you reach it before 3 seconds, you're following too closely.",
+      "body": "For speeds of 30 mph or under, keep at least a 2-second gap from the car ahead; above 30 mph, make it 4 seconds — the higher speed needs more room to react. Pick a fixed point ahead (a sign, a shadow, an overpass) and count from when the car ahead passes it to when you do. In rain, heavy traffic, or low visibility, add more time on top of that.",
       "meta": null,
-      "sortOrder": 1,
-      "topicNumber": 5
+      "topicNumber": 5,
+      "sortOrder": 1
     },
     {
       "contentType": "text",
-      "tag": "Traffic flow",
+      "tag": "Controlling traffic flow",
       "route": false,
       "heading": "Speed: legal isn't always safe",
-      "body": "Driving exactly at the posted limit is always legal \u2014 except when conditions (fog, rain, heavy traffic) make that speed unsafe. Texas law expects you to adjust for conditions, not just obey the number on the sign.",
+      "body": "Driving exactly at the posted limit is always legal — except when conditions like fog, rain, or heavy traffic make that speed unsafe. Texas law expects you to adjust for conditions, not just the sign.",
       "meta": null,
-      "sortOrder": 2,
-      "topicNumber": 5
+      "topicNumber": 5,
+      "sortOrder": 2
+    },
+    {
+      "contentType": "stat",
+      "tag": "Controlling traffic flow",
+      "route": false,
+      "heading": "How far it actually takes to stop",
+      "body": "At 60 mph on dry pavement with good brakes, it takes about 303 feet — roughly a football field — to think, react, and brake to a stop. At 30 mph it's about 109 feet. Speed doesn't just raise impact force; it eats the distance you have to avoid the crash in the first place.",
+      "meta": {
+        "number": "303 ft"
+      },
+      "topicNumber": 5,
+      "sortOrder": 3
     },
     {
       "contentType": "text",
-      "tag": "Traffic flow",
+      "tag": "Controlling traffic flow",
+      "route": false,
+      "heading": "Signaling your intentions",
+      "body": "Turn signals (or hand signals if yours fail) are required any time you change lanes, turn, pull away from a curb, slow to stop, or enter or leave a highway. Signal continuously for at least 100 feet before you turn, and turn the signal back off once you're through — a signal left on by mistake tells everyone around you the wrong thing.",
+      "meta": null,
+      "topicNumber": 5,
+      "sortOrder": 4
+    },
+    {
+      "contentType": "text",
+      "tag": "Controlling traffic flow",
       "route": false,
       "heading": "Passing and blind spots",
-      "body": "Every vehicle has blind spots your mirrors don't cover \u2014 most critically just behind and to each side. A quick shoulder check before changing lanes catches what your mirrors miss. Never assume a lane is clear from mirrors alone.",
+      "body": "Every vehicle has blind spots your mirrors don't cover — most critically just behind and to each side. A quick shoulder check before changing lanes catches what your mirrors alone can miss.",
       "meta": null,
-      "sortOrder": 3,
-      "topicNumber": 5
+      "topicNumber": 5,
+      "sortOrder": 5
+    },
+    {
+      "contentType": "stat",
+      "tag": "Speed",
+      "route": true,
+      "heading": "Speed shrinks what you can see",
+      "body": "Your normal field of vision is 180 degrees or more standing still. At 60 mph, it narrows to roughly a fifth of that. The faster you go, the less of the road around you you're actually able to take in.",
+      "meta": {
+        "number": "1/5"
+      },
+      "topicNumber": 5,
+      "sortOrder": 6
+    },
+    {
+      "contentType": "text",
+      "tag": "Speed",
+      "route": false,
+      "heading": "The actual speed limits",
+      "body": "Unless posted otherwise: 30 mph in an urban district, 15 mph in an alley, and — a Texas-specific one — 15 mph on beaches and county roads next to a public beach. Numbered Texas or U.S. highways outside city limits top out at 70 mph for passenger vehicles; unnumbered highways top out at 60. Some limited-access highways post as high as 75–85 mph. Whatever's actually posted always controls.",
+      "meta": null,
+      "topicNumber": 5,
+      "sortOrder": 7
+    },
+    {
+      "contentType": "text",
+      "tag": "Speed",
+      "route": false,
+      "heading": "Street racing is a real charge",
+      "body": "Racing, drag racing, speed or acceleration contests, and even just trying to set your car's top-speed record on a public road are all illegal under Transportation Code §545.420 — not just reckless, but a specific criminal offense ranging from a Class B misdemeanor up to a second-degree felony depending on the outcome.",
+      "meta": null,
+      "topicNumber": 5,
+      "sortOrder": 8
+    },
+    {
+      "contentType": "text",
+      "tag": "Vehicle lights",
+      "route": false,
+      "heading": "Headlights aren't just for seeing",
+      "body": "Texas law requires headlights on starting 30 minutes after sunset until 30 minutes before sunrise, or anytime you can't clearly see people or vehicles 1,000 feet ahead — rain, fog, or dust count. Switch to low beams within 500 feet of an oncoming car, or within 300 feet of one you're following, so you're not blinding the driver ahead of or facing you.",
+      "meta": null,
+      "topicNumber": 5,
+      "sortOrder": 9
+    },
+    {
+      "contentType": "text",
+      "tag": "Freeway driving",
+      "route": false,
+      "heading": "Entering and leaving a freeway",
+      "body": "Entering, you yield to traffic already on the highway, use the speed lane to match traffic speed, then merge — don't just ease in at a crawl. Once you're on, hold a steady speed and keep at least a 2-second gap (4 in bad weather). Move into the exit lane early; the more traffic, the sooner you should get over, since exit signs are typically posted about 1,000 yards ahead.",
+      "meta": null,
+      "topicNumber": 5,
+      "sortOrder": 10
+    },
+    {
+      "contentType": "text",
+      "tag": "Controlling traffic flow",
+      "route": false,
+      "heading": "Fatigue and highway hypnosis",
+      "body": "Long, monotonous stretches of driving can induce a kind of trance — \"highway hypnosis\" — where attention drifts without the driver noticing. Stop every two hours or 100 miles, get out and move around, and keep shifting your eyes between near and far instead of fixing on one point ahead.",
+      "meta": null,
+      "topicNumber": 5,
+      "sortOrder": 11
+    },
+    {
+      "contentType": "text",
+      "tag": "Vehicle emergencies",
+      "route": false,
+      "heading": "If your car breaks down or you lose control",
+      "body": "Breakdown: get off the pavement if you can, turn on your hazards (taillights at night), and get everyone out and away from traffic if the car won't move. Skid: ease off the gas — don't stab the brakes — and steer gently toward the direction the back of the car is sliding. Brake failure: pump the brakes, downshift, and apply the parking brake carefully. Blowout: don't brake hard; ease off the gas and steer straight until you can safely pull over.",
+      "meta": null,
+      "topicNumber": 5,
+      "sortOrder": 12
+    },
+    {
+      "contentType": "text",
+      "tag": "Winter driving",
+      "route": false,
+      "heading": "Winter driving",
+      "body": "There's no safe fixed speed on ice or snow — slow down until you've felt out how much traction you actually have, and give yourself far more following distance than usual. Watch for ice on bridges and shaded spots even when the rest of the road looks clear, and remember chains or snow tires help you go, not necessarily stop or turn any faster than normal.",
+      "meta": null,
+      "topicNumber": 5,
+      "sortOrder": 13
     },
     {
       "contentType": "custom_visual",
-      "tag": "Traffic flow",
+      "tag": "Work zones",
       "route": false,
       "heading": "Construction and maintenance work zones",
       "body": null,
       "meta": {
         "visualKey": "workzone",
-        "caption": "Orange signage and barrels mark the zone. Speed limits drop, and a flagger's signal overrides normal traffic rules."
+        "caption": "Reduced speed limits in work zones are enforced whether or not you see anyone working."
       },
-      "sortOrder": 4,
-      "topicNumber": 5
-    },
-    {
-      "contentType": "stat",
-      "tag": "Traffic flow",
-      "route": false,
-      "heading": "Work zone fines, explained",
-      "body": "Fines for traffic violations roughly double in a work zone when workers are present. A second conviction within 5 years can suspend your license for 30-90 days.",
-      "meta": {
-        "number": "2\u00d7"
-      },
-      "sortOrder": 5,
-      "topicNumber": 5
-    },
-    {
-      "contentType": "text",
-      "tag": "Traffic flow",
-      "route": false,
-      "heading": "Fatigue and highway hypnosis",
-      "body": "Long, monotonous stretches of driving can induce a kind of trance \u2014 'highway hypnosis' \u2014 where attention drifts without the driver noticing. Regular breaks and active scanning (not just staring straight ahead) are the real countermeasures.",
-      "meta": null,
-      "sortOrder": 6,
-      "topicNumber": 5
+      "topicNumber": 5,
+      "sortOrder": 14
     },
     {
       "contentType": "check",
-      "tag": "",
+      "tag": "Quick check",
       "route": false,
       "heading": null,
       "body": "True or false: fines for traffic violations are higher in a work zone when workers are present.",
       "meta": {
-        "answer": "True \u2014 and a second such conviction within 5 years can result in a license suspension of 30-90 days."
+        "answer": "True — under Transportation Code §542.404, both the minimum and maximum fine are doubled when workers are present and the zone is properly posted with its speed limit."
       },
-      "sortOrder": 7,
-      "topicNumber": 5
+      "topicNumber": 5,
+      "sortOrder": 15
     },
     {
       "contentType": "text",
-      "tag": "Highest stakes",
+      "tag": "Alcohol and other drugs",
       "route": false,
       "heading": "The module with the highest stakes.",
-      "body": "The difference between a bad decision and a life-changing one often comes down to information in the next 40 minutes. This module doesn't try to scare you \u2014 it tries to make sure you actually know the rules and the real effects, plainly.",
+      "body": "The difference between a bad decision and a life-changing one often comes down to information in the next 40 minutes. This module doesn't try to scare you — it just makes sure you actually know the rules, the numbers, and the consequences before you're ever in a position to need them.",
       "meta": null,
-      "sortOrder": 0,
-      "topicNumber": 6
+      "topicNumber": 6,
+      "sortOrder": 0
     },
     {
       "contentType": "text",
-      "tag": "The law",
+      "tag": "Alcohol and other drugs",
       "route": false,
       "heading": "Legal intoxication in Texas",
-      "body": "Texas defines intoxication either by a measured blood alcohol concentration at or above the legal threshold, or by not having the normal use of mental or physical faculties due to alcohol, drugs, or a combination. (Confirm the current statutory BAC threshold before publishing \u2014 this is one figure that must be exact.)",
+      "body": "Texas defines intoxication as a blood alcohol concentration (BAC) of 0.08 or more for anyone 21 and older — or, at any age, not having the normal use of your mental or physical faculties. That means you can be legally intoxicated below 0.08 too, if alcohol or drugs have visibly impaired you.",
       "meta": null,
-      "sortOrder": 1,
-      "topicNumber": 6
+      "topicNumber": 6,
+      "sortOrder": 1
     },
     {
       "contentType": "stat",
-      "tag": "Effects",
+      "tag": "Alcohol and other drugs",
       "route": false,
       "heading": "Zero Tolerance for minors",
-      "body": "Texas has a Zero Tolerance law for drivers under 21 \u2014 any detectable amount of alcohol, not just over a legal limit, can result in license suspension and other penalties.",
+      "body": "Texas law does not allow any detectable amount of alcohol for a driver under 21 — not a limit, a flat zero. A minor doesn't need to be \"intoxicated\" under the adult standard to be charged; any measurable amount while driving is its own offense.",
       "meta": {
-        "number": "0"
+        "number": "0.00%"
       },
-      "sortOrder": 2,
-      "topicNumber": 6
+      "topicNumber": 6,
+      "sortOrder": 2
     },
     {
       "contentType": "text",
-      "tag": "Effects",
+      "tag": "Alcohol and other drugs",
+      "route": false,
+      "heading": "It's not just alcohol",
+      "body": "Marijuana measurably affects concentration, judgment, and the sensory skills driving depends on, even at typical social doses. Stimulants like amphetamines make you more alert short-term but less coordinated and more crash-prone. Tranquilizers, sedatives, and even many over-the-counter cold and allergy medications can cause the same drowsiness and slowed reactions as alcohol — read the label. Mixing any of these with alcohol multiplies the effect rather than just adding to it.",
+      "meta": null,
+      "topicNumber": 6,
+      "sortOrder": 3
+    },
+    {
+      "contentType": "text",
+      "tag": "Alcohol and other drugs",
       "route": false,
       "heading": "How alcohol affects driving",
-      "body": "Alcohol slows reaction time, narrows peripheral vision, and impairs judgment about risk \u2014 often before a driver feels impaired at all. That gap between feeling fine and actually being impaired is exactly why 'I can still drive' is a dangerous judgment call to trust.",
+      "body": "Alcohol slows reaction time, narrows peripheral vision, and impairs judgment about risk — often before a driver feels impaired at all. That gap between feeling fine and actually being able to drive safely is exactly what makes drinking and driving so dangerous.",
       "meta": null,
-      "sortOrder": 3,
-      "topicNumber": 6
+      "topicNumber": 6,
+      "sortOrder": 4
     },
     {
       "contentType": "text",
-      "tag": "The law",
+      "tag": "Alcohol and other drugs",
       "route": false,
       "heading": "Penalties, in plain terms",
-      "body": "DWI, DUI (for minors), and public intoxication all carry real consequences \u2014 license suspension, fines, and potentially jail time, with penalties escalating for repeat offenses or for causing injury (intoxication assault) or death (intoxication manslaughter).",
+      "body": "A first adult DWI conviction can mean up to $2,000 in fines and 72 hours to 180 days in jail, with your license suspended 90 days to a year. If the crash causes injury, the charge becomes Intoxication Assault (up to 10 years); if it causes death, Intoxication Manslaughter (up to 20 years) — both felonies with fines up to $10,000. Minors face their own escalating scale for Minor in Possession offenses, starting at a Class C misdemeanor and moving to a Class B by a third offense.",
       "meta": null,
-      "sortOrder": 4,
-      "topicNumber": 6
+      "topicNumber": 6,
+      "sortOrder": 5
     },
     {
       "contentType": "text",
-      "tag": "The law",
+      "tag": "Alcohol and other drugs",
       "route": false,
       "heading": "Open Container and Implied Consent",
-      "body": "Texas's Open Container law makes it illegal to have an open alcoholic beverage in the passenger area, even if the driver isn't drinking. Implied Consent means that by driving in Texas, you've already agreed to a breath/blood test if lawfully arrested for DWI \u2014 refusing has its own separate penalty (an automatic license suspension), on top of anything else.",
+      "body": "Texas's Open Container law makes it illegal to have an open alcoholic beverage in the passenger area, even if the driver isn't drinking — a standalone offense punishable by up to a $500 fine. The Open Container Enhancement Law raises the stakes further: having an open container present during a DWI arrest increases the mandatory minimum jail time. Implied Consent means that by driving in Texas, you've already agreed to a breath or blood test if arrested for suspected intoxication — refusing doesn't avoid the consequences, it just triggers its own license suspension instead.",
       "meta": null,
-      "sortOrder": 5,
-      "topicNumber": 6
+      "topicNumber": 6,
+      "sortOrder": 6
+    },
+    {
+      "contentType": "text",
+      "tag": "Alcohol and other drugs",
+      "route": false,
+      "heading": "Administrative License Revocation",
+      "body": "Separate from any criminal DWI charge, DPS can suspend your license administratively — no trial required — the moment you fail a breath or blood test at 0.08 BAC or above, or refuse to take one. This is Administrative License Revocation (ALR), and it runs on its own timeline alongside whatever happens in court.",
+      "meta": null,
+      "topicNumber": 6,
+      "sortOrder": 7
     },
     {
       "contentType": "check",
-      "tag": "",
+      "tag": "Quick check",
       "route": false,
       "heading": null,
       "body": "True or false: a driver can be charged with an open container violation even if they aren't the one drinking.",
       "meta": {
-        "answer": "True \u2014 the law applies to an open container anywhere in the passenger area, regardless of who's drinking."
+        "answer": "True — the law applies to an open container anywhere in the passenger area, regardless of who's drinking."
       },
-      "sortOrder": 6,
-      "topicNumber": 6
+      "topicNumber": 6,
+      "sortOrder": 8
     },
     {
       "contentType": "text",
-      "tag": "Sharing the road",
+      "tag": "Cooperating with others",
       "route": false,
       "heading": "You're never the only one out there.",
-      "body": "This module is about everyone else on the road \u2014 pedestrians, cyclists, motorcyclists \u2014 and what's expected of you around them, including in situations that go wrong.",
+      "body": "This module is about everyone else on the road — pedestrians, cyclists, motorcyclists, and more — and what's expected of you around them, including in situations that call for quick, level-headed decisions.",
       "meta": null,
-      "sortOrder": 0,
-      "topicNumber": 7
+      "topicNumber": 7,
+      "sortOrder": 0
     },
     {
       "contentType": "text",
-      "tag": "Sharing the road",
+      "tag": "Cooperating with others",
       "route": false,
       "heading": "Who shares the road",
-      "body": "Beyond other cars: pedestrians, cyclists, motorcyclists, farm equipment, and more \u2014 collectively called vulnerable roadway users because they have far less protection than someone inside a car. The law expects extra caution around all of them.",
+      "body": "Beyond other cars: pedestrians, cyclists, motorcyclists, farm equipment, horses and horse-drawn conveyances, light rail trains, and motor-assisted scooters — collectively called vulnerable roadway users because they have far less protection than you do in a crash. Light rail is quieter than most buses or cars, so stay alert near tracks even when you can't hear a train coming, and never stop or park on the rails.",
       "meta": null,
-      "sortOrder": 1,
-      "topicNumber": 7
+      "topicNumber": 7,
+      "sortOrder": 1
     },
     {
       "contentType": "custom_visual",
-      "tag": "Sharing the road",
+      "tag": "Cooperating with others",
       "route": false,
       "heading": "Passing a cyclist safely",
       "body": null,
       "meta": {
         "visualKey": "passing",
-        "caption": "Texas law generally requires a safe passing distance when overtaking a cyclist \u2014 treat this as a hard minimum, not a suggestion."
+        "caption": "Give a cyclist real room — not just a courtesy tap of the wheel."
       },
-      "sortOrder": 2,
-      "topicNumber": 7
+      "topicNumber": 7,
+      "sortOrder": 2
     },
     {
       "contentType": "text",
       "tag": "Sharing the road",
+      "route": false,
+      "heading": "Sharing the road with oversized vehicles",
+      "body": "Trucks and oversize or overweight vehicles take longer to stop, need a wider turning radius, and have bigger blind spots than a car. A rule of thumb: if you can't see the truck driver in their side mirror, they can't see you. Give trucks extra following distance, never cut into the space in front of one, and when passing, complete it in one smooth move rather than lingering alongside.",
+      "meta": null,
+      "topicNumber": 7,
+      "sortOrder": 3
+    },
+    {
+      "contentType": "text",
+      "tag": "Cooperating with others",
       "route": false,
       "heading": "Good Samaritan Law and crash scenes",
-      "body": "If you're at or near a crash scene, Texas's Good Samaritan Law offers legal protection for those who render reasonable aid in good faith. You're not expected to be a paramedic \u2014 just to help without making things worse, and to call for real help immediately.",
+      "body": "If you're at or near a crash scene, Texas's Good Samaritan Law offers legal protection for those who render reasonable aid in good faith. You're not expected to be a medical professional — just to help without fear of being sued for trying.",
       "meta": null,
-      "sortOrder": 3,
-      "topicNumber": 7
+      "topicNumber": 7,
+      "sortOrder": 4
     },
     {
       "contentType": "text",
-      "tag": "Sharing the road",
+      "tag": "Cooperating with others",
       "route": false,
       "heading": "Defensive driving, in practice",
-      "body": "Defensive driving isn't a slogan \u2014 it's assuming other drivers might make mistakes, and leaving yourself room and time to react when they do. It's the single habit that prevents the most crashes that weren't technically your fault.",
+      "body": "Defensive driving isn't a slogan — it's assuming other drivers might make mistakes, and leaving yourself room and time to react when they do. It's the difference between reacting to a hazard and already having a plan for it.",
       "meta": null,
-      "sortOrder": 4,
-      "topicNumber": 7
+      "topicNumber": 7,
+      "sortOrder": 5
     },
     {
       "contentType": "text",
-      "tag": "If stopped",
+      "tag": "Cooperating with others",
       "route": false,
       "heading": "If stopped by law enforcement",
-      "body": "Pull over safely and promptly, stay in the vehicle unless told otherwise, keep hands visible, and have your license/registration/insurance ready. This isn't about fear \u2014 it's about a calm, predictable interaction for everyone involved.",
+      "body": "Pull over safely and promptly, stay in the vehicle unless told otherwise, keep hands visible, and have your license, registration, and insurance ready. This isn't just etiquette — it's what keeps a routine stop routine.",
       "meta": null,
-      "sortOrder": 5,
-      "topicNumber": 7
+      "topicNumber": 7,
+      "sortOrder": 6
     },
     {
       "contentType": "text",
-      "tag": "Behavior",
+      "tag": "Vehicle responsibilities",
+      "route": false,
+      "heading": "Open truck beds and hauling cargo",
+      "body": "It's illegal to drive with anyone under 18 riding in an open truck bed or open flatbed trailer, with narrow exceptions like parades or farm-to-market work. Cargo has its own rules too: loose material like gravel or dirt has to be fully enclosed or covered so nothing blows or spills onto the road, and any trailer you're towing needs safety chains attached — not just a hitch — so it can't break free if the connection fails.",
+      "meta": null,
+      "topicNumber": 7,
+      "sortOrder": 7
+    },
+    {
+      "contentType": "text",
+      "tag": "Cooperating with others",
       "route": false,
       "heading": "Aggressive driving",
-      "body": "Aggressive driving is a pattern \u2014 tailgating, weaving, brake-checking \u2014 not a single mistake. The best response if you encounter it is to avoid engaging: don't match the behavior, create space, and let it go.",
+      "body": "Aggressive driving is a pattern — tailgating, weaving, brake-checking — not a single mistake. The best response if you encounter it is to avoid engaging: don't match the behavior, give them room, and let them go.",
       "meta": null,
-      "sortOrder": 6,
-      "topicNumber": 7
+      "topicNumber": 7,
+      "sortOrder": 8
     },
     {
       "contentType": "text",
-      "tag": "Behavior",
+      "tag": "Cooperating with others",
       "route": false,
       "heading": "Carbon monoxide risk",
-      "body": "A running vehicle in an enclosed space (like a closed garage) can build dangerous carbon monoxide levels quickly and silently. Never let an engine idle in an enclosed, unventilated space.",
+      "body": "A running vehicle in an enclosed space (like a closed garage) can build dangerous carbon monoxide levels quickly and silently. Never let an engine idle in an enclosed space, even briefly, and never use a heater or A/C in a parked car with the windows sealed in a tight space.",
       "meta": null,
-      "sortOrder": 7,
-      "topicNumber": 7
+      "topicNumber": 7,
+      "sortOrder": 9
+    },
+    {
+      "contentType": "text",
+      "tag": "Accessibility",
+      "route": false,
+      "heading": "The Texas Driving with Disabilities Program",
+      "body": "If communicating with a peace officer during a stop could be a challenge, Texas lets a driver add a \"Communication Impediment\" notation to their license (form DL-101, signed by a doctor) or flag it privately in the state's law enforcement system when registering a vehicle (form VTR-216) — either way, it alerts an officer to the situation before they even reach the window.",
+      "meta": null,
+      "topicNumber": 7,
+      "sortOrder": 10
+    },
+    {
+      "contentType": "text",
+      "tag": "Work zones",
+      "route": true,
+      "heading": "Driving through a work zone",
+      "body": "A work zone isn't just a speed limit sign — know how to actually get through one: watch for a flagger holding a STOP/SLOW paddle or directing traffic by hand, follow the temporary signs and lane shifts exactly as posted, and don't try to beat merging traffic to a lane closure. Under Transportation Code §542.404, both the minimum and maximum fine for certain qualifying traffic offenses are doubled in a work zone when workers are present and the zone is properly posted — a violation that's a $200 fine elsewhere can be $400 there.",
+      "meta": null,
+      "topicNumber": 7,
+      "sortOrder": 11
     },
     {
       "contentType": "check",
-      "tag": "",
+      "tag": "Quick check",
       "route": false,
       "heading": null,
       "body": "What does the Good Samaritan Law protect?",
       "meta": {
         "answer": "Someone who renders reasonable aid in good faith at a crash scene, from legal liability for that assistance."
       },
-      "sortOrder": 8,
-      "topicNumber": 7
+      "topicNumber": 7,
+      "sortOrder": 12
     },
     {
       "contentType": "text",
-      "tag": "Risk",
+      "tag": "Managing risk",
       "route": false,
       "heading": "Every drive involves risk. The goal is seeing it coming.",
-      "body": "You can't eliminate risk on the road \u2014 but you can get much better at spotting it before it becomes a problem. This module also covers something that might seem out of place in a driving course: recognizing human trafficking.",
+      "body": "You can't eliminate risk on the road — but you can get much better at spotting it before it becomes a problem. This module also covers something that has nothing to do with driving skill and everything to do with awareness: recognizing human trafficking.",
       "meta": null,
-      "sortOrder": 0,
-      "topicNumber": 8
+      "topicNumber": 8,
+      "sortOrder": 0
     },
     {
       "contentType": "text",
-      "tag": "Risk",
+      "tag": "Managing risk",
       "route": false,
       "heading": "Risk categories",
-      "body": "Think of risk on a scale: controlled, low, moderate, complex. An empty parking lot is controlled risk. A busy downtown intersection at rush hour is complex risk. Recognizing which situation you're in changes how much margin you should be giving yourself.",
+      "body": "Think of risk on a scale: controlled, low, moderate, complex. An empty parking lot is controlled risk. A busy downtown intersection at rush hour is complex risk. Recognizing which one you're in changes how much margin you should be leaving yourself.",
       "meta": null,
-      "sortOrder": 1,
-      "topicNumber": 8
+      "topicNumber": 8,
+      "sortOrder": 1
     },
     {
       "contentType": "text",
-      "tag": "Risk",
+      "tag": "Managing risk",
       "route": false,
       "heading": "Perceived risk vs. actual risk",
-      "body": "New drivers often misjudge risk in both directions \u2014 overestimating harmless situations while underestimating genuinely dangerous ones. Experience closes that gap over time; until then, err toward more caution than feels necessary.",
+      "body": "New drivers often misjudge risk in both directions — overestimating harmless situations while underestimating genuinely dangerous ones. Experience closes that gap; until it does, lean toward caution when you're not sure.",
       "meta": null,
-      "sortOrder": 2,
-      "topicNumber": 8
+      "topicNumber": 8,
+      "sortOrder": 2
     },
     {
       "contentType": "text",
-      "tag": "Risk",
-      "route": false,
-      "heading": "Space management: Search, Evaluate, Execute",
-      "body": "SEE is a simple mental loop: Search the road ahead and around you, Evaluate what you find for risk, then Execute the safest response. Running this loop continuously \u2014 not just when something obviously happens \u2014 is what separates defensive driving from reactive driving.",
+      "tag": "Distracted driving",
+      "route": true,
+      "heading": "The biggest risk most drivers underestimate",
+      "body": "Distraction doesn't have to mean texting — it's anything that pulls your eyes, hands, or mind off driving: adjusting navigation or music, eating or drinking, personal grooming, digging for something in the car, or just a passenger — or pet — demanding attention. If a distraction slows your reaction time by even half a second, your odds of crashing roughly double.",
       "meta": null,
-      "sortOrder": 3,
-      "topicNumber": 8
-    },
-    {
-      "contentType": "stat",
-      "tag": "Risk",
-      "route": false,
-      "heading": "Why new drivers are over-represented",
-      "body": "New drivers are disproportionately involved in speed-related, single-vehicle, and off-road control-loss crashes \u2014 tying directly back to Module 1's numbers.",
-      "meta": {
-        "number": "3\u00d7"
-      },
-      "sortOrder": 4,
-      "topicNumber": 8
-    },
-    {
-      "contentType": "text",
-      "tag": "Human trafficking awareness",
-      "route": false,
-      "heading": "Recognizing human trafficking",
-      "body": "This section covers indicators that someone may be a trafficking victim \u2014 signs of control by another person, fear, or being unable to speak for themselves \u2014 and how to report a concern safely. This is handled seriously, without gamification, because the subject deserves that.",
-      "meta": {
-        "resource": "If you suspect a trafficking situation, contact the National Human Trafficking Hotline: 1-888-373-7888."
-      },
-      "sortOrder": 5,
-      "topicNumber": 8
+      "topicNumber": 8,
+      "sortOrder": 3
     },
     {
       "contentType": "check",
-      "tag": "",
+      "tag": "Quick check",
       "route": false,
       "heading": null,
-      "body": "What does the 'E' in SEE stand for, and what does it mean in practice?",
+      "body": "True or false: it's legal to check a text at a red light, since the car isn't moving.",
       "meta": {
-        "answer": "Evaluate \u2014 assessing what you've spotted while searching, for how much risk it actually presents, before deciding how to respond."
+        "answer": "False — Texas law prohibits reading, writing, or sending an electronic message while operating a vehicle, which includes while stopped in traffic or at a light. The only exceptions are contacting emergency services or using a hands-free device."
       },
-      "sortOrder": 6,
-      "topicNumber": 8
+      "topicNumber": 8,
+      "sortOrder": 4
+    },
+    {
+      "contentType": "text",
+      "tag": "Seat belts",
+      "route": false,
+      "heading": "Buckling up is still the single best odds-improver",
+      "body": "Every seat in the car — driver and passengers, front and back — is required to be belted if the vehicle has a belt for it. Being thrown from a vehicle in a crash makes death about five times more likely; a seat belt is what keeps that from happening. It does more for your survival odds than almost anything else on this list.",
+      "meta": null,
+      "topicNumber": 8,
+      "sortOrder": 5
+    },
+    {
+      "contentType": "text",
+      "tag": "Night driving",
+      "route": false,
+      "heading": "Why night driving carries more risk",
+      "body": "You see less at night — your headlights only light so far ahead, and other drivers, pedestrians, and animals are harder to spot until they're close. Fatigue is also more likely on top of reduced visibility. If a trip can be done in daylight instead, it's the lower-risk choice; if you must drive at night, slow down enough that you can stop within the distance your headlights actually light up.",
+      "meta": null,
+      "topicNumber": 8,
+      "sortOrder": 6
+    },
+    {
+      "contentType": "text",
+      "tag": "Managing risk",
+      "route": false,
+      "heading": "Space management: Search, Evaluate, Execute",
+      "body": "SEE is a simple mental loop: Search the road ahead and around you, Evaluate what you find for risk, then Execute the safest response. Running this loop constantly — not just when something goes wrong — is what separates a defensive driver from someone who's just reacting.",
+      "meta": null,
+      "topicNumber": 8,
+      "sortOrder": 7
+    },
+    {
+      "contentType": "stat",
+      "tag": "Managing risk",
+      "route": false,
+      "heading": "Why new drivers are over-represented",
+      "body": "New drivers are involved in a disproportionate share of crashes, injuries, and fatalities — especially ones involving speed, alcohol, single-vehicle loss of control, and running off the road. It's not that new drivers are worse people; it's that the judgment gap takes real time behind the wheel to close.",
+      "meta": {
+        "number": "13%"
+      },
+      "topicNumber": 8,
+      "sortOrder": 8
+    },
+    {
+      "contentType": "text",
+      "tag": "Speed",
+      "route": false,
+      "heading": "Speed is a risk multiplier, not just a rule",
+      "body": "Higher speed means less time to react, a longer distance to stop, and a harder impact if you can't. It's also the difference between a legal risk and a criminal one — street racing, speed contests, or just trying to set a personal top-speed record on a public road is a specific offense under Texas law, not just reckless driving.",
+      "meta": null,
+      "topicNumber": 8,
+      "sortOrder": 9
+    },
+    {
+      "contentType": "text",
+      "tag": "Managing risk",
+      "route": false,
+      "heading": "Recognizing human trafficking",
+      "body": "Watch for signs someone may be a trafficking victim: visible fear or anxiety around a controlling companion, avoiding eye contact or being unable to speak for themselves, signs of physical abuse, or someone who seems unable to come and go freely. If you notice these signs, don't intervene directly — call the National Human Trafficking Hotline at 1-888-373-7888 or text 233733, or call 911 if someone is in immediate danger.",
+      "meta": null,
+      "topicNumber": 8,
+      "sortOrder": 10
+    },
+    {
+      "contentType": "check",
+      "tag": "Quick check",
+      "route": false,
+      "heading": null,
+      "body": "What does the \"E\" in SEE stand for, and what does it mean in practice?",
+      "meta": {
+        "answer": "Evaluate — assessing what you've spotted while searching, for how much risk it actually presents, before deciding how to respond."
+      },
+      "topicNumber": 8,
+      "sortOrder": 11
     }
   ],
   "topicQuiz": [
     {
       "topicNumber": 1,
-      "question": "What does completing this course let you do?",
+      "question": "What does successfully completing this approved adult driver education course allow an eligible student to do?",
       "options": [
-        "Skip the DPS written test if you pass the exam here",
-        "Skip the vision exam at the DPS office",
-        "Get an automatic license without visiting DPS",
-        "Avoid needing a learner permit"
+        "Skip every DPS requirement",
+        "Satisfy the required driver-education component and take the applicable knowledge examination through the approved course",
+        "Receive a driver license automatically",
+        "Skip the driving skills test in every situation"
       ],
-      "correctIndex": 0,
-      "sortOrder": 0,
-      "visualKey": null
+      "correctIndex": 1,
+      "visualKey": null,
+      "sortOrder": 0
     },
     {
       "topicNumber": 1,
-      "question": "This course is required for which group?",
+      "question": "Who is required to complete an approved adult driver education course before obtaining a first Texas driver license?",
       "options": [
-        "All Texas drivers regardless of age",
-        "Adults 18-24 who haven't completed driver ed before",
+        "Every Texas driver regardless of age",
+        "First-time driver-license applicants ages 18 through 24",
         "Only drivers renewing an expired license",
         "Commercial drivers only"
       ],
       "correctIndex": 1,
-      "sortOrder": 1,
-      "visualKey": "licenseillustration"
+      "visualKey": "licenseillustration",
+      "sortOrder": 1
     },
     {
       "topicNumber": 1,
-      "question": "True or false: new drivers are statistically safer than experienced drivers.",
+      "question": "True or False: New drivers are generally at greater crash risk because they have less driving experience.",
       "options": [
         "True",
         "False"
       ],
-      "correctIndex": 1,
-      "sortOrder": 2,
-      "visualKey": null
+      "correctIndex": 0,
+      "visualKey": null,
+      "sortOrder": 2
     },
     {
       "topicNumber": 2,
-      "question": "What is a Learner License?",
+      "question": "What is the purpose of a learner license?",
       "options": [
-        "A permanent license with no restrictions",
-        "The first-stage permit held before a standard license",
-        "A commercial driving credential",
-        "A license issued only after age 21"
+        "It is a permanent unrestricted license",
+        "It allows an eligible person to practice driving under required supervision",
+        "It authorizes commercial driving",
+        "It is issued only after age 21"
       ],
       "correctIndex": 1,
-      "sortOrder": 0,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 0
     },
     {
       "topicNumber": 2,
-      "question": "What does a restriction code on a license generally require?",
+      "question": "What does a restriction code on a driver license generally mean?",
       "options": [
-        "Nothing \u2014 it's informational only",
-        "A specific condition the driver must meet while driving (e.g. corrective lenses)",
-        "A higher insurance premium",
-        "A yearly retest"
+        "It is informational only",
+        "The driver must meet a specified condition while driving",
+        "The driver must pay higher insurance premiums",
+        "The driver must retest every year"
       ],
       "correctIndex": 1,
-      "sortOrder": 1,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 1
     },
     {
       "topicNumber": 2,
-      "question": "Besides a license, what else is legally required to operate a registered vehicle in Texas?",
+      "question": "Besides having a valid driver license, what requirements generally apply to a vehicle legally operated on Texas roads?",
       "options": [
-        "A vehicle inspection sticker only",
-        "Valid registration and financial responsibility (insurance)",
-        "A AAA membership",
-        "Nothing else is required"
+        "AAA membership",
+        "Current registration and required financial responsibility",
+        "A new inspection sticker every year in all cases",
+        "No additional legal requirements"
       ],
       "correctIndex": 1,
-      "sortOrder": 2,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 2
     },
     {
       "topicNumber": 2,
-      "question": "True or false: driving privileges can be suspended without a criminal conviction.",
+      "question": "True or False: Driving privileges can sometimes be suspended through an administrative process without first obtaining a criminal conviction.",
       "options": [
         "True",
-        "False",
-        "Only for drivers under 18",
-        "Only for commercial licenses"
+        "False"
       ],
       "correctIndex": 0,
-      "sortOrder": 3,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 3
     },
     {
       "topicNumber": 2,
-      "question": "Why does Texas require both a license and vehicle registration?",
+      "question": "Why do Texas licensing and vehicle-registration requirements serve different purposes?",
       "options": [
-        "To increase state revenue only",
-        "To create accountability for both the driver and the vehicle",
-        "It's only required in certain counties",
-        "It's optional but recommended"
+        "They exist only to increase revenue",
+        "A driver license identifies driving privileges, while registration identifies the vehicle and its registration status",
+        "Registration is optional",
+        "They apply only in certain counties"
       ],
       "correctIndex": 1,
-      "sortOrder": 4,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 4
     },
     {
       "topicNumber": 3,
-      "question": "Four cars arrive at a 4-way stop at slightly different times. Who goes first?",
+      "question": "Vehicles arrive at an all-way stop at different times. Who normally proceeds first?",
       "options": [
-        "Whoever arrived first",
-        "Whoever is turning left",
+        "The vehicle that arrived and stopped first",
+        "The vehicle turning left",
         "The largest vehicle",
-        "Whoever honks first"
+        "The driver who honks first"
       ],
       "correctIndex": 0,
-      "sortOrder": 0,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 0
     },
     {
       "topicNumber": 3,
-      "question": "At an uncontrolled intersection, what determines right-of-way?",
+      "question": "Two vehicles approach an uncontrolled intersection at approximately the same time. What should the driver on the left generally do?",
       "options": [
-        "The wider road always wins",
-        "Whichever driver is more confident",
-        "Legal right-of-way rules \u2014 not the road's appearance",
-        "Whoever is going straight always wins"
-      ],
-      "correctIndex": 2,
-      "sortOrder": 1,
-      "visualKey": null
-    },
-    {
-      "topicNumber": 3,
-      "question": "What must a driver do when an emergency vehicle is stopped ahead with lights active, per Texas's Move Over law?",
-      "options": [
-        "Nothing, if you're already going the speed limit",
-        "Move over a lane if safe, or slow down significantly",
-        "Only slow down if going over 70 mph",
-        "Only applies to police vehicles"
+        "Accelerate first",
+        "Yield to the vehicle on the right",
+        "Honk and proceed",
+        "Always proceed if traveling straight"
       ],
       "correctIndex": 1,
-      "sortOrder": 2,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 1
     },
     {
       "topicNumber": 3,
-      "question": "What must drivers in both directions do when a school bus has its stop arm extended?",
+      "question": "What should you do when approaching a qualifying stopped emergency or other covered service vehicle with required warning lights activated?",
       "options": [
-        "Only the following driver must stop",
-        "Both directions must stop, with limited exceptions on divided highways",
-        "Only stop if children are visible",
-        "Slow down but proceed with caution"
+        "Maintain speed if you are at the speed limit",
+        "Move out of the lane closest to the vehicle when possible, or slow as required by law",
+        "Stop immediately in your travel lane",
+        "The law applies only to police vehicles"
       ],
       "correctIndex": 1,
-      "sortOrder": 3,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 2
     },
     {
       "topicNumber": 3,
-      "question": "Who has the right-of-way at a railroad crossing?",
+      "question": "What must a driver generally do when approaching a school bus displaying flashing red lights?",
       "options": [
-        "Whoever arrives first",
-        "The train, always",
-        "Cars, if the gate is up",
-        "Whoever is turning"
+        "Only vehicles behind the bus stop",
+        "Stop as required by law and remain stopped until legally permitted to proceed",
+        "Stop only when children are visible",
+        "Slow down without stopping"
       ],
       "correctIndex": 1,
-      "sortOrder": 4,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 3
     },
     {
       "topicNumber": 3,
-      "question": "At a T-intersection, who generally has the right-of-way?",
+      "question": "What should a driver do when a train is approaching a railroad crossing?",
       "options": [
-        "Traffic on the through road",
-        "Traffic ending at the T",
-        "Whoever is turning right",
-        "It's always a coin flip"
+        "Cross first if the car arrived first",
+        "Yield and remain clear of the crossing",
+        "Cross whenever the gate is still partially raised",
+        "Follow the vehicle ahead without checking"
       ],
-      "correctIndex": 0,
-      "sortOrder": 5,
-      "visualKey": null
+      "correctIndex": 1,
+      "visualKey": null,
+      "sortOrder": 4
+    },
+    {
+      "topicNumber": 3,
+      "question": "At a T-intersection, what must traffic on the road that ends generally do?",
+      "options": [
+        "Proceed first",
+        "Yield to traffic on the through roadway",
+        "Always turn right",
+        "Proceed based only on vehicle size"
+      ],
+      "correctIndex": 1,
+      "visualKey": null,
+      "sortOrder": 5
     },
     {
       "topicNumber": 4,
-      "question": "What does an octagon-shaped sign always mean, regardless of color or text?",
+      "question": "What does an octagonal traffic sign mean?",
       "options": [
         "Yield",
         "Stop",
-        "Railroad crossing ahead",
+        "Railroad crossing",
         "Speed limit"
       ],
       "correctIndex": 1,
-      "sortOrder": 0,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 0
     },
     {
       "topicNumber": 4,
-      "question": "What does a flashing yellow signal mean?",
+      "question": "What does a flashing yellow traffic signal mean?",
       "options": [
-        "Full stop required, like a stop sign",
-        "Slow down and proceed with caution, no full stop required",
-        "The signal is malfunctioning and should be ignored",
-        "Only pedestrians may cross"
+        "Come to a complete stop",
+        "Slow down and proceed with caution",
+        "Ignore the signal",
+        "Pedestrians only may proceed"
       ],
       "correctIndex": 1,
-      "sortOrder": 1,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 1
     },
     {
       "topicNumber": 4,
-      "question": "Where is passing legally allowed based on a dashed white line between same-direction lanes?",
+      "question": "What does a broken white line between lanes traveling in the same direction generally mean?",
       "options": [
-        "Never",
-        "You may cross when safe to change lanes or pass",
-        "Only at night",
-        "Only over 45 mph"
+        "You may never cross it",
+        "You may cross it when it is safe to change lanes",
+        "It separates opposing traffic",
+        "Passing is permitted only at night"
       ],
       "correctIndex": 1,
-      "sortOrder": 2,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 2
     },
     {
       "topicNumber": 4,
       "question": "What does a yellow diamond-shaped sign generally indicate?",
       "options": [
         "A regulatory requirement",
-        "A warning about upcoming road conditions",
-        "A destination marker",
-        "A rest stop"
+        "A warning about roadway conditions or hazards ahead",
+        "A destination",
+        "A rest area"
       ],
       "correctIndex": 1,
-      "sortOrder": 3,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 3
     },
     {
       "topicNumber": 4,
-      "question": "What does a solid double yellow line down the center of a road mean?",
+      "question": "What does a double solid yellow center line generally mean?",
       "options": [
-        "Passing is allowed from either side",
-        "Passing is not allowed from either direction",
-        "It's a pedestrian crossing zone",
-        "It marks a school zone only"
+        "Passing is permitted from either direction",
+        "Passing across the center line is prohibited from either direction",
+        "A pedestrian zone begins",
+        "A school zone begins"
       ],
       "correctIndex": 1,
-      "sortOrder": 4,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 4
     },
     {
       "topicNumber": 4,
-      "question": "Why do warning signs use a diamond shape specifically?",
+      "question": "Why are standardized traffic-sign shapes useful?",
       "options": [
-        "It's easier to manufacture",
-        "So the shape itself is recognizable even from a distance or angle before the text is readable",
-        "It's required only on state highways",
-        "There's no specific reason"
+        "They make signs easier to manufacture",
+        "They help drivers recognize the type of message even before every word or symbol can be read",
+        "They apply only to state highways",
+        "They have no safety purpose"
       ],
       "correctIndex": 1,
-      "sortOrder": 5,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 5
     },
     {
       "topicNumber": 5,
-      "question": "What's the recommended following distance in good conditions?",
+      "question": "Under good road conditions, what minimum following interval does the 2026 Texas Driver Handbook specify when traveling above 30 mph?",
       "options": [
         "1 second",
-        "3-4 seconds",
-        "10 seconds",
-        "One car length regardless of speed"
+        "2 seconds",
+        "4 seconds",
+        "10 seconds"
       ],
-      "correctIndex": 1,
-      "sortOrder": 0,
-      "visualKey": null
+      "correctIndex": 2,
+      "visualKey": null,
+      "sortOrder": 0
     },
     {
       "topicNumber": 5,
-      "question": "Is it always legal to drive exactly at the posted speed limit?",
+      "question": "Is it always safe to drive at the posted speed limit?",
       "options": [
-        "Yes, always, regardless of conditions",
-        "Legal, but not always safe \u2014 conditions like fog or heavy traffic may require slower speeds",
-        "No, you must drive under the limit at all times",
-        "Only on highways"
+        "Yes, regardless of conditions",
+        "No. Conditions may require a driver to travel slower than the posted limit",
+        "No. Drivers must always remain below the limit",
+        "The rule applies only on highways"
       ],
       "correctIndex": 1,
-      "sortOrder": 1,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 1
     },
     {
       "topicNumber": 5,
-      "question": "Why is a shoulder check necessary before changing lanes, even with mirrors?",
+      "question": "Why should a driver check the blind spot before changing lanes?",
       "options": [
-        "It isn't necessary if mirrors are adjusted correctly",
-        "Mirrors don't cover blind spots directly beside and behind the vehicle",
-        "It's a legal formality only",
-        "It's only needed at night"
+        "Properly adjusted mirrors eliminate every blind spot",
+        "Mirrors may not show vehicles positioned in certain areas beside the vehicle",
+        "It is required only at night",
+        "It replaces using the mirrors"
       ],
       "correctIndex": 1,
-      "sortOrder": 2,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 2
     },
     {
       "topicNumber": 5,
-      "question": "What happens to fines for traffic violations in a work zone with workers present?",
+      "question": "What can happen to applicable fines for certain traffic offenses committed in a construction or maintenance work zone when workers are present and statutory conditions are met?",
       "options": [
-        "They stay the same as normal",
-        "They roughly double, and a second conviction can suspend your license",
-        "They're waived for first-time offenders",
-        "They only apply to commercial vehicles"
+        "The fines are waived",
+        "The applicable minimum and maximum fines may be doubled",
+        "Only commercial drivers can be fined",
+        "Every violation automatically results in license suspension"
       ],
       "correctIndex": 1,
-      "sortOrder": 3,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 3
     },
     {
       "topicNumber": 5,
       "question": "What is highway hypnosis?",
       "options": [
-        "A legal driving technique for long trips",
-        "A trance-like state of reduced attention during long, monotonous driving",
-        "A type of headlight setting",
-        "A GPS navigation feature"
+        "A legal highway-driving technique",
+        "A state of reduced attention that may develop during long, monotonous driving",
+        "A headlight setting",
+        "A navigation feature"
       ],
       "correctIndex": 1,
-      "sortOrder": 4,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 4
     },
     {
       "topicNumber": 5,
-      "question": "What best prevents highway hypnosis on a long drive?",
+      "question": "What is a good way to reduce the risk of highway hypnosis or fatigue during a long drive?",
       "options": [
-        "Driving faster to finish sooner",
-        "Regular breaks and actively scanning the road, not just staring ahead",
-        "Turning off the radio completely",
-        "Driving only at night"
+        "Drive faster to finish sooner",
+        "Take appropriate breaks and remain actively engaged in scanning the roadway",
+        "Turn off all ventilation",
+        "Drive only at night"
       ],
       "correctIndex": 1,
-      "sortOrder": 5,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 5
     },
     {
       "topicNumber": 6,
-      "question": "What does Zero Tolerance mean for drivers under 21 in Texas?",
+      "question": "What does Texas Zero Tolerance mean for drivers under age 21?",
       "options": [
-        "The same BAC limit as adults applies",
-        "Any detectable amount of alcohol can result in penalties",
-        "It only applies to repeat offenders",
-        "It only applies to driving after midnight"
+        "The adult 0.08 BAC threshold is the only limit",
+        "Driving with any detectable amount of alcohol can result in penalties",
+        "It applies only to repeat offenses",
+        "It applies only after midnight"
       ],
       "correctIndex": 1,
-      "sortOrder": 0,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 0
     },
     {
       "topicNumber": 6,
-      "question": "What does alcohol impair before a driver typically feels impaired?",
+      "question": "Which driving abilities can alcohol impair?",
       "options": [
-        "Nothing \u2014 impairment and feeling impaired happen together",
-        "Reaction time, peripheral vision, and risk judgment",
+        "None until the driver feels drunk",
+        "Judgment, reaction ability, vision, and coordination",
         "Only long-term memory",
-        "Only fine motor skills in the hands"
+        "Only the driver's hearing"
       ],
       "correctIndex": 1,
-      "sortOrder": 1,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 1
     },
     {
       "topicNumber": 6,
-      "question": "What is the Open Container law?",
+      "question": "Which statement best describes Texas's open-container law?",
       "options": [
-        "It only restricts the driver from drinking",
-        "It prohibits an open alcoholic beverage anywhere in the passenger area, regardless of who's drinking",
-        "It only applies to beer, not liquor",
-        "It only applies on highways"
+        "It applies only when the driver is drinking",
+        "Texas generally prohibits knowingly possessing an open alcoholic-beverage container in the passenger area of a motor vehicle on a public highway, subject to statutory exceptions",
+        "It applies only to beer",
+        "It applies only when a driver is intoxicated"
       ],
       "correctIndex": 1,
-      "sortOrder": 2,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 2
     },
     {
       "topicNumber": 6,
-      "question": "What happens if a driver refuses a breath/blood test after a lawful DWI arrest, under Implied Consent?",
+      "question": "What can happen when a driver refuses a requested breath or blood specimen under qualifying Texas implied-consent circumstances?",
       "options": [
-        "Nothing \u2014 refusal has no consequence",
-        "An automatic license suspension, separate from any DWI penalty",
-        "The arrest is automatically dismissed",
-        "Only a warning is issued"
+        "Refusal has no consequences",
+        "Refusal can result in administrative driver-license consequences separate from the criminal DWI case",
+        "The DWI case must be dismissed",
+        "The driver automatically receives only a warning"
       ],
       "correctIndex": 1,
-      "sortOrder": 3,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 3
     },
     {
       "topicNumber": 6,
-      "question": "How do penalties typically change for a DWI that causes injury or death?",
+      "question": "How can the criminal consequences change when intoxicated driving causes serious bodily injury or death?",
       "options": [
-        "They stay the same regardless of outcome",
-        "They escalate significantly (e.g. to intoxication assault or intoxication manslaughter charges)",
-        "They only escalate for repeat offenders",
-        "They are handled as a civil matter only"
+        "They remain identical to every other DWI",
+        "The conduct can result in more serious offenses such as intoxication assault or intoxication manslaughter when statutory elements are met",
+        "It becomes only a civil matter",
+        "Serious consequences apply only to repeat offenders"
       ],
       "correctIndex": 1,
-      "sortOrder": 4,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 4
     },
     {
       "topicNumber": 6,
-      "question": "True or false: a DWI conviction as a minor can affect licensing even before turning 21.",
+      "question": "True or False: Alcohol-related driving offenses can affect a driver's licensing privileges before age 21.",
       "options": [
         "True",
-        "False",
-        "Only if it's a second offense",
-        "Only if a crash occurred"
+        "False"
       ],
       "correctIndex": 0,
-      "sortOrder": 5,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 5
     },
     {
       "topicNumber": 7,
-      "question": "What is a 'vulnerable roadway user'?",
+      "question": "Which is an example of a vulnerable roadway user who requires additional care from motorists?",
       "options": [
-        "Any driver under 21",
-        "A pedestrian, cyclist, motorcyclist, or similar user with less protection than someone in a car",
-        "Only pedestrians",
-        "Only cyclists"
+        "Only drivers under 21",
+        "A pedestrian, bicyclist, motorcyclist, or similar less-protected roadway user",
+        "Only commercial drivers",
+        "Only passengers"
       ],
       "correctIndex": 1,
-      "sortOrder": 0,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 0
     },
     {
       "topicNumber": 7,
-      "question": "What does Texas law generally require when passing a cyclist?",
+      "question": "What should a driver do when passing a bicyclist?",
       "options": [
-        "No specific distance is required",
-        "A safe passing distance, treated as a hard minimum",
-        "Cyclists must pull over for cars",
-        "Passing cyclists is not allowed"
+        "Pass as closely as possible",
+        "Force the bicyclist onto the shoulder",
+        "Allow safe clearance and pass only when it can be done safely",
+        "Honk continuously until the bicyclist stops"
+      ],
+      "correctIndex": 2,
+      "visualKey": null,
+      "sortOrder": 1
+    },
+    {
+      "topicNumber": 7,
+      "question": "What is the safest general approach if you stop to help after a crash?",
+      "options": [
+        "Attempt medical procedures beyond your ability",
+        "Avoid creating additional danger, summon appropriate emergency assistance, and provide reasonable help within your ability",
+        "Immediately move every injured person",
+        "Leave without reporting serious injuries"
       ],
       "correctIndex": 1,
-      "sortOrder": 1,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 2
     },
     {
       "topicNumber": 7,
-      "question": "What does the Good Samaritan Law protect, and what's expected of a driver at a crash scene?",
+      "question": "If stopped by law enforcement, what is generally the safest response?",
       "options": [
-        "It requires drivers to perform medical procedures",
-        "It protects someone who renders reasonable aid in good faith; the expectation is to help without making things worse and call for real help",
-        "It only applies to licensed medical professionals",
-        "It requires drivers to leave the scene immediately"
+        "Immediately exit the vehicle",
+        "Pull over safely, remain in the vehicle unless instructed otherwise, keep your hands visible, and follow instructions",
+        "Continue to the nearest police station without acknowledging the stop",
+        "Hide your hands while searching for documents"
       ],
       "correctIndex": 1,
-      "sortOrder": 2,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 3
     },
     {
       "topicNumber": 7,
-      "question": "If stopped by law enforcement, what's generally expected?",
+      "question": "Which behavior is an example of aggressive driving?",
       "options": [
-        "Exit the vehicle immediately",
-        "Pull over safely, stay in the vehicle unless told otherwise, keep hands visible",
-        "Drive to the nearest police station instead",
-        "Only required to stop if a crime was witnessed"
+        "Making one ordinary driving error",
+        "Tailgating, unsafe weaving, or intentionally confronting another driver",
+        "Listening to music",
+        "Using the windshield wipers"
       ],
       "correctIndex": 1,
-      "sortOrder": 3,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 4
     },
     {
       "topicNumber": 7,
-      "question": "What defines aggressive driving as distinct from a single mistake like speeding once?",
+      "question": "What can cause dangerous carbon monoxide exposure from a vehicle?",
       "options": [
-        "Any speeding at all",
-        "A repeated pattern of behavior like tailgating, weaving, or brake-checking",
-        "Driving over 80 mph",
-        "Driving with music on"
-      ],
-      "correctIndex": 1,
-      "sortOrder": 4,
-      "visualKey": null
-    },
-    {
-      "topicNumber": 7,
-      "question": "What causes dangerous carbon monoxide buildup in a vehicle?",
-      "options": [
-        "Using the air conditioning",
-        "Running the engine in an enclosed, unventilated space",
-        "Driving with the windows up",
+        "Using a turn signal",
+        "Running the engine in an enclosed or inadequately ventilated area",
+        "Driving on an open highway with the windows closed",
         "Using cruise control"
       ],
       "correctIndex": 1,
-      "sortOrder": 5,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 5
     },
     {
       "topicNumber": 8,
-      "question": "What are the four risk categories used to describe a driving situation?",
+      "question": "In Easy Way's course risk-management framework, which sequence represents increasing levels of driving complexity?",
       "options": [
         "Easy, medium, hard, extreme",
         "Controlled, low, moderate, complex",
@@ -1234,154 +1462,154 @@
         "Green, yellow, orange, red"
       ],
       "correctIndex": 1,
-      "sortOrder": 0,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 0
     },
     {
       "topicNumber": 8,
-      "question": "What does the 'S' in the SEE space management system stand for?",
+      "question": "What does SEE stand for in the space-management process taught in the course?",
       "options": [
-        "Stop",
-        "Search",
-        "Signal",
-        "Slow"
+        "Stop, Enter, Exit",
+        "Search, Evaluate, Execute",
+        "Signal, Enter, Escape",
+        "Speed, Examine, Enter"
       ],
       "correctIndex": 1,
-      "sortOrder": 1,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 1
     },
     {
       "topicNumber": 8,
-      "question": "Which crash types are new drivers most over-represented in?",
+      "question": "Why do inexperienced drivers need to give particular attention to speed control and hazard recognition?",
       "options": [
-        "Parking lot fender-benders",
-        "Speed-related, single-vehicle, and off-road control-loss crashes",
-        "Rear-end collisions only",
-        "Crashes involving only other new drivers"
+        "Experience eliminates all crash risk",
+        "Developing drivers have less experience recognizing hazards and making complex driving judgments",
+        "New drivers are involved only in parking crashes",
+        "Speed has no relationship to driving risk"
       ],
       "correctIndex": 1,
-      "sortOrder": 2,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 2
     },
     {
       "topicNumber": 8,
-      "question": "What is a general indicator that someone may be a trafficking victim?",
+      "question": "Which situation may be a warning sign of possible human trafficking?",
       "options": [
-        "Traveling alone",
-        "Signs of being controlled by another person, fear, or being unable to speak for themselves",
-        "Not having ID on them",
-        "Being in an unfamiliar city"
+        "A person traveling alone",
+        "A person appearing fearful or controlled by someone else and being unable to speak freely for themselves",
+        "A person visiting an unfamiliar city",
+        "A person carrying luggage"
       ],
       "correctIndex": 1,
-      "sortOrder": 3,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 3
     },
     {
       "topicNumber": 8,
-      "question": "What should someone do if they suspect a trafficking situation?",
+      "question": "What should a person generally do if they suspect a possible human-trafficking situation?",
       "options": [
-        "Confront the suspected trafficker directly",
-        "Contact the National Human Trafficking Hotline (1-888-373-7888)",
-        "Ignore it unless certain",
-        "Post about it on social media"
+        "Personally confront the suspected trafficker",
+        "Report the concern through an appropriate reporting or emergency resource rather than attempting direct intervention",
+        "Post accusations publicly on social media",
+        "Ignore the situation unless personally certain"
       ],
       "correctIndex": 1,
-      "sortOrder": 4,
-      "visualKey": null
+      "visualKey": null,
+      "sortOrder": 4
     }
   ],
   "examQuestions": [
     {
       "sourceTopicNumber": 2,
-      "question": "What is a Learner License?",
+      "question": "What is the purpose of a learner license?",
       "options": [
-        "A permanent license with no restrictions",
-        "The first-stage permit held before a standard license",
-        "A commercial driving credential",
-        "A license issued only after age 21"
+        "It is a permanent unrestricted driver license",
+        "It allows a person to practice driving under required supervision",
+        "It authorizes operation of commercial vehicles",
+        "It is issued only to drivers age 21 or older"
       ],
       "correctIndex": 1,
       "sortOrder": 0
     },
     {
       "sourceTopicNumber": 2,
-      "question": "Besides a license, what else is legally required to operate a registered vehicle in Texas?",
+      "question": "Besides having a valid driver license, what should a driver operating a registered vehicle in Texas be able to show when required?",
       "options": [
-        "A vehicle inspection sticker only",
-        "Valid registration and financial responsibility (insurance)",
-        "A AAA membership",
-        "Nothing else is required"
+        "AAA membership",
+        "Current registration and proof of financial responsibility",
+        "A vehicle inspection receipt for every trip",
+        "A vehicle purchase agreement"
       ],
       "correctIndex": 1,
       "sortOrder": 1
     },
     {
       "sourceTopicNumber": 3,
-      "question": "Four cars arrive at a 4-way stop at slightly different times. Who goes first?",
+      "question": "Four vehicles arrive at an all-way stop at different times. Which vehicle normally proceeds first?",
       "options": [
-        "Whoever arrived first",
-        "Whoever is turning left",
+        "The vehicle that arrived and stopped first",
+        "The vehicle turning left",
         "The largest vehicle",
-        "Whoever honks first"
+        "The fastest vehicle"
       ],
       "correctIndex": 0,
       "sortOrder": 2
     },
     {
       "sourceTopicNumber": 3,
-      "question": "At an uncontrolled intersection, what determines right-of-way?",
+      "question": "Two vehicles arrive at an uncontrolled intersection at approximately the same time. What should the driver on the left generally do?",
       "options": [
-        "The wider road always wins",
-        "Whichever driver is more confident",
-        "Legal right-of-way rules \u2014 not the road's appearance",
-        "Whoever is going straight always wins"
+        "Accelerate through the intersection",
+        "Yield to the vehicle on the right",
+        "Honk and proceed first",
+        "Always proceed if traveling straight"
       ],
-      "correctIndex": 2,
+      "correctIndex": 1,
       "sortOrder": 3
     },
     {
       "sourceTopicNumber": 3,
-      "question": "What must a driver do when an emergency vehicle is stopped ahead with lights active?",
+      "question": "What should you do when approaching a qualifying emergency, tow, utility, or TxDOT vehicle stopped with required warning lights activated?",
       "options": [
-        "Nothing, if already at the speed limit",
-        "Move over a lane if safe, or slow down significantly",
-        "Only slow down if going over 70 mph",
-        "Only applies to police vehicles"
+        "Maintain speed if you are at the speed limit",
+        "Move out of the lane closest to the vehicle when possible, or slow as required by law",
+        "Stop in your travel lane",
+        "The rule applies only to police vehicles"
       ],
       "correctIndex": 1,
       "sortOrder": 4
     },
     {
       "sourceTopicNumber": 3,
-      "question": "What must drivers in both directions do when a school bus has its stop arm extended?",
+      "question": "What must drivers generally do when approaching a school bus displaying flashing red lights and an extended stop signal?",
       "options": [
-        "Only the following driver must stop",
-        "Both directions must stop, with limited exceptions on divided highways",
-        "Only stop if children are visible",
-        "Slow down but proceed with caution"
+        "Only traffic behind the bus must stop",
+        "Stop and remain stopped as required by law, subject to the divided-highway exception",
+        "Stop only when children can be seen",
+        "Reduce speed but continue driving"
       ],
       "correctIndex": 1,
       "sortOrder": 5
     },
     {
       "sourceTopicNumber": 3,
-      "question": "Who has the right-of-way at a railroad crossing?",
+      "question": "When a train is approaching a railroad crossing, what should a driver do?",
       "options": [
-        "Whoever arrives first",
-        "The train, always",
-        "Cars, if the gate is up",
-        "Whoever is turning"
+        "Cross if the vehicle arrived before the train",
+        "Yield and remain clear of the crossing",
+        "Cross whenever the gate begins rising",
+        "Follow the vehicle ahead across without checking"
       ],
       "correctIndex": 1,
       "sortOrder": 6
     },
     {
       "sourceTopicNumber": 4,
-      "question": "What does an octagon-shaped sign always mean, regardless of color or text?",
+      "question": "What does an octagonal traffic sign mean?",
       "options": [
         "Yield",
         "Stop",
-        "Railroad crossing ahead",
+        "Railroad crossing",
         "Speed limit"
       ],
       "correctIndex": 1,
@@ -1389,266 +1617,266 @@
     },
     {
       "sourceTopicNumber": 4,
-      "question": "What does a flashing yellow signal mean?",
+      "question": "What does a flashing yellow traffic signal mean?",
       "options": [
-        "Full stop required, like a stop sign",
-        "Slow down and proceed with caution, no full stop required",
-        "The signal is malfunctioning and should be ignored",
-        "Only pedestrians may cross"
+        "Come to a complete stop",
+        "Slow down and proceed with caution",
+        "Ignore the signal",
+        "Pedestrians only may proceed"
       ],
       "correctIndex": 1,
       "sortOrder": 8
     },
     {
       "sourceTopicNumber": 4,
-      "question": "What does a solid double yellow line down the center of a road mean?",
+      "question": "What does a double solid yellow center line generally mean?",
       "options": [
-        "Passing is allowed from either side",
-        "Passing is not allowed from either direction",
-        "It's a pedestrian crossing zone",
-        "It marks a school zone only"
+        "Passing is permitted in both directions",
+        "Passing across the center line is prohibited in both directions",
+        "A school zone begins",
+        "Traffic travels in the same direction on both sides"
       ],
       "correctIndex": 1,
       "sortOrder": 9
     },
     {
       "sourceTopicNumber": 4,
-      "question": "What does a yellow diamond-shaped sign generally indicate?",
+      "question": "What does a yellow diamond-shaped traffic sign generally indicate?",
       "options": [
         "A regulatory requirement",
-        "A warning about upcoming road conditions",
-        "A destination marker",
-        "A rest stop"
+        "A warning about a roadway condition or hazard ahead",
+        "A hospital",
+        "A speed-limit requirement"
       ],
       "correctIndex": 1,
       "sortOrder": 10
     },
     {
       "sourceTopicNumber": 5,
-      "question": "What's the recommended following distance in good conditions?",
+      "question": "Under good road conditions, what following distance does the current Texas Driver Handbook specify for speeds above 30 mph?",
       "options": [
         "1 second",
-        "3-4 seconds",
-        "10 seconds",
-        "One car length regardless of speed"
+        "2 seconds",
+        "4 seconds",
+        "10 seconds"
       ],
-      "correctIndex": 1,
+      "correctIndex": 2,
       "sortOrder": 11
     },
     {
       "sourceTopicNumber": 5,
-      "question": "Is it always legal to drive exactly at the posted speed limit?",
+      "question": "Is driving at the posted speed limit always safe regardless of conditions?",
       "options": [
-        "Yes, always, regardless of conditions",
-        "Legal, but not always safe \u2014 conditions may require slower speeds",
-        "No, you must drive under the limit at all times",
-        "Only on highways"
+        "Yes",
+        "No. A driver may need to travel slower because of weather, traffic, visibility, or roadway conditions.",
+        "Yes, unless driving at night",
+        "No, because drivers must always travel below the posted limit"
       ],
       "correctIndex": 1,
       "sortOrder": 12
     },
     {
-      "sourceTopicNumber": 5,
-      "question": "What happens to fines for traffic violations in a work zone with workers present?",
+      "sourceTopicNumber": 7,
+      "question": "What can happen to applicable minimum and maximum fines for certain traffic offenses committed in a construction or maintenance work zone when the statutory work-zone conditions are met?",
       "options": [
-        "They stay the same as normal",
-        "They roughly double, and a second conviction can suspend your license",
-        "They're waived for first-time offenders",
-        "They only apply to commercial vehicles"
+        "The fines are automatically waived",
+        "The applicable minimum and maximum fines may be doubled",
+        "Only commercial drivers receive a fine",
+        "The fine is always exactly $500"
       ],
       "correctIndex": 1,
       "sortOrder": 13
     },
     {
-      "sourceTopicNumber": 5,
-      "question": "What is highway hypnosis?",
+      "sourceTopicNumber": 7,
+      "question": "When approaching a construction or maintenance work zone, what should a driver do?",
       "options": [
-        "A legal driving technique for long trips",
-        "A trance-like state of reduced attention during long, monotonous driving",
-        "A type of headlight setting",
-        "A GPS navigation feature"
+        "Maintain normal speed until reaching workers",
+        "Reduce speed as necessary, watch for temporary traffic-control devices and flaggers, and be prepared for changing conditions",
+        "Follow normal pavement markings even when temporary markings direct traffic differently",
+        "Use the shoulder to avoid congestion"
       ],
       "correctIndex": 1,
       "sortOrder": 14
     },
     {
-      "sourceTopicNumber": 6,
-      "question": "What does Zero Tolerance mean for drivers under 21 in Texas?",
+      "sourceTopicNumber": 7,
+      "question": "Why are traffic violations especially dangerous in construction and maintenance work zones?",
       "options": [
-        "The same BAC limit as adults applies",
-        "Any detectable amount of alcohol can result in penalties",
-        "It only applies to repeat offenders",
-        "It only applies to driving after midnight"
+        "Work zones normally have wider lanes",
+        "Construction workers are always behind concrete barriers",
+        "Workers, equipment, lane changes, barriers, and changing traffic patterns can increase the risk of bodily injury, death, and property damage",
+        "Traffic laws do not apply inside work zones"
       ],
-      "correctIndex": 1,
+      "correctIndex": 2,
       "sortOrder": 15
     },
     {
       "sourceTopicNumber": 6,
-      "question": "What is the Open Container law?",
+      "question": "What does Texas Zero Tolerance mean for a driver under age 21?",
       "options": [
-        "It only restricts the driver from drinking",
-        "It prohibits an open alcoholic beverage anywhere in the passenger area, regardless of who's drinking",
-        "It only applies to beer, not liquor",
-        "It only applies on highways"
+        "The standard adult 0.08 BAC threshold always applies",
+        "Driving with any detectable amount of alcohol can result in penalties",
+        "It applies only after a second offense",
+        "It applies only after midnight"
       ],
       "correctIndex": 1,
       "sortOrder": 16
     },
     {
       "sourceTopicNumber": 6,
-      "question": "What happens if a driver refuses a breath/blood test after a lawful DWI arrest, under Implied Consent?",
+      "question": "Which statement best describes Texas's open-container law?",
       "options": [
-        "Nothing \u2014 refusal has no consequence",
-        "An automatic license suspension, separate from any DWI penalty",
-        "The arrest is automatically dismissed",
-        "Only a warning is issued"
+        "Only the driver is prohibited from possessing an open alcoholic beverage",
+        "Texas generally prohibits possession of an open alcoholic-beverage container in the passenger area of a motor vehicle on a public highway, subject to statutory exceptions",
+        "The law applies only to beer",
+        "The law applies only when the vehicle is speeding"
       ],
       "correctIndex": 1,
       "sortOrder": 17
     },
     {
       "sourceTopicNumber": 6,
-      "question": "True or false: a DWI conviction as a minor can affect licensing even before turning 21.",
+      "question": "What can happen if a driver refuses a breath or blood specimen after a qualifying DWI arrest under Texas implied-consent law?",
       "options": [
-        "True",
-        "False",
-        "Only if it's a second offense",
-        "Only if a crash occurred"
+        "Nothing",
+        "The refusal can result in an administrative driver-license suspension separate from the criminal DWI case",
+        "The DWI case must automatically be dismissed",
+        "The driver automatically receives only a warning"
       ],
-      "correctIndex": 0,
+      "correctIndex": 1,
       "sortOrder": 18
     },
     {
-      "sourceTopicNumber": 7,
-      "question": "What is a 'vulnerable roadway user'?",
+      "sourceTopicNumber": 6,
+      "question": "Why can alcohol make driving dangerous even before a driver appears obviously intoxicated?",
       "options": [
-        "Any driver under 21",
-        "A pedestrian, cyclist, motorcyclist, or similar user with less protection than someone in a car",
-        "Only pedestrians",
-        "Only cyclists"
+        "Alcohol improves reaction time",
+        "Alcohol improves judgment but reduces hearing",
+        "Alcohol can impair judgment, coordination, vision, and reaction ability",
+        "Alcohol affects driving only after a crash"
       ],
-      "correctIndex": 1,
+      "correctIndex": 2,
       "sortOrder": 19
     },
     {
       "sourceTopicNumber": 7,
-      "question": "What does Texas law generally require when passing a cyclist?",
+      "question": "Which roadway user requires particular caution because they have much less physical protection in a collision with a motor vehicle?",
       "options": [
-        "No specific distance is required",
-        "A safe passing distance, treated as a hard minimum",
-        "Cyclists must pull over for cars",
-        "Passing cyclists is not allowed"
+        "Only truck drivers",
+        "Pedestrians, bicyclists, motorcyclists, and similar vulnerable roadway users",
+        "Only drivers under age 21",
+        "Only emergency-vehicle operators"
       ],
       "correctIndex": 1,
       "sortOrder": 20
     },
     {
       "sourceTopicNumber": 7,
-      "question": "What does the Good Samaritan Law protect?",
+      "question": "What should a driver do when passing a bicyclist?",
       "options": [
-        "It requires drivers to perform medical procedures",
-        "Someone who renders reasonable aid in good faith at a crash scene",
-        "Only licensed medical professionals",
-        "It requires drivers to leave the scene immediately"
+        "Pass as closely as possible",
+        "Honk continuously until the bicyclist leaves the roadway",
+        "Allow safe clearance and pass only when it can be done safely",
+        "Force the bicyclist onto the shoulder"
       ],
-      "correctIndex": 1,
+      "correctIndex": 2,
       "sortOrder": 21
     },
     {
       "sourceTopicNumber": 7,
-      "question": "If stopped by law enforcement, what's generally expected?",
+      "question": "If you are stopped by law enforcement, what is generally the safest response?",
       "options": [
-        "Exit the vehicle immediately",
-        "Pull over safely, stay in the vehicle unless told otherwise, keep hands visible",
-        "Drive to the nearest police station instead",
-        "Only required to stop if a crime was witnessed"
+        "Immediately get out of the vehicle",
+        "Pull over safely, remain in the vehicle unless instructed otherwise, keep your hands visible, and follow the officer's instructions",
+        "Continue driving until reaching your destination",
+        "Hide your hands while locating documents"
       ],
       "correctIndex": 1,
       "sortOrder": 22
     },
     {
       "sourceTopicNumber": 7,
-      "question": "What defines aggressive driving as distinct from a single mistake like speeding once?",
+      "question": "When approaching a pedestrian who is lawfully crossing in a crosswalk and your vehicle is required to yield, what should you do?",
       "options": [
-        "Any speeding at all",
-        "A repeated pattern of behavior like tailgating, weaving, or brake-checking",
-        "Driving over 80 mph",
-        "Driving with music on"
+        "Accelerate before the pedestrian reaches your lane",
+        "Stop and yield as required",
+        "Honk so the pedestrian leaves the crosswalk",
+        "Pass another vehicle stopped for the pedestrian"
       ],
       "correctIndex": 1,
       "sortOrder": 23
     },
     {
-      "sourceTopicNumber": 7,
-      "question": "What causes dangerous carbon monoxide buildup in a vehicle?",
+      "sourceTopicNumber": 8,
+      "question": "What should a driver do when visibility, traffic, or roadway conditions increase driving risk?",
       "options": [
-        "Using the air conditioning",
-        "Running the engine in an enclosed, unventilated space",
-        "Driving with the windows up",
-        "Using cruise control"
+        "Maintain the same speed and following distance",
+        "Drive closer to the vehicle ahead",
+        "Reduce speed as appropriate, increase space, and increase attention",
+        "Depend entirely on other drivers to avoid a collision"
       ],
-      "correctIndex": 1,
+      "correctIndex": 2,
       "sortOrder": 24
     },
     {
-      "sourceTopicNumber": 7,
-      "question": "True or false: pedestrians in a crosswalk always have the right-of-way.",
+      "sourceTopicNumber": 8,
+      "question": "In the SEE space-management process, what does SEE stand for?",
       "options": [
-        "True",
-        "False",
-        "Only during daytime",
-        "Only at marked crosswalks with signals"
+        "Stop, Enter, Exit",
+        "Signal, Enter, Escape",
+        "Search, Evaluate, Execute",
+        "Speed, Examine, Enter"
       ],
-      "correctIndex": 0,
+      "correctIndex": 2,
       "sortOrder": 25
     },
     {
       "sourceTopicNumber": 8,
-      "question": "What are the four risk categories used to describe a driving situation?",
+      "question": "What is the safest response when another driver behaves aggressively?",
       "options": [
-        "Easy, medium, hard, extreme",
-        "Controlled, low, moderate, complex",
-        "Safe, unsafe, neutral, dangerous",
-        "Green, yellow, orange, red"
+        "Brake-check the driver",
+        "Make eye contact and challenge the driver",
+        "Follow the vehicle and obtain the driver's information",
+        "Avoid confrontation, create space, and allow the aggressive driver to move away"
       ],
-      "correctIndex": 1,
+      "correctIndex": 3,
       "sortOrder": 26
     },
     {
       "sourceTopicNumber": 8,
-      "question": "What does the 'S' in the SEE space management system stand for?",
+      "question": "What can cause dangerous carbon monoxide buildup around a vehicle?",
       "options": [
-        "Stop",
-        "Search",
-        "Signal",
-        "Slow"
+        "Using the turn signal",
+        "Running the engine in an enclosed or inadequately ventilated space",
+        "Driving with the windows closed on an open highway",
+        "Using cruise control"
       ],
       "correctIndex": 1,
       "sortOrder": 27
     },
     {
       "sourceTopicNumber": 8,
-      "question": "Which crash types are new drivers most over-represented in?",
+      "question": "What is highway hypnosis?",
       "options": [
-        "Parking lot fender-benders",
-        "Speed-related, single-vehicle, and off-road control-loss crashes",
-        "Rear-end collisions only",
-        "Crashes involving only other new drivers"
+        "A method of improving fuel economy",
+        "A reduced-attention state that can develop during long, monotonous driving",
+        "A vehicle's automatic lane-control system",
+        "A nighttime headlight setting"
       ],
       "correctIndex": 1,
       "sortOrder": 28
     },
     {
       "sourceTopicNumber": 8,
-      "question": "What should someone do if they suspect a trafficking situation?",
+      "question": "If someone suspects a possible human-trafficking situation, what is the safest response?",
       "options": [
         "Confront the suspected trafficker directly",
-        "Contact the National Human Trafficking Hotline (1-888-373-7888)",
-        "Ignore it unless certain",
-        "Post about it on social media"
+        "Post accusations on social media",
+        "Report the concern through an appropriate reporting resource rather than personally confronting the suspected trafficker",
+        "Ignore the situation unless personally involved"
       ],
-      "correctIndex": 1,
+      "correctIndex": 2,
       "sortOrder": 29
     }
   ]

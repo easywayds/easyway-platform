@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { PDFDocument, PDFFont, StandardFonts } from "pdf-lib";
+import { PDFDocument } from "pdf-lib";
 
 const TEMPLATE_PATH = path.join(process.cwd(), "certificate-assets", "ADEE-1317-template.pdf");
 
@@ -52,21 +52,10 @@ function drawSignatureOnBothPages(
   }
 }
 
-function drawTypedSignatureOnBothPages(
-  doc: PDFDocument,
-  font: PDFFont,
-  name: string,
-  rect: { x0: number; y0: number; x1: number; y1: number }
-) {
-  for (const page of doc.getPages()) {
-    page.drawText(name, {
-      x: rect.x0 + 4,
-      y: rect.y0 + (rect.y1 - rect.y0 - 10) / 2,
-      size: 12,
-      font,
-    });
-  }
-}
+// Thrown when required school settings (real signature images) aren't
+// configured yet — the caller should surface this as a clear "issuance
+// disabled" message, never fall back to a typed name on an actual ADEE-1317.
+export class CertificateNotReadyError extends Error {}
 
 export async function generateCertificatePdf({
   lastName,
@@ -75,7 +64,8 @@ export async function generateCertificatePdf({
   dateOfBirth,
   sex,
   controlNumber,
-  completionDate,
+  courseCompletedAt,
+  certificateIssuedAt,
   schoolSettings,
 }: {
   lastName: string;
@@ -84,7 +74,13 @@ export async function generateCertificatePdf({
   dateOfBirth: Date;
   sex: "Male" | "Female";
   controlNumber: string;
-  completionDate: Date;
+  // The moment the student actually finished the course (all 9 topics +
+  // passing exam attempt) — goes on the "Online Completion" fields.
+  courseCompletedAt: Date;
+  // The moment a real TDLR certificate number was assigned, which can be
+  // later than completion if the number pool was empty at the time — goes
+  // on "Date Issued". These are deliberately never the same field.
+  certificateIssuedAt: Date;
   schoolSettings: {
     tdlrNumber: string | null;
     schoolName: string | null;
@@ -95,13 +91,21 @@ export async function generateCertificatePdf({
     chiefOfficialSignatureImage: string | null;
   };
 }): Promise<Uint8Array> {
+  // Fail fast, before touching the template, if issuance isn't allowed yet.
+  if (!schoolSettings.instructorSignatureImage || !schoolSettings.chiefOfficialSignatureImage) {
+    throw new CertificateNotReadyError(
+      "Certificate issuance disabled — required school settings incomplete (instructor and/or chief official signature image not configured)."
+    );
+  }
+
   const templateBytes = fs.readFileSync(TEMPLATE_PATH);
   const doc = await PDFDocument.load(templateBytes);
   const form = doc.getForm();
 
   const dob = splitDate(dateOfBirth);
-  const completion = splitDate(completionDate);
-  const dateIssuedStr = `${completion.month}/${completion.day}/${completion.year}`;
+  const completion = splitDate(courseCompletedAt);
+  const issued = splitDate(certificateIssuedAt);
+  const dateIssuedStr = `${issued.month}/${issued.day}/${issued.year}`;
 
   // --- Text fields ---
   form.getTextField("Last Name").setText(lastName);
@@ -143,22 +147,15 @@ export async function generateCertificatePdf({
   // --- Sex radio ---
   form.getRadioGroup("Male or Female").select(sex);
 
-  // --- Signatures: real uploaded image if available, otherwise a typed
-  // fallback so a certificate can still generate before signatures are set.
-  const helv = await doc.embedFont(StandardFonts.HelveticaOblique);
-
-  if (schoolSettings.instructorSignatureImage) {
+  // --- Signatures: both were confirmed present by the check at the top of
+  // this function — no typed-name fallback in production.
+  {
     const { image } = await embedSignatureImage(doc, schoolSettings.instructorSignatureImage);
     drawSignatureOnBothPages(doc, image, SIGNATURE_RECTS.instructor);
-  } else if (schoolSettings.instructorName && helv) {
-    drawTypedSignatureOnBothPages(doc, helv, schoolSettings.instructorName, SIGNATURE_RECTS.instructor);
   }
-
-  if (schoolSettings.chiefOfficialSignatureImage) {
+  {
     const { image } = await embedSignatureImage(doc, schoolSettings.chiefOfficialSignatureImage);
     drawSignatureOnBothPages(doc, image, SIGNATURE_RECTS.chiefOfficial);
-  } else if (schoolSettings.chiefOfficialName && helv) {
-    drawTypedSignatureOnBothPages(doc, helv, schoolSettings.chiefOfficialName, SIGNATURE_RECTS.chiefOfficial);
   }
 
   // Bake all field values into the page content — the issued PDF should be

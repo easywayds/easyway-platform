@@ -23,6 +23,7 @@ export default function AssessmentRunner({
   previousAttempts: number;
 }) {
   const [questions, setQuestions] = useState<Question[] | null>(null);
+  const [attemptId, setAttemptId] = useState<string | null>(null);
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [loadError, setLoadError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -37,7 +38,10 @@ export default function AssessmentRunner({
         }
         return res.json();
       })
-      .then((data) => setQuestions(data.questions))
+      .then((data) => {
+        setQuestions(data.questions);
+        setAttemptId(data.attemptId);
+      })
       .catch((err) => setLoadError(err.message));
   }, []);
 
@@ -46,13 +50,14 @@ export default function AssessmentRunner({
   }
 
   async function handleSubmit() {
-    if (!questions) return;
+    if (!questions || !attemptId) return;
     setSubmitting(true);
     try {
       const res = await fetch("/api/assessment/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          attemptId,
           answers: questions.map((q) => ({
             questionId: q.id,
             selectedIndex: answers[q.id] ?? -1,
@@ -74,9 +79,13 @@ export default function AssessmentRunner({
     setResult(null);
     setAnswers({});
     setQuestions(null);
+    setAttemptId(null);
     fetch("/api/assessment/questions")
       .then((res) => res.json())
-      .then((data) => setQuestions(data.questions));
+      .then((data) => {
+        setQuestions(data.questions);
+        setAttemptId(data.attemptId);
+      });
   }
 
   if (loadError && !questions) {

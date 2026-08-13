@@ -131,10 +131,17 @@ model TopicProgress {
 
   // Compliance-critical field: accumulated real foreground time, updated via
   // periodic client heartbeat (~every 15s while tab is visible/focused).
-  secondsActive Int         @default(0)
-  startedAt     DateTime?
-  completedAt   DateTime?
-  status        TopicStatus @default(not_started)
+  // The server computes credit itself from (now - lastHeartbeatAt), capped —
+  // the client's own timing is never trusted for how many seconds to award.
+  secondsActive   Int         @default(0)
+  lastHeartbeatAt DateTime?
+  startedAt       DateTime?
+  completedAt     DateTime?
+  status          TopicStatus @default(not_started)
+  // Set once the student reaches the topic's final "complete" screen, which
+  // is only reachable after answering every quiz question on the way there.
+  // Proves instructional-sequence progression, not just elapsed time.
+  quizCompletedAt DateTime?
 
   @@unique([enrollmentId, topicId])
   @@map("topic_progress")
@@ -145,13 +152,20 @@ model AssessmentAttempt {
   enrollmentId  String
   enrollment    Enrollment @relation(fields: [enrollmentId], references: [id])
   attemptNumber Int
-  scorePercent  Float
-  passed        Boolean
+  // Null until submitted — an attempt is created server-side the moment a
+  // student starts the exam, before any answer exists.
+  scorePercent  Float?
+  passed        Boolean?
   startedAt     DateTime   @default(now())
   submittedAt   DateTime?
 
-  // What was asked/answered, stored for audit purposes.
-  answers Json
+  // The exact set of ExamQuestion ids the server assigned to this attempt
+  // at start time — the only questions /submit will accept answers for.
+  // string[], length === REQUIRED_QUESTION_COUNT.
+  assignedQuestionIds Json?
+
+  // What was asked/answered, stored for audit purposes. Null until submitted.
+  answers Json?
 
   @@map("assessment_attempts")
 }

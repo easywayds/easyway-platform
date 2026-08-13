@@ -29,7 +29,6 @@ type Screen =
   | { kind: "complete" };
 
 const HEARTBEAT_INTERVAL_MS = 15000;
-const HEARTBEAT_SECONDS = 15;
 
 export default function TopicViewer({
   topic,
@@ -74,10 +73,7 @@ export default function TopicViewer({
         const res = await fetch("/api/progress/heartbeat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            topicNumber: topic.number,
-            deltaSeconds: HEARTBEAT_SECONDS,
-          }),
+          body: JSON.stringify({ topicNumber: topic.number }),
         });
         if (res.ok) {
           const data = await res.json();
@@ -99,6 +95,22 @@ export default function TopicViewer({
   const minutesLogged = Math.floor(secondsActive / 60);
 
   const quizCorrectCount = quiz.filter((q) => quizAnswers[q.id] === q.correctIndex).length;
+
+  // Reaching the "complete" screen is only possible after answering every
+  // quiz question along the way (Continue is disabled on an unanswered quiz
+  // screen) — recording it server-side turns that client-side gate into a
+  // durable proof of instructional-sequence progression.
+  useEffect(() => {
+    if (quiz.length === 0 || screen.kind !== "complete") return;
+    fetch("/api/progress/quiz-complete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ topicNumber: topic.number }),
+    }).catch(() => {
+      // Best-effort — a missed call here doesn't block progress; it just
+      // means this particular visit isn't recorded as having reached the end.
+    });
+  }, [screen.kind, quiz.length, topic.number]);
 
   function selectQuizAnswer(questionId: string, index: number) {
     setQuizAnswers((prev) => ({ ...prev, [questionId]: index }));

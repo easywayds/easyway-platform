@@ -8,6 +8,7 @@ import { tryIssueCertificate } from "@/lib/certificate-pool";
 const PASS_THRESHOLD_PERCENT = 70;
 
 const SubmitSchema = z.object({
+  attemptId: z.string(),
   answers: z
     .array(
       z.object({
@@ -41,11 +42,45 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // The browser never gets to decide what a valid attempt looks like — every
+  // check below is against server-held state, not anything the client sent
+  // about correctness, question count, or which questions were assigned.
+  const attempt = await prisma.assessmentAttempt.findUnique({
+    where: { id: parsed.data.attemptId },
+  });
+
+  if (!attempt || attempt.enrollmentId !== enrollment.id) {
+    return NextResponse.json({ error: "Attempt not found." }, { status: 404 });
+  }
+  if (attempt.submittedAt) {
+    return NextResponse.json({ error: "This attempt has already been submitted." }, { status: 409 });
+  }
+
+  const assignedIds = (attempt.assignedQuestionIds as string[] | null) ?? [];
+  const assignedSet = new Set(assignedIds);
+
+  const answerIds = parsed.data.answers.map((a) => a.questionId);
+  const uniqueAnswerIds = new Set(answerIds);
+
+  const hasDuplicates = uniqueAnswerIds.size !== answerIds.length;
+  const wrongCount = parsed.data.answers.length !== assignedIds.length;
+  const answersMatchAssigned =
+    !hasDuplicates &&
+    !wrongCount &&
+    answerIds.every((id) => assignedSet.has(id)) &&
+    assignedIds.every((id) => uniqueAnswerIds.has(id));
+
+  if (!answersMatchAssigned) {
+    return NextResponse.json(
+      { error: "Submission does not match the questions assigned to this attempt." },
+      { status: 400 }
+    );
+  }
+
   // Re-fetch the real questions from the database — grading is done
   // entirely against server-side data, ignoring anything about
   // correctness the client might have sent.
-  const questionIds = parsed.data.answers.map((a) => a.questionId);
-  const questions = await prisma.examQuestion.findMany({ where: { id: { in: questionIds } } });
+  const questions = await prisma.examQuestion.findMany({ where: { id: { in: assignedIds } } });
   const questionMap = new Map(questions.map((q) => [q.id, q]));
 
   let correctCount = 0;
@@ -62,18 +97,13 @@ export async function POST(req: NextRequest) {
     };
   });
 
-  const total = parsed.data.answers.length;
+  const total = assignedIds.length;
   const scorePercent = total > 0 ? Math.round((correctCount / total) * 10000) / 100 : 0;
   const passed = scorePercent >= PASS_THRESHOLD_PERCENT;
 
-  const previousAttempts = await prisma.assessmentAttempt.count({
-    where: { enrollmentId: enrollment.id },
-  });
-
-  const attempt = await prisma.assessmentAttempt.create({
+  await prisma.assessmentAttempt.update({
+    where: { id: attempt.id },
     data: {
-      enrollmentId: enrollment.id,
-      attemptNumber: previousAttempts + 1,
       scorePercent,
       passed,
       submittedAt: new Date(),

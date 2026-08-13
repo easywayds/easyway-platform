@@ -29,6 +29,10 @@ const AddNumbersSchema = z.object({
   numbers: z.string().min(1),
 });
 
+// TDLR's data specification: an Adult Driver Education certificate number
+// begins with "ADEE" followed by exactly 8 digits — e.g. ADEE12345678.
+const CERTIFICATE_NUMBER_FORMAT = /^ADEE\d{8}$/;
+
 export async function POST(req: NextRequest) {
   if (!(await checkAdmin(req))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -40,17 +44,29 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 
-  const numbers = Array.from(
+  const allTokens = Array.from(
     new Set(
       parsed.data.numbers
         .split(/[\n,\s]+/)
-        .map((n) => n.trim())
+        .map((n) => n.trim().toUpperCase())
         .filter(Boolean)
     )
   );
 
-  if (numbers.length === 0) {
+  if (allTokens.length === 0) {
     return NextResponse.json({ error: "No certificate numbers found." }, { status: 400 });
+  }
+
+  const numbers = allTokens.filter((n) => CERTIFICATE_NUMBER_FORMAT.test(n));
+  const invalidNumbers = allTokens.filter((n) => !CERTIFICATE_NUMBER_FORMAT.test(n));
+
+  if (numbers.length === 0) {
+    return NextResponse.json(
+      {
+        error: `None of the entered numbers match the required ADEE + 8-digit format (e.g. ADEE12345678). Rejected: ${invalidNumbers.join(", ")}`,
+      },
+      { status: 400 }
+    );
   }
 
   const result = await prisma.certificateNumber.createMany({
@@ -63,6 +79,7 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({
     added: result.count,
     skipped: numbers.length - result.count,
+    rejectedInvalidFormat: invalidNumbers,
     assignedToPendingStudents: assignedCount,
   });
 }

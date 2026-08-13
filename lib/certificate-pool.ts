@@ -1,9 +1,19 @@
 import { prisma } from "@/lib/prisma";
 
-// Claims the oldest available number and marks it assigned, guarding
-// against two requests claiming the same number at once. Returns null if
-// the pool is empty.
-async function claimNextNumber(): Promise<string | null> {
+// Issues a real certificate for an enrollment that has already passed,
+// pulling the next number from the pool. If the pool is empty, the
+// enrollment is left waiting (assessmentPassedAt stays set, certificateId
+// stays null) so it can be picked up the next time numbers are added.
+//
+// Claiming the number, creating the Certificate row, and attaching it to
+// the Enrollment all happen inside one transaction — if any step fails
+// (including a concurrent claim of the same number), the whole thing rolls
+// back instead of leaving a number marked "assigned" with no certificate
+// actually attached to anyone.
+export async function tryIssueCertificate(enrollmentId: string): Promise<string | null> {
+  const enrollment = await prisma.enrollment.findUnique({ where: { id: enrollmentId } });
+  if (!enrollment || enrollment.certificateId) return null;
+
   return prisma.$transaction(async (tx) => {
     const row = await tx.certificateNumber.findFirst({
       where: { status: "available" },
@@ -19,35 +29,21 @@ async function claimNextNumber(): Promise<string | null> {
     // as no number available rather than double-issuing.
     if (claimed.count === 0) return null;
 
+    const certificate = await tx.certificate.create({
+      data: { certificateNumber: row.number },
+    });
+
+    await tx.enrollment.update({
+      where: { id: enrollmentId },
+      data: {
+        certificateId: certificate.id,
+        status: "completed",
+        completedAt: new Date(),
+      },
+    });
+
     return row.number;
   });
-}
-
-// Issues a real certificate for an enrollment that has already passed,
-// pulling the next number from the pool. If the pool is empty, the
-// enrollment is left waiting (assessmentPassedAt stays set, certificateId
-// stays null) so it can be picked up the next time numbers are added.
-export async function tryIssueCertificate(enrollmentId: string): Promise<string | null> {
-  const enrollment = await prisma.enrollment.findUnique({ where: { id: enrollmentId } });
-  if (!enrollment || enrollment.certificateId) return enrollment?.certificateId ? null : null;
-
-  const number = await claimNextNumber();
-  if (!number) return null;
-
-  const certificate = await prisma.certificate.create({
-    data: { certificateNumber: number },
-  });
-
-  await prisma.enrollment.update({
-    where: { id: enrollmentId },
-    data: {
-      certificateId: certificate.id,
-      status: "completed",
-      completedAt: new Date(),
-    },
-  });
-
-  return number;
 }
 
 // Called after an admin adds new numbers to the pool — finds anyone who

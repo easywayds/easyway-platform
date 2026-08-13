@@ -50,6 +50,9 @@ export default function CertificateNumbersAdminPage() {
 
     let msg = `Added ${data.added} new number${data.added === 1 ? "" : "s"}.`;
     if (data.skipped > 0) msg += ` Skipped ${data.skipped} already in the system.`;
+    if (data.rejectedInvalidFormat?.length > 0) {
+      msg += ` Rejected ${data.rejectedInvalidFormat.length} that didn't match the required ADEE + 8-digit format: ${data.rejectedInvalidFormat.join(", ")}.`;
+    }
     if (data.assignedToPendingStudents > 0) {
       msg += ` Issued ${data.assignedToPendingStudents} certificate${
         data.assignedToPendingStudents === 1 ? "" : "s"
@@ -68,7 +71,8 @@ export default function CertificateNumbersAdminPage() {
           Paste the certificate numbers purchased from TDLR below, one per line.
           The system hands these out to students automatically, in order, only
           when they pass the final assessment — it never makes up a number on
-          its own.
+          its own. Each number must match TDLR's format: <strong>ADEE</strong>{" "}
+          followed by exactly 8 digits (e.g. ADEE12345678).
         </p>
 
         <form onSubmit={handleSubmit} style={{ marginTop: 24 }}>

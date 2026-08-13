@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
 import { getSchoolSettings } from "@/lib/enrollment";
-import { generateCertificatePdf } from "@/lib/generate-certificate-pdf";
+import { generateCertificatePdf, CertificateNotReadyError } from "@/lib/generate-certificate-pdf";
 
 export async function GET(req: NextRequest) {
   const token = req.cookies.get(SESSION_COOKIE)?.value;
@@ -34,16 +34,29 @@ export async function GET(req: NextRequest) {
 
   const schoolSettings = await getSchoolSettings();
 
-  const pdfBytes = await generateCertificatePdf({
-    lastName: student.lastName,
-    firstName: student.firstName,
-    middleInitial: student.middleInitial,
-    dateOfBirth: student.dateOfBirth,
-    sex: student.sex as "Male" | "Female",
-    controlNumber: certificate.certificateNumber,
-    completionDate: certificate.issuedAt,
-    schoolSettings,
-  });
+  let pdfBytes: Uint8Array;
+  try {
+    pdfBytes = await generateCertificatePdf({
+      lastName: student.lastName,
+      firstName: student.firstName,
+      middleInitial: student.middleInitial,
+      dateOfBirth: student.dateOfBirth,
+      sex: student.sex as "Male" | "Female",
+      controlNumber: certificate.certificateNumber,
+      // Course completion (all topics + passing exam) and certificate
+      // issuance (a real TDLR number actually being assigned) can happen on
+      // different days — each goes on its own field on the PDF, never
+      // conflated into a single "completion" date.
+      courseCompletedAt: enrollment.assessmentPassedAt ?? certificate.issuedAt,
+      certificateIssuedAt: certificate.issuedAt,
+      schoolSettings,
+    });
+  } catch (err) {
+    if (err instanceof CertificateNotReadyError) {
+      return NextResponse.json({ error: err.message }, { status: 503 });
+    }
+    throw err;
+  }
 
   return new NextResponse(Buffer.from(pdfBytes), {
     headers: {

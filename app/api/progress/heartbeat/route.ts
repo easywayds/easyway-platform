@@ -4,11 +4,13 @@ import { prisma } from "@/lib/prisma";
 import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
 import { getOrCreateActiveEnrollment, getTopicsWithProgress } from "@/lib/enrollment";
 
+// Matches the client's ~15s heartbeat interval, plus slack for network
+// latency and timer drift. This is a ceiling on credit per heartbeat, not
+// something the client can request more of — see below.
+const MAX_CREDIT_SECONDS = 20;
+
 const HeartbeatSchema = z.object({
   topicNumber: z.number().int().min(1).max(9),
-  // Capped server-side regardless of what the client sends, so a paused
-  // tab, a clock change, or a tampered request can't inflate seat time.
-  deltaSeconds: z.number().int().min(1).max(20),
 });
 
 export async function POST(req: NextRequest) {
@@ -23,7 +25,7 @@ export async function POST(req: NextRequest) {
   if (!parsed.success) {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
-  const { topicNumber, deltaSeconds } = parsed.data;
+  const { topicNumber } = parsed.data;
 
   const enrollment = await getOrCreateActiveEnrollment(session.sub);
 
@@ -45,7 +47,21 @@ export async function POST(req: NextRequest) {
     where: { enrollmentId_topicId: { enrollmentId: enrollment.id, topicId: topic.id } },
   });
 
-  const newSecondsActive = (existing?.secondsActive ?? 0) + deltaSeconds;
+  const now = new Date();
+
+  // The client only ever says "I'm active right now" — it never gets to say
+  // how many seconds that's worth. Credit is the server's own clock diffed
+  // against the last heartbeat it accepted, capped at MAX_CREDIT_SECONDS so
+  // a gap (tab closed, laptop asleep, first heartbeat ever) can't dump a
+  // large block of time in one request. A student calling this endpoint
+  // faster than every ~15s gains nothing extra — credit is bounded by how
+  // much real wall-clock time has actually passed since the last accepted
+  // heartbeat, not by however many requests were sent.
+  const previousBeat = existing?.lastHeartbeatAt ?? existing?.startedAt ?? null;
+  const rawElapsedSeconds = previousBeat ? (now.getTime() - previousBeat.getTime()) / 1000 : 0;
+  const creditSeconds = Math.max(0, Math.min(MAX_CREDIT_SECONDS, Math.round(rawElapsedSeconds)));
+
+  const newSecondsActive = (existing?.secondsActive ?? 0) + creditSeconds;
   const thresholdSeconds = topic.minMinutes * 60;
   const nowComplete = newSecondsActive >= thresholdSeconds;
 
@@ -54,15 +70,17 @@ export async function POST(req: NextRequest) {
     create: {
       enrollmentId: enrollment.id,
       topicId: topic.id,
-      secondsActive: deltaSeconds,
-      status: nowComplete ? "complete" : "in_progress",
-      startedAt: new Date(),
-      completedAt: nowComplete ? new Date() : null,
+      secondsActive: 0,
+      lastHeartbeatAt: now,
+      status: "in_progress",
+      startedAt: now,
+      completedAt: null,
     },
     update: {
       secondsActive: newSecondsActive,
+      lastHeartbeatAt: now,
       status: nowComplete ? "complete" : "in_progress",
-      completedAt: nowComplete && !existing?.completedAt ? new Date() : existing?.completedAt,
+      completedAt: nowComplete && !existing?.completedAt ? now : existing?.completedAt,
     },
   });
 

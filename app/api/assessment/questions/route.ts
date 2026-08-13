@@ -3,11 +3,11 @@ import { prisma } from "@/lib/prisma";
 import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
 import { getOrCreateActiveEnrollment, getTopicsWithProgress } from "@/lib/enrollment";
 
-// How many questions make up one attempt. TDLR doesn't mandate an exact
-// count for this classroom assessment — this is a reasonable placeholder,
-// worth confirming against the real DPS-style exam format during
-// compliance review.
-const QUESTIONS_PER_ATTEMPT = 20;
+// Fixed by the current exam bank: exactly 30 questions, matching the
+// 30-question graded final exam this platform was built around. Not a
+// placeholder — /submit requires an exact match against whatever is
+// assigned here, so this and the submit-side check must never drift apart.
+const REQUIRED_QUESTION_COUNT = 30;
 
 function shuffle<T>(arr: T[]): T[] {
   const copy = [...arr];
@@ -36,20 +36,60 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  const pool = await prisma.examQuestion.findMany();
-  if (pool.length === 0) {
-    return NextResponse.json({ error: "No questions available yet." }, { status: 503 });
+  // Reuse an already-started, not-yet-submitted attempt so refreshing the
+  // page (or reopening the tab) doesn't hand the student a different 30
+  // questions mid-attempt. A new attempt is only created once the previous
+  // one has been submitted.
+  let attempt = await prisma.assessmentAttempt.findFirst({
+    where: { enrollmentId: enrollment.id, submittedAt: null },
+    orderBy: { startedAt: "desc" },
+  });
+
+  let assignedIds: string[];
+
+  if (attempt) {
+    assignedIds = (attempt.assignedQuestionIds as string[] | null) ?? [];
+  } else {
+    const pool = await prisma.examQuestion.findMany();
+    if (pool.length < REQUIRED_QUESTION_COUNT) {
+      return NextResponse.json(
+        {
+          error: `The exam bank currently has ${pool.length} questions — at least ${REQUIRED_QUESTION_COUNT} are required to start an attempt.`,
+        },
+        { status: 503 }
+      );
+    }
+
+    const selected = shuffle(pool).slice(0, REQUIRED_QUESTION_COUNT);
+    assignedIds = selected.map((q) => q.id);
+
+    const previousAttempts = await prisma.assessmentAttempt.count({
+      where: { enrollmentId: enrollment.id },
+    });
+
+    attempt = await prisma.assessmentAttempt.create({
+      data: {
+        enrollmentId: enrollment.id,
+        attemptNumber: previousAttempts + 1,
+        assignedQuestionIds: assignedIds,
+      },
+    });
   }
 
-  const selected = shuffle(pool).slice(0, Math.min(QUESTIONS_PER_ATTEMPT, pool.length));
+  const questions = await prisma.examQuestion.findMany({ where: { id: { in: assignedIds } } });
+  const byId = new Map(questions.map((q) => [q.id, q]));
 
   // Never send correctIndex to the client — grading happens server-side
   // in /api/assessment/submit using each question's real stored answer.
-  const questions = selected.map((q) => ({
-    id: q.id,
-    questionText: q.question,
-    choices: q.options,
-  }));
+  // Order matches the order assigned at attempt-start time.
+  const ordered = assignedIds
+    .map((id) => byId.get(id))
+    .filter((q): q is NonNullable<typeof q> => Boolean(q))
+    .map((q) => ({
+      id: q.id,
+      questionText: q.question,
+      choices: q.options,
+    }));
 
-  return NextResponse.json({ questions });
+  return NextResponse.json({ attemptId: attempt.id, questions: ordered });
 }
