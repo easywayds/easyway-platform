@@ -1,10 +1,14 @@
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { requireAdminPage } from "@/lib/admin-auth";
 import AdminShell from "../admin-shell";
 
 // Live student roster — never statically prerendered.
 export const dynamic = "force-dynamic";
 
 export default async function StudentsAdminPage() {
+  const session = await requireAdminPage(["master_admin", "student_admin"]);
+
   const students = await prisma.student.findMany({
     orderBy: { createdAt: "desc" },
     include: {
@@ -20,9 +24,11 @@ export default async function StudentsAdminPage() {
   });
 
   return (
-    <AdminShell>
-      <div style={{ maxWidth: 1000, margin: "40px auto", padding: "0 24px" }}>
-        <h1>Students</h1>
+    <AdminShell session={session}>
+      <div style={{ maxWidth: 1080, margin: "0 auto", padding: "0 28px 40px" }}>
+        <div className="admin-page-header" style={{ marginTop: 8 }}>
+          <h1>Students</h1>
+        </div>
         <p style={{ color: "#666" }}>{students.length} total.</p>
 
         <div style={{ overflowX: "auto", marginTop: 16 }}>
@@ -35,6 +41,7 @@ export default async function StudentsAdminPage() {
                 <th>Topics</th>
                 <th>Assessment</th>
                 <th>Certificate</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -76,6 +83,11 @@ export default async function StudentsAdminPage() {
                       ) : (
                         <span className="status-badge status-not_started">—</span>
                       )}
+                    </td>
+                    <td>
+                      <Link href={`/admin/students/${student.id}`} className="admin-btn" style={{ padding: "5px 12px" }}>
+                        Edit
+                      </Link>
                     </td>
                   </tr>
                 );

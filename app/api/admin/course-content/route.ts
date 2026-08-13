@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
-import { ADMIN_SESSION_COOKIE, verifyAdminSessionToken } from "@/lib/admin-auth";
+import { requireAdmin } from "@/lib/admin-auth";
 
 async function checkAdmin(req: NextRequest): Promise<boolean> {
-  const token = req.cookies.get(ADMIN_SESSION_COOKIE)?.value;
-  return token ? verifyAdminSessionToken(token) : false;
+  const session = await requireAdmin(req, ["curriculum_admin"]);
+  return Boolean(session);
 }
 
 export async function GET(req: NextRequest) {
@@ -32,10 +33,16 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({ topic, content });
 }
 
+const ContentTypeEnum = z.enum(["text", "video", "image", "bullets", "stat", "custom_visual", "check"]);
+
 const CreateSchema = z.object({
   topicNumber: z.number().int().min(1).max(9),
-  contentType: z.enum(["text", "video", "image"]),
-  body: z.string().min(1),
+  contentType: ContentTypeEnum,
+  tag: z.string().optional().or(z.literal("")),
+  route: z.boolean().optional(),
+  heading: z.string().optional().or(z.literal("")),
+  body: z.string().optional().or(z.literal("")),
+  meta: z.record(z.unknown()).optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -46,7 +53,7 @@ export async function POST(req: NextRequest) {
   const json = await req.json().catch(() => null);
   const parsed = CreateSchema.safeParse(json);
   if (!parsed.success) {
-    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+    return NextResponse.json({ error: parsed.error.flatten().fieldErrors }, { status: 400 });
   }
 
   const topic = await prisma.topic.findUnique({
@@ -65,7 +72,11 @@ export async function POST(req: NextRequest) {
     data: {
       topicId: topic.id,
       contentType: parsed.data.contentType,
-      body: parsed.data.body,
+      tag: parsed.data.tag || null,
+      route: parsed.data.route ?? false,
+      heading: parsed.data.heading || null,
+      body: parsed.data.body || null,
+      meta: (parsed.data.meta as Prisma.InputJsonValue) ?? undefined,
       sortOrder: (maxSort._max.sortOrder ?? -1) + 1,
     },
   });

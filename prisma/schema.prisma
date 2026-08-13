@@ -34,8 +34,10 @@ enum TopicStatus {
 }
 
 enum AdminRole {
-  admin
-  compliance_reviewer
+  master_admin
+  student_admin
+  payment_admin
+  curriculum_admin
 }
 
 model Student {
@@ -232,7 +234,12 @@ model AdminUser {
   id           String    @id @default(cuid())
   email        String    @unique
   passwordHash String
-  role         AdminRole @default(admin)
+  name         String
+  role         AdminRole @default(student_admin)
+  // Deactivating instead of deleting preserves who-did-what history without
+  // leaving a still-usable login around.
+  active       Boolean   @default(true)
+  lastLoginAt  DateTime?
   createdAt    DateTime  @default(now())
 
   @@map("admin_users")

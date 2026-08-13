@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { ADMIN_SESSION_COOKIE, verifyAdminSessionToken } from "@/lib/admin-auth";
+import { requireAdmin } from "@/lib/admin-auth";
 
+// master_admin only — TDLR number, school name, and signatures are stamped
+// onto every issued certificate, so this isn't delegated to a panel admin.
 async function checkAdmin(req: NextRequest): Promise<boolean> {
-  const token = req.cookies.get(ADMIN_SESSION_COOKIE)?.value;
-  return token ? verifyAdminSessionToken(token) : false;
+  const session = await requireAdmin(req);
+  return Boolean(session && session.role === "master_admin");
 }
 
 export async function GET(req: NextRequest) {

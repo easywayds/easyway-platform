@@ -31,29 +31,36 @@ async function main() {
     topicIdByNumber.set(t.number, topic.id);
   }
 
-  // 2. Scene-by-scene content, in order, per topic.
-  console.log(`Seeding ${seedData.topicContent.length} content rows...`);
-  // Clear existing content first so re-running the seed doesn't duplicate rows
-  // (safe because content is fully owned by this seed file, not edited in-app yet).
-  await prisma.topicContent.deleteMany({});
-  for (const row of seedData.topicContent) {
-    const topicId = topicIdByNumber.get(row.topicNumber);
-    if (!topicId) {
-      console.warn(`Skipping content row — no topic found for number ${row.topicNumber}`);
-      continue;
+  // 2. Scene-by-scene content, in order, per topic. Content is now managed
+  // live via /admin/course-content, so this only bootstraps an empty table
+  // (fresh DB) — once any rows exist, re-running the seed leaves them alone
+  // instead of wiping out edits made through the admin panel.
+  const existingContentCount = await prisma.topicContent.count();
+  if (existingContentCount === 0) {
+    console.log(`Seeding ${seedData.topicContent.length} content rows (first run)...`);
+    for (const row of seedData.topicContent) {
+      const topicId = topicIdByNumber.get(row.topicNumber);
+      if (!topicId) {
+        console.warn(`Skipping content row — no topic found for number ${row.topicNumber}`);
+        continue;
+      }
+      await prisma.topicContent.create({
+        data: {
+          topicId,
+          contentType: row.contentType as ContentType,
+          tag: row.tag ?? null,
+          route: row.route ?? false,
+          heading: row.heading ?? null,
+          body: row.body ?? null,
+          meta: row.meta ?? undefined,
+          sortOrder: row.sortOrder,
+        },
+      });
     }
-    await prisma.topicContent.create({
-      data: {
-        topicId,
-        contentType: row.contentType as ContentType,
-        tag: row.tag ?? null,
-        route: row.route ?? false,
-        heading: row.heading ?? null,
-        body: row.body ?? null,
-        meta: row.meta ?? undefined,
-        sortOrder: row.sortOrder,
-      },
-    });
+  } else {
+    console.log(
+      `Skipping topic content seed — ${existingContentCount} rows already exist and are managed via /admin/course-content.`
+    );
   }
 
   // 3. Per-topic ungraded quiz questions.

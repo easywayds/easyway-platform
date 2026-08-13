@@ -1,15 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { ADMIN_SESSION_COOKIE, verifyAdminSessionToken } from "@/lib/admin-auth";
+import { requireAdmin } from "@/lib/admin-auth";
 
 async function checkAdmin(req: NextRequest): Promise<boolean> {
-  const token = req.cookies.get(ADMIN_SESSION_COOKIE)?.value;
-  return token ? verifyAdminSessionToken(token) : false;
+  const session = await requireAdmin(req, ["curriculum_admin"]);
+  return Boolean(session);
 }
 
+const ContentTypeEnum = z.enum(["text", "video", "image", "bullets", "stat", "custom_visual", "check"]);
+
 const UpdateSchema = z.object({
-  body: z.string().min(1).optional(),
+  contentType: ContentTypeEnum.optional(),
+  tag: z.string().optional().or(z.literal("")),
+  route: z.boolean().optional(),
+  heading: z.string().optional().or(z.literal("")),
+  body: z.string().optional().or(z.literal("")),
+  meta: z.record(z.unknown()).optional(),
   sortOrder: z.number().int().optional(),
 });
 
@@ -21,12 +28,21 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   const json = await req.json().catch(() => null);
   const parsed = UpdateSchema.safeParse(json);
   if (!parsed.success) {
-    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+    return NextResponse.json({ error: parsed.error.flatten().fieldErrors }, { status: 400 });
   }
+
+  const data: Record<string, unknown> = {};
+  if (parsed.data.contentType !== undefined) data.contentType = parsed.data.contentType;
+  if (parsed.data.tag !== undefined) data.tag = parsed.data.tag || null;
+  if (parsed.data.route !== undefined) data.route = parsed.data.route;
+  if (parsed.data.heading !== undefined) data.heading = parsed.data.heading || null;
+  if (parsed.data.body !== undefined) data.body = parsed.data.body || null;
+  if (parsed.data.meta !== undefined) data.meta = parsed.data.meta;
+  if (parsed.data.sortOrder !== undefined) data.sortOrder = parsed.data.sortOrder;
 
   const updated = await prisma.topicContent.update({
     where: { id: params.id },
-    data: parsed.data,
+    data,
   });
 
   return NextResponse.json(updated);

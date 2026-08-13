@@ -2,11 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { sweepPendingCertificates } from "@/lib/certificate-pool";
-import { ADMIN_SESSION_COOKIE, verifyAdminSessionToken } from "@/lib/admin-auth";
+import { requireAdmin } from "@/lib/admin-auth";
 
 async function checkAdmin(req: NextRequest): Promise<boolean> {
-  const token = req.cookies.get(ADMIN_SESSION_COOKIE)?.value;
-  return token ? verifyAdminSessionToken(token) : false;
+  const session = await requireAdmin(req, ["payment_admin"]);
+  return Boolean(session);
 }
 
 export async function GET(req: NextRequest) {
