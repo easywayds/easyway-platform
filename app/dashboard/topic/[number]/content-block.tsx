@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { VISUALS } from "@/lib/visuals-map";
+import styles from "./stepper.module.css";
 
 export type ContentBlockData = {
   id: string;
@@ -20,17 +21,15 @@ function VideoEmbed({ url }: { url: string }) {
       ? url.split("/").pop()?.split("?")[0]
       : new URL(url).searchParams.get("v");
     return (
-      <div style={{ position: "relative", paddingBottom: "56.25%", height: 0, marginTop: 8 }}>
-        <iframe
-          src={`https://www.youtube.com/embed/${videoId}`}
-          style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: 0, borderRadius: 8 }}
-          allowFullScreen
-        />
-      </div>
+      <iframe
+        src={`https://www.youtube.com/embed/${videoId}`}
+        style={{ width: "100%", aspectRatio: "16/9", border: 0 }}
+        allowFullScreen
+      />
     );
   }
   return (
-    <video controls style={{ width: "100%", borderRadius: 8, marginTop: 8 }}>
+    <video controls preload="metadata">
       <source src={url} />
     </video>
   );
@@ -39,14 +38,16 @@ function VideoEmbed({ url }: { url: string }) {
 function CheckBlock({ question, answer }: { question: string; answer: string }) {
   const [revealed, setRevealed] = useState(false);
   return (
-    <div className="content-check">
-      <p style={{ margin: 0, fontWeight: 600 }}>{question}</p>
+    <div className={styles.checkCard}>
+      <p>{question}</p>
       {!revealed ? (
-        <button type="button" className="content-check-reveal" onClick={() => setRevealed(true)}>
-          Reveal answer
-        </button>
+        <div className={styles.btnRow}>
+          <button type="button" className={styles.btn} onClick={() => setRevealed(true)}>
+            Reveal answer
+          </button>
+        </div>
       ) : (
-        <p className="content-check-answer">{answer}</p>
+        <div className={styles.feedback}>{answer}</div>
       )}
     </div>
   );
@@ -56,53 +57,68 @@ export default function ContentBlockView({ block }: { block: ContentBlockData })
   const meta = block.meta ?? {};
 
   return (
-    <div className="content-block">
+    <div>
       {block.tag && (
-        <span className={`content-tag${block.route ? " content-tag-route" : ""}`}>{block.tag}</span>
-      )}
-      {block.heading && block.contentType !== "check" && (
-        <h3 className="content-heading">{block.heading}</h3>
-      )}
-
-      {block.contentType === "text" && (
-        <div className="content-body">
-          {(block.body ?? "").split("\n\n").map((para, i) => (
-            <p key={i}>{para}</p>
-          ))}
+        <div className={`${styles.tag} ${block.route ? styles.tagRoute : ""}`}>
+          <span className={styles.dot} />
+          {block.tag}
         </div>
       )}
 
-      {block.contentType === "bullets" && (
-        <ul className="content-bullets">
-          {((meta.bullets as string[]) ?? []).map((b, i) => (
-            <li key={i}>{b}</li>
+      {block.contentType === "text" && (
+        <>
+          {block.heading && <h2 className={styles.heading}>{block.heading}</h2>}
+          {(block.body ?? "").split("\n\n").map((para, i) => (
+            <p className={styles.lead} key={i}>
+              {para}
+            </p>
           ))}
-        </ul>
+        </>
+      )}
+
+      {block.contentType === "bullets" && (
+        <>
+          {block.heading && <h2 className={styles.heading}>{block.heading}</h2>}
+          <ul className={styles.bites}>
+            {((meta.bullets as string[]) ?? []).map((b, i) => (
+              <li key={i}>{b}</li>
+            ))}
+          </ul>
+        </>
       )}
 
       {block.contentType === "stat" && (
         <>
-          <div className="content-stat-number">{(meta.number as string) ?? ""}</div>
-          {block.body && <p style={{ margin: 0 }}>{block.body}</p>}
+          {block.heading && <h2 className={styles.heading}>{block.heading}</h2>}
+          <div className={styles.statHero}>
+            <div className={styles.statNum}>{(meta.number as string) ?? ""}</div>
+            {block.body && <div className={styles.statCap}>{block.body}</div>}
+          </div>
         </>
       )}
 
       {block.contentType === "custom_visual" && (
         <>
+          {block.heading && <h2 className={styles.heading}>{block.heading}</h2>}
           {meta.visualKey && VISUALS[meta.visualKey as string] && (
             <div
-              className="content-visual"
+              className={`${styles.mediaFrame} ${styles.mediaFrameLight}`}
               dangerouslySetInnerHTML={{ __html: VISUALS[meta.visualKey as string] }}
             />
           )}
-          {meta.caption && <p className="content-caption">{meta.caption as string}</p>}
+          {meta.caption && <p className={styles.caption}>{meta.caption as string}</p>}
         </>
       )}
 
       {block.contentType === "video" && (
         <>
-          {meta.videoKey && <VideoEmbed url={`/videos/${meta.videoKey}`} />}
-          {meta.caption && <p className="content-caption">{meta.caption as string}</p>}
+          {block.heading && <h2 className={styles.heading}>{block.heading}</h2>}
+          {meta.videoKey && (
+            <div className={styles.mediaFrame}>
+              <VideoEmbed url={`/videos/${meta.videoKey}`} />
+            </div>
+          )}
+          {meta.caption && <p className={styles.caption}>{meta.caption as string}</p>}
         </>
       )}
 
@@ -111,7 +127,9 @@ export default function ContentBlockView({ block }: { block: ContentBlockData })
       )}
 
       {block.contentType === "image" && block.body && (
-        <img src={block.body} alt="" style={{ maxWidth: "100%", borderRadius: 8 }} />
+        <div className={styles.mediaFrame}>
+          <img src={block.body} alt="" />
+        </div>
       )}
     </div>
   );

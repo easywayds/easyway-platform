@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import ContentBlockView, { type ContentBlockData } from "./content-block";
-import TopicQuiz from "./topic-quiz";
+import styles from "./stepper.module.css";
 
 type Topic = {
   number: number;
@@ -21,6 +21,12 @@ type QuizQuestion = {
   correctIndex: number;
   visualKey: string | null;
 };
+
+type Screen =
+  | { kind: "content"; block: ContentBlockData }
+  | { kind: "quiz"; question: QuizQuestion; index: number; total: number }
+  | { kind: "quizResult" }
+  | { kind: "complete" };
 
 const HEARTBEAT_INTERVAL_MS = 15000;
 const HEARTBEAT_SECONDS = 15;
@@ -41,9 +47,20 @@ export default function TopicViewer({
   const [status, setStatus] = useState(topic.status);
   const sendingRef = useRef(false);
 
+  const [current, setCurrent] = useState(0);
+  const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({});
+
+  const screens: Screen[] = [
+    ...content.map((block): Screen => ({ kind: "content", block })),
+    ...quiz.map((question, index): Screen => ({ kind: "quiz", question, index, total: quiz.length })),
+    ...(quiz.length > 0 ? [{ kind: "quizResult" } as Screen] : []),
+    { kind: "complete" },
+  ];
+
+  const isComplete = status === "complete";
+
   useEffect(() => {
-    // Already done — no need to keep pinging the server.
-    if (status === "complete") return;
+    if (isComplete) return;
 
     const interval = setInterval(async () => {
       // Only count time toward the compliance record while the student
@@ -69,81 +86,167 @@ export default function TopicViewer({
         }
       } catch {
         // A missed heartbeat just means slightly less credited time this
-        // tick — the next successful one catches back up. No need to
-        // surface a network error to the student mid-lesson.
+        // tick — the next successful one catches back up.
       } finally {
         sendingRef.current = false;
       }
     }, HEARTBEAT_INTERVAL_MS);
 
     return () => clearInterval(interval);
-  }, [status, topic.number]);
+  }, [isComplete, topic.number]);
 
-  const pct = Math.min(100, Math.round((secondsActive / (topic.minMinutes * 60)) * 100));
+  const screen = screens[current];
   const minutesLogged = Math.floor(secondsActive / 60);
-  const isComplete = status === "complete";
 
-  function handleNext() {
-    if (nextTopicNumber) {
-      router.push(`/dashboard/topic/${nextTopicNumber}`);
-    } else if (topic.number === 9) {
-      // Topic 9 is the last instructional topic — completing it unlocks
-      // the actual assessment rather than another topic page.
-      router.push("/dashboard/assessment");
-    } else {
-      router.push("/dashboard");
-    }
+  const quizCorrectCount = quiz.filter((q) => quizAnswers[q.id] === q.correctIndex).length;
+
+  function selectQuizAnswer(questionId: string, index: number) {
+    setQuizAnswers((prev) => ({ ...prev, [questionId]: index }));
   }
 
+  function handleBack() {
+    setCurrent((c) => Math.max(0, c - 1));
+    window.scrollTo(0, 0);
+  }
+
+  function handleContinue() {
+    if (screen.kind === "complete") {
+      if (nextTopicNumber) {
+        router.push(`/dashboard/topic/${nextTopicNumber}`);
+      } else if (topic.number === 9) {
+        router.push("/dashboard/assessment");
+      } else {
+        router.push("/dashboard");
+      }
+      return;
+    }
+    setCurrent((c) => Math.min(screens.length - 1, c + 1));
+    window.scrollTo(0, 0);
+  }
+
+  const onQuizScreen = screen.kind === "quiz";
+  const quizAnswered = onQuizScreen && quizAnswers[screen.question.id] !== undefined;
+  const nextDisabled =
+    (onQuizScreen && !quizAnswered) || (screen.kind === "complete" && !isComplete);
+
+  const pct = Math.min(100, Math.round((current / (screens.length - 1)) * 100));
+
   return (
-    <div style={{ maxWidth: 680, margin: "40px auto", padding: "0 24px 80px" }}>
-      <Link href="/dashboard" style={{ fontSize: "0.85rem", color: "#666" }}>
-        ← Back to dashboard
-      </Link>
-
-      <h1 style={{ marginTop: 12 }}>
-        Topic {topic.number}: {topic.title}
-      </h1>
-
-      <div className="progress-track" style={{ marginTop: 16 }}>
-        <div className="progress-fill" style={{ width: `${pct}%` }} />
-      </div>
-      <p style={{ color: "#666", fontSize: "0.9rem", marginTop: 8 }}>
-        {minutesLogged} of {topic.minMinutes} minutes logged
-        {isComplete && " — complete"}
-      </p>
-
-      {content.length > 0 ? (
-        <div style={{ marginTop: 24, display: "flex", flexDirection: "column", gap: 16 }}>
-          {content.map((block) => (
-            <ContentBlockView key={block.id} block={block} />
-          ))}
+    <div className={styles.root}>
+      <header className={styles.bar}>
+        <div className={styles.barInner}>
+          <div className={styles.brandRow}>
+            <div className={styles.brandMark}>E</div>
+            <div className={styles.brandName}>
+              Easy Way Driving School — Topic {topic.number}
+            </div>
+            <Link href="/dashboard" className={styles.backLink} style={{ marginLeft: "auto" }}>
+              ← Dashboard
+            </Link>
+          </div>
+          <div className={styles.progressTrack}>
+            <div className={styles.progressFill} style={{ width: `${pct}%` }} />
+          </div>
+          <div className={styles.progressCaption}>
+            {current < screens.length - 1
+              ? `Screen ${current + 1} of ${screens.length - 1}`
+              : "Complete"}
+          </div>
         </div>
-      ) : (
-        <div className="topic-content-placeholder">
-          <p>
-            Lesson content for this topic hasn&rsquo;t been added yet. Keep this tab
-            open and focused to log time toward the {topic.minMinutes}-minute
-            requirement.
-          </p>
+      </header>
+
+      <main className={styles.main}>
+        <div className={styles.stage}>
+          {screen.kind === "content" && <ContentBlockView block={screen.block} />}
+
+          {screen.kind === "quiz" && (
+            <>
+              <div className={styles.tag}>
+                <span className={styles.dot} />
+                Question {screen.index + 1} of {screen.total}
+              </div>
+              <div className={styles.qCard}>
+                <p className={styles.qText}>{screen.question.question}</p>
+                {screen.question.options.map((opt, i) => {
+                  const picked = quizAnswers[screen.question.id];
+                  let cls = styles.opt;
+                  if (picked !== undefined) {
+                    if (i === screen.question.correctIndex) cls = `${styles.opt} ${styles.optCorrect}`;
+                    else if (i === picked) cls = `${styles.opt} ${styles.optWrong}`;
+                  }
+                  return (
+                    <button
+                      key={i}
+                      type="button"
+                      className={cls}
+                      disabled={picked !== undefined}
+                      onClick={() => selectQuizAnswer(screen.question.id, i)}
+                    >
+                      {opt}
+                    </button>
+                  );
+                })}
+              </div>
+            </>
+          )}
+
+          {screen.kind === "quizResult" && (
+            <div className={styles.resultCard}>
+              <div className={styles.resultBig}>
+                {quizCorrectCount} of {quiz.length} correct
+              </div>
+              <p>
+                Ungraded — just for you. The real assessment is in Topic 9.
+              </p>
+            </div>
+          )}
+
+          {screen.kind === "complete" && (
+            <div className={styles.completeCard}>
+              <div className={styles.completeBig}>
+                {isComplete ? "Topic complete" : "Almost there"}
+              </div>
+              <p className={styles.completeMinutes}>
+                {minutesLogged} of {topic.minMinutes} minutes logged
+                {!isComplete &&
+                  " — stay on this page, focused, until the full time is logged."}
+              </p>
+            </div>
+          )}
         </div>
-      )}
+      </main>
 
-      <TopicQuiz questions={quiz} />
-
-      <button
-        className="primary"
-        style={{ marginTop: 24, width: "auto", padding: "10px 20px" }}
-        disabled={!isComplete}
-        onClick={handleNext}
-        title={
-          isComplete
-            ? undefined
-            : `Stay on this page until ${topic.minMinutes} minutes are logged`
-        }
-      >
-        {nextTopicNumber ? "Next topic" : topic.number === 9 ? "Go to assessment" : "Back to dashboard"}
-      </button>
+      <footer className={styles.nav}>
+        <div className={styles.navInner}>
+          <button
+            type="button"
+            className={`${styles.navBtn} ${styles.navBtnBack}`}
+            onClick={handleBack}
+            disabled={current === 0}
+          >
+            Back
+          </button>
+          <button
+            type="button"
+            className={`${styles.navBtn} ${styles.navBtnNext}`}
+            onClick={handleContinue}
+            disabled={nextDisabled}
+            title={
+              screen.kind === "complete" && !isComplete
+                ? `Stay on this page until ${topic.minMinutes} minutes are logged`
+                : undefined
+            }
+          >
+            {screen.kind === "complete"
+              ? nextTopicNumber
+                ? "Next topic"
+                : topic.number === 9
+                  ? "Go to assessment"
+                  : "Back to dashboard"
+              : "Continue"}
+          </button>
+        </div>
+      </footer>
     </div>
   );
 }
