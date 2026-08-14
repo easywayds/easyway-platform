@@ -1,0 +1,261 @@
+/*
+  Easy Way Interactive Lesson Standard v1.0 — navy/yellow, Poppins.
+  Scoped to components/course/* only (the new Topic 3 interactive blocks).
+  The rest of the stepper (chrome, text/bullets/stat/etc.) keeps the
+  existing approved ink/paper/amber Fraunces+Inter system unchanged.
+*/
+
+.root {
+  --navy: #0b2345;
+  --navy-soft: #48597d;
+  --yellow: #ffd400;
+  --yellow-deep: #a37f00;
+  --paper: #ffffff;
+  --bg: #f6f7fb;
+  --line: #e2e6ef;
+  --correct: #1b7a3d;
+  --correct-bg: #e8f5ec;
+  --incorrect: #a3271e;
+  --incorrect-bg: #fbeceb;
+
+  font-family: var(--font-poppins), sans-serif;
+  color: var(--navy);
+}
+
+.card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 24px -18px rgba(11, 35, 69, 0.35);
+}
+
+.eyebrow {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--yellow-deep);
+  margin: 0 0 10px;
+}
+
+.prompt {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.45;
+  margin: 0 0 20px;
+  color: var(--navy);
+}
+
+.sceneFrame {
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  margin: 0 0 20px;
+}
+
+.sceneFrame svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.choiceBtn {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 14px 16px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--paper);
+  font-family: var(--font-poppins), sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--navy);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.choiceBtn:hover:not(:disabled) {
+  border-color: var(--yellow);
+}
+
+.choiceBtn:focus-visible {
+  outline: 2.5px solid var(--navy);
+  outline-offset: 2px;
+}
+
+.choiceBtn:disabled {
+  cursor: default;
+}
+
+.choiceCorrect {
+  border-color: var(--correct);
+  background: var(--correct-bg);
+  color: var(--correct);
+  font-weight: 600;
+}
+
+.choiceIncorrect {
+  border-color: var(--incorrect);
+  background: var(--incorrect-bg);
+  color: var(--incorrect);
+}
+
+.choiceMuted {
+  opacity: 0.55;
+}
+
+.feedback {
+  margin-top: 16px;
+  padding: 16px 18px;
+  border-radius: 12px;
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+.feedbackCorrect {
+  background: var(--correct-bg);
+  color: var(--correct);
+}
+
+.feedbackIncorrect {
+  background: #fff7e0;
+  color: #6b4c00;
+}
+
+.feedbackLabel {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  font-size: 11.5px;
+  letter-spacing: 0.05em;
+}
+
+.tabRow {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.tabBtn {
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--line);
+  background: var(--paper);
+  font-family: var(--font-poppins), sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--navy-soft);
+  cursor: pointer;
+}
+
+.tabBtn:focus-visible {
+  outline: 2.5px solid var(--navy);
+  outline-offset: 2px;
+}
+
+.tabBtnActive {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
+
+.tabBtnVisited:not(.tabBtnActive) {
+  border-color: var(--correct);
+  color: var(--correct);
+}
+
+.ruleCard {
+  background: var(--navy);
+  color: #fff;
+  border-radius: 14px;
+  padding: 22px 24px;
+}
+
+.ruleCardTitle {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--yellow);
+  margin: 0 0 10px;
+}
+
+.ruleCardBody {
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.ruleCardBody + .ruleCardBody {
+  margin-top: 10px;
+}
+
+.roundIndicator {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.roundDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--line);
+}
+
+.roundDotDone {
+  background: var(--correct);
+}
+
+.roundDotActive {
+  background: var(--yellow);
+}
+
+.continueInternal {
+  margin-top: 18px;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 10px;
+  background: var(--yellow);
+  color: var(--navy);
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 700;
+  font-size: 14.5px;
+  cursor: pointer;
+}
+
+.continueInternal:hover {
+  filter: brightness(0.95);
+}
+
+.continueInternal:focus-visible {
+  outline: 2.5px solid var(--navy);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .choiceBtn,
+  .tabBtn {
+    transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .choiceBtn,
+  .tabBtn {
+    transition: none;
+  }
+}

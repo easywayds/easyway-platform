@@ -4,6 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import ContentBlockView, { type ContentBlockData } from "./content-block";
+import DecisionChallenge from "@/components/course/DecisionChallenge";
+import CompareScenes from "@/components/course/CompareScenes";
+import AllWayStopLab from "@/components/course/AllWayStopLab";
+import { TOPIC3_BLOCKS, type Topic3Block } from "@/lib/topic3-blocks";
+import courseStyles from "@/components/course/course.module.css";
 import styles from "./stepper.module.css";
 
 type Topic = {
@@ -24,6 +29,7 @@ type QuizQuestion = {
 
 type Screen =
   | { kind: "content"; block: ContentBlockData }
+  | { kind: "interactive"; block: Topic3Block }
   | { kind: "quiz"; question: QuizQuestion; index: number; total: number }
   | { kind: "quizResult" }
   | { kind: "complete" };
@@ -35,11 +41,13 @@ export default function TopicViewer({
   content,
   quiz,
   nextTopicNumber,
+  completedBlockIds: initialCompletedBlockIds = [],
 }: {
   topic: Topic;
   content: ContentBlockData[];
   quiz: QuizQuestion[];
   nextTopicNumber: number | null;
+  completedBlockIds?: string[];
 }) {
   const router = useRouter();
   const [secondsActive, setSecondsActive] = useState(topic.secondsActive);
@@ -48,9 +56,24 @@ export default function TopicViewer({
 
   const [current, setCurrent] = useState(0);
   const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({});
+  // Seeded from the server so a mid-topic refresh doesn't force the student
+  // to redo an interactive block that's already recorded as complete.
+  const [completedBlockIds, setCompletedBlockIds] = useState<Set<string>>(
+    () => new Set(initialCompletedBlockIds)
+  );
+
+  // Topic 3 pilots the Easy Way Interactive Lesson Standard v1.0 — its
+  // curriculum data (lib/topic3-blocks.ts) is static, not per-student, so
+  // it's imported directly here rather than threaded through as a prop.
+  // Every other topic is completely unaffected (TOPIC3_BLOCKS only
+  // resolves to screens when topic.number === 3).
+  const leadingBlocks = topic.number === 3 ? TOPIC3_BLOCKS.filter((b) => b.id !== "T3-B15") : [];
+  const trailingBlocks = topic.number === 3 ? TOPIC3_BLOCKS.filter((b) => b.id === "T3-B15") : [];
 
   const screens: Screen[] = [
+    ...leadingBlocks.map((block): Screen => ({ kind: "interactive", block })),
     ...content.map((block): Screen => ({ kind: "content", block })),
+    ...trailingBlocks.map((block): Screen => ({ kind: "interactive", block })),
     ...quiz.map((question, index): Screen => ({ kind: "quiz", question, index, total: quiz.length })),
     ...(quiz.length > 0 ? [{ kind: "quizResult" } as Screen] : []),
     { kind: "complete" },
@@ -116,6 +139,50 @@ export default function TopicViewer({
     setQuizAnswers((prev) => ({ ...prev, [questionId]: index }));
   }
 
+  // Fires the moment a student genuinely completes an interactive block
+  // (makes a decision, finishes a comparison) — recorded server-side so
+  // topic completion can require it, not just elapsed time.
+  function handleBlockComplete(blockId: string) {
+    setCompletedBlockIds((prev) => {
+      if (prev.has(blockId)) return prev;
+      const next = new Set(prev);
+      next.add(blockId);
+      return next;
+    });
+    fetch("/api/progress/block-complete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ topicNumber: topic.number, blockId }),
+    })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.blocksComplete) {
+          // All required blocks done — re-poll status via a heartbeat-shaped
+          // check isn't needed here; the next heartbeat tick (or the final
+          // screen's own logic) will reflect "complete" once time also
+          // clears. We still refresh local status defensively in case time
+          // was already satisfied before this last block finished.
+          fetch("/api/progress/heartbeat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ topicNumber: topic.number }),
+          })
+            .then((r) => (r.ok ? r.json() : null))
+            .then((hb) => {
+              if (hb) {
+                setSecondsActive(hb.secondsActive);
+                setStatus(hb.status);
+              }
+            })
+            .catch(() => {});
+        }
+      })
+      .catch(() => {
+        // Best-effort — if this fails, the block just isn't marked complete
+        // yet server-side; the student can still finish it again to retry.
+      });
+  }
+
   function handleBack() {
     setCurrent((c) => Math.max(0, c - 1));
     window.scrollTo(0, 0);
@@ -138,8 +205,12 @@ export default function TopicViewer({
 
   const onQuizScreen = screen.kind === "quiz";
   const quizAnswered = onQuizScreen && quizAnswers[screen.question.id] !== undefined;
+  const onInteractiveScreen = screen.kind === "interactive";
+  const interactiveDone = onInteractiveScreen && completedBlockIds.has(screen.block.id);
   const nextDisabled =
-    (onQuizScreen && !quizAnswered) || (screen.kind === "complete" && !isComplete);
+    (onQuizScreen && !quizAnswered) ||
+    (onInteractiveScreen && !interactiveDone) ||
+    (screen.kind === "complete" && !isComplete);
 
   const pct = Math.min(100, Math.round((current / (screens.length - 1)) * 100));
 
@@ -170,6 +241,29 @@ export default function TopicViewer({
       <main className={styles.main}>
         <div className={styles.stage}>
           {screen.kind === "content" && <ContentBlockView block={screen.block} />}
+
+          {screen.kind === "interactive" && (
+            <div className={courseStyles.card}>
+              {screen.block.kind === "decision" && (
+                <DecisionChallenge
+                  {...screen.block.props}
+                  onComplete={() => handleBlockComplete(screen.block.id)}
+                />
+              )}
+              {screen.block.kind === "compare" && (
+                <CompareScenes
+                  {...screen.block.props}
+                  onComplete={() => handleBlockComplete(screen.block.id)}
+                />
+              )}
+              {screen.block.kind === "stopLab" && (
+                <AllWayStopLab
+                  {...screen.block.props}
+                  onComplete={() => handleBlockComplete(screen.block.id)}
+                />
+              )}
+            </div>
+          )}
 
           {screen.kind === "quiz" && (
             <>

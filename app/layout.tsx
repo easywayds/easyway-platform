@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Oswald, IBM_Plex_Sans, IBM_Plex_Mono, Fraunces, Inter } from "next/font/google";
+import { Oswald, IBM_Plex_Sans, IBM_Plex_Mono, Fraunces, Inter, Poppins } from "next/font/google";
 import "./globals.css";
 
 const oswald = Oswald({
@@ -34,6 +34,15 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+// Used only by the new interactive lesson blocks (components/course/) —
+// part of the Easy Way Interactive Lesson Standard v1.0 navy/yellow system,
+// piloted in Topic 3 before the rest of the course adopts it.
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-poppins",
+});
+
 export const metadata: Metadata = {
   title: "Easy Way Driving School — 6-Hour Adult Course",
   description: "TDLR-approved 6-Hour Adult Driver Education course",
@@ -47,7 +56,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${oswald.variable} ${plexSans.variable} ${plexMono.variable} ${fraunces.variable} ${inter.variable}`}
+      className={`${oswald.variable} ${plexSans.variable} ${plexMono.variable} ${fraunces.variable} ${inter.variable} ${poppins.variable}`}
     >
       <body>{children}</body>
     </html>

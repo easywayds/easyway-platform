@@ -41,7 +41,7 @@ export default async function TopicPage({
   const nextTopic = topics.find((t) => t.number === topicNumber + 1) ?? null;
 
   const topicRecord = await prisma.topic.findUnique({ where: { number: topicNumber } });
-  const [content, quiz] = topicRecord
+  const [content, quiz, completedBlocks] = topicRecord
     ? await Promise.all([
         prisma.topicContent.findMany({
           where: { topicId: topicRecord.id },
@@ -51,8 +51,15 @@ export default async function TopicPage({
           where: { topicId: topicRecord.id },
           orderBy: { sortOrder: "asc" },
         }),
+        // Already-completed interactive blocks (Topic 3 pilot) — fetched so
+        // a refresh mid-topic doesn't make the student redo a block that's
+        // already recorded server-side.
+        prisma.topicBlockProgress.findMany({
+          where: { enrollmentId: enrollment.id, topicNumber, completedAt: { not: null } },
+          select: { blockId: true },
+        }),
       ])
-    : [[], []];
+    : [[], [], []];
 
   return (
     <TopicViewer
@@ -80,6 +87,7 @@ export default async function TopicPage({
         visualKey: q.visualKey,
       }))}
       nextTopicNumber={nextTopic?.number ?? null}
+      completedBlockIds={completedBlocks.map((b) => b.blockId)}
     />
   );
 }

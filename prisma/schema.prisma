@@ -86,6 +86,7 @@ model Enrollment {
 
   topicProgress      TopicProgress[]
   assessmentAttempts AssessmentAttempt[]
+  topicBlockProgress TopicBlockProgress[]
 
   @@map("enrollments")
 }
@@ -147,6 +148,27 @@ model TopicProgress {
 
   @@unique([enrollmentId, topicId])
   @@map("topic_progress")
+}
+
+// Tracks completion of individual interactive learning blocks within a
+// topic (e.g. a scenario decision, a comparison exercise) — distinct from
+// the ungraded per-topic quiz and from plain seat-time. A topic that
+// defines required blocks (see lib/topic-blocks.ts) can't be marked
+// complete until every required block here has completedAt set, even if
+// the time threshold is already satisfied. Topics with no required blocks
+// defined are entirely unaffected — this table stays empty for them.
+model TopicBlockProgress {
+  id           String     @id @default(cuid())
+  enrollmentId String
+  enrollment   Enrollment @relation(fields: [enrollmentId], references: [id])
+  topicNumber  Int
+  blockId      String
+  openedAt     DateTime   @default(now())
+  completedAt  DateTime?
+
+  @@unique([enrollmentId, blockId])
+  @@index([enrollmentId, topicNumber])
+  @@map("topic_block_progress")
 }
 
 model AssessmentAttempt {
