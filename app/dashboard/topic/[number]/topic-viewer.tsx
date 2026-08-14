@@ -6,8 +6,11 @@ import Link from "next/link";
 import ContentBlockView, { type ContentBlockData } from "./content-block";
 import DecisionChallenge from "@/components/course/DecisionChallenge";
 import CompareScenes from "@/components/course/CompareScenes";
-import AllWayStopLab from "@/components/course/AllWayStopLab";
-import { TOPIC3_BLOCKS, type Topic3Block } from "@/lib/topic3-blocks";
+import DecisionSequence from "@/components/course/DecisionSequence";
+import HotspotScene from "@/components/course/HotspotScene";
+import StagedScenario from "@/components/course/StagedScenario";
+import RecapAccordion from "@/components/course/RecapAccordion";
+import { TOPIC3_BLOCKS, TOPIC3_CHAPTERS, TOPIC3_PRACTICE_BLOCK_IDS, type Topic3Block } from "@/lib/topic3-blocks";
 import courseStyles from "@/components/course/course.module.css";
 import styles from "./stepper.module.css";
 
@@ -36,6 +39,29 @@ type Screen =
 
 const HEARTBEAT_INTERVAL_MS = 15000;
 
+function chapterFor(blockId: string): { title: string; index: number } | null {
+  const idx = TOPIC3_CHAPTERS.findIndex((c) => c.blockIds.includes(blockId));
+  if (idx === -1) return null;
+  return { title: TOPIC3_CHAPTERS[idx].title, index: idx };
+}
+
+// Sequence/staged blocks don't have a top-level "eyebrow" (each round or
+// stage has its own instead), so the practice hub needs a per-kind label.
+function practiceTitle(block: Topic3Block): string {
+  switch (block.kind) {
+    case "decision":
+    case "compare":
+    case "hotspot":
+      return block.props.eyebrow ?? block.id;
+    case "sequence":
+      return block.props.rounds[0]?.eyebrow ?? block.id;
+    case "staged":
+      return block.props.eyebrow ?? block.props.stages[0]?.label ?? block.id;
+    case "recap":
+      return block.props.eyebrow ?? block.id;
+  }
+}
+
 export default function TopicViewer({
   topic,
   content,
@@ -48,6 +74,7 @@ export default function TopicViewer({
   quiz: QuizQuestion[];
   nextTopicNumber: number | null;
   completedBlockIds?: string[];
+  quizAlreadyCompleted?: boolean;
 }) {
   const router = useRouter();
   const [secondsActive, setSecondsActive] = useState(topic.secondsActive);
@@ -61,19 +88,23 @@ export default function TopicViewer({
   const [completedBlockIds, setCompletedBlockIds] = useState<Set<string>>(
     () => new Set(initialCompletedBlockIds)
   );
+  // When set, we're viewing a block in "practice mode" from the Keep
+  // Practicing screen — a dedicated link returns here instead of the
+  // normal Continue flow advancing through the rest of the sequence.
+  const [practiceReturnIndex, setPracticeReturnIndex] = useState<number | null>(null);
 
   // Topic 3 pilots the Easy Way Interactive Lesson Standard v1.0 — its
   // curriculum data (lib/topic3-blocks.ts) is static, not per-student, so
   // it's imported directly here rather than threaded through as a prop.
   // Every other topic is completely unaffected (TOPIC3_BLOCKS only
-  // resolves to screens when topic.number === 3).
-  const leadingBlocks = topic.number === 3 ? TOPIC3_BLOCKS.filter((b) => b.id !== "T3-B15") : [];
-  const trailingBlocks = topic.number === 3 ? TOPIC3_BLOCKS.filter((b) => b.id === "T3-B15") : [];
+  // resolves to screens when topic.number === 3). Topic 3's `content` rows
+  // are empty in the database — all its instructional content now flows
+  // through the interactive blocks instead.
+  const interactiveBlocks = topic.number === 3 ? TOPIC3_BLOCKS : [];
 
   const screens: Screen[] = [
-    ...leadingBlocks.map((block): Screen => ({ kind: "interactive", block })),
+    ...interactiveBlocks.map((block): Screen => ({ kind: "interactive", block })),
     ...content.map((block): Screen => ({ kind: "content", block })),
-    ...trailingBlocks.map((block): Screen => ({ kind: "interactive", block })),
     ...quiz.map((question, index): Screen => ({ kind: "quiz", question, index, total: quiz.length })),
     ...(quiz.length > 0 ? [{ kind: "quizResult" } as Screen] : []),
     { kind: "complete" },
@@ -129,10 +160,30 @@ export default function TopicViewer({
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ topicNumber: topic.number }),
-    }).catch(() => {
-      // Best-effort — a missed call here doesn't block progress; it just
-      // means this particular visit isn't recorded as having reached the end.
-    });
+    })
+      .then((res) => (res.ok ? res.json() : null))
+      .catch(() => null)
+      .then(() => {
+        // Quiz may have been the last required piece — refresh status in
+        // case it just flipped to complete server-side.
+        return fetch("/api/progress/heartbeat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ topicNumber: topic.number }),
+        });
+      })
+      .then((res) => (res && res.ok ? res.json() : null))
+      .then((hb) => {
+        if (hb) {
+          setSecondsActive(hb.secondsActive);
+          setStatus(hb.status);
+        }
+      })
+      .catch(() => {
+        // Best-effort — a missed call here doesn't block progress; it just
+        // means this particular visit isn't recorded as having reached the end.
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [screen.kind, quiz.length, topic.number]);
 
   function selectQuizAnswer(questionId: string, index: number) {
@@ -157,11 +208,8 @@ export default function TopicViewer({
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (data?.blocksComplete) {
-          // All required blocks done — re-poll status via a heartbeat-shaped
-          // check isn't needed here; the next heartbeat tick (or the final
-          // screen's own logic) will reflect "complete" once time also
-          // clears. We still refresh local status defensively in case time
-          // was already satisfied before this last block finished.
+          // All required blocks done — re-poll status in case time was
+          // already satisfied before this last block finished.
           fetch("/api/progress/heartbeat", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -184,11 +232,21 @@ export default function TopicViewer({
   }
 
   function handleBack() {
+    if (practiceReturnIndex !== null) {
+      setCurrent(practiceReturnIndex);
+      setPracticeReturnIndex(null);
+      window.scrollTo(0, 0);
+      return;
+    }
     setCurrent((c) => Math.max(0, c - 1));
     window.scrollTo(0, 0);
   }
 
   function handleContinue() {
+    if (practiceReturnIndex !== null) {
+      returnFromPractice();
+      return;
+    }
     if (screen.kind === "complete") {
       if (nextTopicNumber) {
         router.push(`/dashboard/topic/${nextTopicNumber}`);
@@ -203,6 +261,21 @@ export default function TopicViewer({
     window.scrollTo(0, 0);
   }
 
+  function startPractice(blockId: string) {
+    const idx = screens.findIndex((s) => s.kind === "interactive" && s.block.id === blockId);
+    if (idx === -1) return;
+    setPracticeReturnIndex(current);
+    setCurrent(idx);
+    window.scrollTo(0, 0);
+  }
+
+  function returnFromPractice() {
+    if (practiceReturnIndex === null) return;
+    setCurrent(practiceReturnIndex);
+    setPracticeReturnIndex(null);
+    window.scrollTo(0, 0);
+  }
+
   const onQuizScreen = screen.kind === "quiz";
   const quizAnswered = onQuizScreen && quizAnswers[screen.question.id] !== undefined;
   const onInteractiveScreen = screen.kind === "interactive";
@@ -213,6 +286,13 @@ export default function TopicViewer({
     (screen.kind === "complete" && !isComplete);
 
   const pct = Math.min(100, Math.round((current / (screens.length - 1)) * 100));
+  const chapter = onInteractiveScreen ? chapterFor(screen.block.id) : null;
+
+  // Reaching the final screen already implies every required block and the
+  // quiz are done (each step along the way gates Continue on that) — so
+  // for Topic 3, "not complete yet" here can only mean time. Show the
+  // practice hub instead of a plain wait message.
+  const showPracticeHub = topic.number === 3 && screen.kind === "complete" && !isComplete;
 
   return (
     <div className={styles.root}>
@@ -231,36 +311,57 @@ export default function TopicViewer({
             <div className={styles.progressFill} style={{ width: `${pct}%` }} />
           </div>
           <div className={styles.progressCaption}>
-            {current < screens.length - 1
-              ? `Screen ${current + 1} of ${screens.length - 1}`
-              : "Complete"}
+            {chapter
+              ? `Chapter ${chapter.index + 1} of ${TOPIC3_CHAPTERS.length} — ${chapter.title}`
+              : current < screens.length - 1
+                ? `Screen ${current + 1} of ${screens.length - 1}`
+                : "Complete"}
           </div>
         </div>
       </header>
 
       <main className={styles.main}>
         <div className={styles.stage}>
+          {practiceReturnIndex !== null && screen.kind === "interactive" && (
+            <button
+              type="button"
+              onClick={returnFromPractice}
+              style={{
+                background: "none",
+                border: "none",
+                color: "var(--navy-soft, #48597d)",
+                fontSize: 13,
+                fontWeight: 600,
+                cursor: "pointer",
+                padding: 0,
+                marginBottom: 14,
+              }}
+            >
+              ← Back to practice
+            </button>
+          )}
+
           {screen.kind === "content" && <ContentBlockView block={screen.block} />}
 
           {screen.kind === "interactive" && (
-            <div className={courseStyles.card}>
+            <div className={`${courseStyles.root} ${courseStyles.card}`}>
               {screen.block.kind === "decision" && (
-                <DecisionChallenge
-                  {...screen.block.props}
-                  onComplete={() => handleBlockComplete(screen.block.id)}
-                />
+                <DecisionChallenge {...screen.block.props} onComplete={() => handleBlockComplete(screen.block.id)} />
               )}
               {screen.block.kind === "compare" && (
-                <CompareScenes
-                  {...screen.block.props}
-                  onComplete={() => handleBlockComplete(screen.block.id)}
-                />
+                <CompareScenes {...screen.block.props} onComplete={() => handleBlockComplete(screen.block.id)} />
               )}
-              {screen.block.kind === "stopLab" && (
-                <AllWayStopLab
-                  {...screen.block.props}
-                  onComplete={() => handleBlockComplete(screen.block.id)}
-                />
+              {screen.block.kind === "sequence" && (
+                <DecisionSequence {...screen.block.props} onComplete={() => handleBlockComplete(screen.block.id)} />
+              )}
+              {screen.block.kind === "hotspot" && (
+                <HotspotScene {...screen.block.props} onComplete={() => handleBlockComplete(screen.block.id)} />
+              )}
+              {screen.block.kind === "staged" && (
+                <StagedScenario {...screen.block.props} onComplete={() => handleBlockComplete(screen.block.id)} />
+              )}
+              {screen.block.kind === "recap" && (
+                <RecapAccordion {...screen.block.props} onComplete={() => handleBlockComplete(screen.block.id)} />
               )}
             </div>
           )}
@@ -307,7 +408,7 @@ export default function TopicViewer({
             </div>
           )}
 
-          {screen.kind === "complete" && (
+          {screen.kind === "complete" && !showPracticeHub && (
             <div className={styles.completeCard}>
               <div className={styles.completeBig}>
                 {isComplete ? "Topic complete" : "Almost there"}
@@ -319,6 +420,34 @@ export default function TopicViewer({
               </p>
             </div>
           )}
+
+          {screen.kind === "complete" && showPracticeHub && (
+            <div className={`${courseStyles.root} ${courseStyles.card}`}>
+              <p className={courseStyles.eyebrow}>Keep Practicing — You're Almost There</p>
+              <p className={courseStyles.prompt} style={{ fontWeight: 500 }}>
+                You've completed the core Topic 3 activities. Use the practice challenges below to
+                strengthen your right-of-way decisions while completing the required instructional
+                time — {minutesLogged} of {topic.minMinutes} minutes logged so far.
+              </p>
+              <div className={courseStyles.practiceGrid}>
+                {TOPIC3_PRACTICE_BLOCK_IDS.map((blockId) => {
+                  const block = TOPIC3_BLOCKS.find((b) => b.id === blockId);
+                  if (!block) return null;
+                  return (
+                    <button
+                      key={blockId}
+                      type="button"
+                      className={courseStyles.practiceCard}
+                      onClick={() => startPractice(blockId)}
+                    >
+                      <p className={courseStyles.practiceCardTitle}>{practiceTitle(block)}</p>
+                      <p className={courseStyles.practiceCardHint}>Tap to revisit this activity</p>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </main>
 
@@ -328,7 +457,7 @@ export default function TopicViewer({
             type="button"
             className={`${styles.navBtn} ${styles.navBtnBack}`}
             onClick={handleBack}
-            disabled={current === 0}
+            disabled={current === 0 && practiceReturnIndex === null}
           >
             Back
           </button>
@@ -343,13 +472,15 @@ export default function TopicViewer({
                 : undefined
             }
           >
-            {screen.kind === "complete"
-              ? nextTopicNumber
-                ? "Next topic"
-                : topic.number === 9
-                  ? "Go to assessment"
-                  : "Back to dashboard"
-              : "Continue"}
+            {practiceReturnIndex !== null
+              ? "Back to practice"
+              : screen.kind === "complete"
+                ? nextTopicNumber
+                  ? "Next topic"
+                  : topic.number === 9
+                    ? "Go to assessment"
+                    : "Back to dashboard"
+                : "Continue"}
           </button>
         </div>
       </footer>

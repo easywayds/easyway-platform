@@ -3,7 +3,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
 import { getOrCreateActiveEnrollment, getTopicsWithProgress } from "@/lib/enrollment";
-import { getRequiredBlocks, areRequiredBlocksComplete } from "@/lib/topic-blocks";
+import { getAllBlocks, areRequiredBlocksComplete, isQuizComplete } from "@/lib/topic-blocks";
 
 const Schema = z.object({
   topicNumber: z.number().int().min(1).max(9),
@@ -30,8 +30,8 @@ export async function POST(req: NextRequest) {
   }
   const { topicNumber, blockId } = parsed.data;
 
-  const requiredBlocks = getRequiredBlocks(topicNumber);
-  if (!requiredBlocks.includes(blockId)) {
+  const validBlocks = getAllBlocks(topicNumber);
+  if (!validBlocks.includes(blockId)) {
     return NextResponse.json({ error: "Unknown block for this topic." }, { status: 400 });
   }
 
@@ -64,8 +64,9 @@ export async function POST(req: NextRequest) {
   const thresholdSeconds = topic.minMinutes * 60;
   const timeComplete = (existingProgress?.secondsActive ?? 0) >= thresholdSeconds;
   const blocksComplete = await areRequiredBlocksComplete(enrollment.id, topicNumber);
+  const quizComplete = await isQuizComplete(topic.id, existingProgress?.quizCompletedAt ?? null);
 
-  if (timeComplete && blocksComplete && existingProgress && existingProgress.status !== "complete") {
+  if (timeComplete && blocksComplete && quizComplete && existingProgress && existingProgress.status !== "complete") {
     await prisma.topicProgress.update({
       where: { id: existingProgress.id },
       data: { status: "complete", completedAt: existingProgress.completedAt ?? now },

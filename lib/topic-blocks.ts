@@ -5,15 +5,37 @@ import { prisma } from "@/lib/prisma";
 // (or an empty array) here has no block requirement at all — existing
 // behavior for every topic besides the Topic 3 prototype is unchanged.
 //
-// Topic 3 currently lists only the 4 core-prototype blocks built so far
-// (Phase B of the interactive redesign) — not the full 20-block spec.
-// Expand this array as more blocks are built in later phases.
+// Topic 3, Phase C: every core teaching block (B00-B14) plus the two
+// substantive reinforcement activities (B16 mistake spotter, B17 SAFE
+// challenge) are required — each is a real decision, not a read-only
+// element. B15 (school bus) was already required in Phase B. B18 (recap
+// accordion) is deliberately excluded: it's a review of material already
+// covered, not new progression, matching "don't require decorative/
+// read-only elements."
 export const REQUIRED_BLOCKS: Record<number, string[]> = {
-  3: ["T3-B00", "T3-B02", "T3-B03", "T3-B15"],
+  3: [
+    "T3-B00", "T3-B01", "T3-B02", "T3-B03", "T3-B04", "T3-B05", "T3-B06", "T3-B07",
+    "T3-B08", "T3-B09", "T3-B10", "T3-B11", "T3-B12", "T3-B13", "T3-B14", "T3-B15",
+    "T3-B16", "T3-B17",
+  ],
+};
+
+// Every valid block id for a topic, required or not — this is what
+// /api/progress/block-complete validates incoming blockIds against. A
+// block can be legitimately completable (and worth recording, so a
+// refresh doesn't reset it) without being part of what gates the topic's
+// overall completion — e.g. B18 (recap), which the student still steps
+// through and completes, but which isn't required for Topic 4 to unlock.
+export const ALL_BLOCKS: Record<number, string[]> = {
+  3: [...REQUIRED_BLOCKS[3], "T3-B18"],
 };
 
 export function getRequiredBlocks(topicNumber: number): string[] {
   return REQUIRED_BLOCKS[topicNumber] ?? [];
+}
+
+export function getAllBlocks(topicNumber: number): string[] {
+  return ALL_BLOCKS[topicNumber] ?? REQUIRED_BLOCKS[topicNumber] ?? [];
 }
 
 export async function areRequiredBlocksComplete(
@@ -31,4 +53,16 @@ export async function areRequiredBlocksComplete(
     },
   });
   return completedCount >= required.length;
+}
+
+// A topic with no quiz questions has nothing to require here (existing
+// behavior, unchanged). A topic that does have quiz questions can't be
+// marked complete until the student has actually reached the quiz's end
+// screen — quizCompletedAt is set by /api/progress/quiz-complete, which
+// the client can only reach after answering every quiz question along
+// the way.
+export async function isQuizComplete(topicId: string, quizCompletedAt: Date | null): Promise<boolean> {
+  if (quizCompletedAt) return true;
+  const quizCount = await prisma.topicQuizQuestion.count({ where: { topicId } });
+  return quizCount === 0;
 }

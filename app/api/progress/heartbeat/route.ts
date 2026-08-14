@@ -3,7 +3,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
 import { getOrCreateActiveEnrollment, getTopicsWithProgress } from "@/lib/enrollment";
-import { areRequiredBlocksComplete } from "@/lib/topic-blocks";
+import { areRequiredBlocksComplete, isQuizComplete } from "@/lib/topic-blocks";
 
 // Matches the client's ~15s heartbeat interval, plus slack for network
 // latency and timer drift. This is a ceiling on credit per heartbeat, not
@@ -70,7 +70,8 @@ export async function POST(req: NextRequest) {
   // topic "in_progress", not "complete".
   const timeComplete = newSecondsActive >= thresholdSeconds;
   const blocksComplete = await areRequiredBlocksComplete(enrollment.id, topicNumber);
-  const nowComplete = timeComplete && blocksComplete;
+  const quizComplete = await isQuizComplete(topic.id, existing?.quizCompletedAt ?? null);
+  const nowComplete = timeComplete && blocksComplete && quizComplete;
 
   const progress = await prisma.topicProgress.upsert({
     where: { enrollmentId_topicId: { enrollmentId: enrollment.id, topicId: topic.id } },

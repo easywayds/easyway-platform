@@ -4,35 +4,38 @@ import { useState } from "react";
 import styles from "./course.module.css";
 import type { DecisionChoice } from "./DecisionChallenge";
 
-export type StopLabRound = {
+export type SequenceRound = {
   eyebrow: string;
   prompt: string;
   visual?: string;
   choices: DecisionChoice[];
 };
 
-export type AllWayStopLabProps = {
-  rounds: StopLabRound[];
-  ruleCardTitle: string;
-  ruleCardLines: string[];
+export type DecisionSequenceProps = {
+  rounds: SequenceRound[];
+  ruleCardTitle?: string;
+  ruleCardLines?: string[];
   onComplete?: () => void;
 };
 
-// A short sequence of related decisions (arrival order → simultaneous
-// arrival → left-turn priority) that builds to one rule summary. Each
-// round requires a pick before "Continue" advances to the next — this is
-// an internal continue, separate from the stepper's own Back/Continue
-// footer, which only unlocks once the whole sequence (including the rule
-// card) is reached.
-export default function AllWayStopLab({
+// A short sequence of related decisions that builds toward one idea (e.g.
+// arrival order → simultaneous arrival → left-turn priority). Each round
+// requires a pick before an internal "Continue" advances to the next —
+// separate from the stepper's own Back/Continue footer, which only
+// unlocks once the whole sequence (including an optional closing rule
+// card) is reached. Generalizes what was originally a one-off
+// "AllWayStopLab" component so the same pattern covers every multi-round
+// block in Phase C.
+export default function DecisionSequence({
   rounds,
   ruleCardTitle,
   ruleCardLines,
   onComplete,
-}: AllWayStopLabProps) {
+}: DecisionSequenceProps) {
+  const hasRuleCard = Boolean(ruleCardTitle && ruleCardLines?.length);
   const [roundIndex, setRoundIndex] = useState(0);
   const [pickedIndex, setPickedIndex] = useState<number | null>(null);
-  const isRuleCard = roundIndex === rounds.length;
+  const isRuleCard = hasRuleCard && roundIndex === rounds.length;
 
   function pick(i: number) {
     if (pickedIndex !== null) return;
@@ -41,9 +44,12 @@ export default function AllWayStopLab({
 
   function advance() {
     const next = roundIndex + 1;
+    const reachedEnd = next === rounds.length;
     setRoundIndex(next);
     setPickedIndex(null);
-    if (next === rounds.length) {
+    if (reachedEnd && !hasRuleCard) {
+      onComplete?.();
+    } else if (reachedEnd && hasRuleCard) {
       onComplete?.();
     }
   }
@@ -51,14 +57,14 @@ export default function AllWayStopLab({
   if (isRuleCard) {
     return (
       <div className={styles.root}>
-        <div className={styles.roundIndicator}>
+        <div className={styles.roundIndicator} aria-hidden="true">
           {rounds.map((_, i) => (
             <span key={i} className={`${styles.roundDot} ${styles.roundDotDone}`} />
           ))}
         </div>
         <div className={styles.ruleCard}>
           <p className={styles.ruleCardTitle}>{ruleCardTitle}</p>
-          {ruleCardLines.map((line, i) => (
+          {ruleCardLines!.map((line, i) => (
             <p className={styles.ruleCardBody} key={i}>
               {line}
             </p>
@@ -70,6 +76,7 @@ export default function AllWayStopLab({
 
   const round = rounds[roundIndex];
   const picked = pickedIndex !== null ? round.choices[pickedIndex] : null;
+  const isLastRound = roundIndex === rounds.length - 1;
 
   return (
     <div className={styles.root}>
@@ -118,7 +125,7 @@ export default function AllWayStopLab({
             {picked.feedback}
           </div>
           <button type="button" className={styles.continueInternal} onClick={advance}>
-            {roundIndex === rounds.length - 1 ? "See the rule" : "Next round"}
+            {isLastRound ? (hasRuleCard ? "See the rule" : "Continue") : "Next"}
           </button>
         </>
       )}

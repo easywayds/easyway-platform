@@ -41,7 +41,7 @@ export default async function TopicPage({
   const nextTopic = topics.find((t) => t.number === topicNumber + 1) ?? null;
 
   const topicRecord = await prisma.topic.findUnique({ where: { number: topicNumber } });
-  const [content, quiz, completedBlocks] = topicRecord
+  const [content, quiz, completedBlocks, progressRecord] = topicRecord
     ? await Promise.all([
         prisma.topicContent.findMany({
           where: { topicId: topicRecord.id },
@@ -58,8 +58,12 @@ export default async function TopicPage({
           where: { enrollmentId: enrollment.id, topicNumber, completedAt: { not: null } },
           select: { blockId: true },
         }),
+        prisma.topicProgress.findUnique({
+          where: { enrollmentId_topicId: { enrollmentId: enrollment.id, topicId: topicRecord.id } },
+          select: { quizCompletedAt: true },
+        }),
       ])
-    : [[], [], []];
+    : [[], [], [], null];
 
   return (
     <TopicViewer
@@ -88,6 +92,7 @@ export default async function TopicPage({
       }))}
       nextTopicNumber={nextTopic?.number ?? null}
       completedBlockIds={completedBlocks.map((b) => b.blockId)}
+      quizAlreadyCompleted={Boolean(progressRecord?.quizCompletedAt)}
     />
   );
 }

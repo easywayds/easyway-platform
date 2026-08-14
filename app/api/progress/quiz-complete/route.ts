@@ -3,6 +3,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
 import { getOrCreateActiveEnrollment, getTopicsWithProgress } from "@/lib/enrollment";
+import { areRequiredBlocksComplete } from "@/lib/topic-blocks";
 
 const Schema = z.object({
   topicNumber: z.number().int().min(1).max(9),
@@ -58,6 +59,19 @@ export async function POST(req: NextRequest) {
     },
     update: { quizCompletedAt: now },
   });
+
+  // Quiz completion may be the last piece of the puzzle — if time and
+  // required blocks were already satisfied, flip the topic to complete now
+  // instead of waiting for the next heartbeat.
+  const thresholdSeconds = topic.minMinutes * 60;
+  const timeComplete = progress.secondsActive >= thresholdSeconds;
+  const blocksComplete = await areRequiredBlocksComplete(enrollment.id, topicNumber);
+  if (timeComplete && blocksComplete && progress.status !== "complete") {
+    await prisma.topicProgress.update({
+      where: { id: progress.id },
+      data: { status: "complete", completedAt: progress.completedAt ?? now },
+    });
+  }
 
   return NextResponse.json({ quizCompletedAt: progress.quizCompletedAt });
 }
