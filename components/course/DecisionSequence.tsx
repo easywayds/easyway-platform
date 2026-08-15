@@ -45,11 +45,16 @@ export default function DecisionSequence({
   function advance() {
     const next = roundIndex + 1;
     const reachedEnd = next === rounds.length;
+    if (reachedEnd && !hasRuleCard) {
+      // Nothing left to render — index rounds.length would be out of
+      // bounds. Stay on the last round (still showing its feedback) and
+      // let the stepper's own Continue button move to the next screen.
+      onComplete?.();
+      return;
+    }
     setRoundIndex(next);
     setPickedIndex(null);
-    if (reachedEnd && !hasRuleCard) {
-      onComplete?.();
-    } else if (reachedEnd && hasRuleCard) {
+    if (reachedEnd && hasRuleCard) {
       onComplete?.();
     }
   }
