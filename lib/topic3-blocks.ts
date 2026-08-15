@@ -13,6 +13,7 @@ import type { DecisionSequenceProps } from "@/components/course/DecisionSequence
 import type { HotspotSceneProps } from "@/components/course/HotspotScene";
 import type { StagedScenarioProps } from "@/components/course/StagedScenario";
 import type { RecapAccordionProps } from "@/components/course/RecapAccordion";
+import type { LessonScreenProps } from "@/components/course/LessonScreen";
 import {
   SCENE_OPENING,
   SCENE_CONTROLLED,
@@ -52,12 +53,12 @@ import {
 // Student-facing chapter grouping — 19 blocks are too many to list
 // individually in a nav; group into 6 chapters instead.
 export const TOPIC3_CHAPTERS: { title: string; blockIds: string[] }[] = [
-  { title: "Who Goes First?", blockIds: ["T3-B00", "T3-B01", "T3-B02", "T3-B03"] },
-  { title: "Turns, Entries & Intersections", blockIds: ["T3-B04", "T3-B05", "T3-B06", "T3-B07"] },
-  { title: "Roundabouts, Highways & Work Zones", blockIds: ["T3-B08", "T3-B09", "T3-B10"] },
-  { title: "Railroad & Emergency Situations", blockIds: ["T3-B11", "T3-B12"] },
-  { title: "Sharing Right-of-Way", blockIds: ["T3-B13", "T3-B14", "T3-B15"] },
-  { title: "Put It All Together", blockIds: ["T3-B16", "T3-B17", "T3-B18"] },
+  { title: "Who Goes First?", blockIds: ["T3-L00", "T3-B00", "T3-L01", "T3-B01", "T3-B02", "T3-B03"] },
+  { title: "Turns, Entries & Intersections", blockIds: ["T3-L02", "T3-B04", "T3-B05", "T3-B06", "T3-B07"] },
+  { title: "Roundabouts, Highways & Work Zones", blockIds: ["T3-L03", "T3-B08", "T3-B09", "T3-B10"] },
+  { title: "Railroad & Emergency Situations", blockIds: ["T3-L04", "T3-B11", "T3-B12"] },
+  { title: "Sharing Right-of-Way", blockIds: ["T3-L05", "T3-B13", "T3-B14", "T3-B15"] },
+  { title: "Put It All Together", blockIds: ["T3-L06", "T3-B16", "T3-B17", "T3-B18"] },
 ];
 
 // Curated subset offered on the "Keep Practicing" screen — not every
@@ -70,18 +71,54 @@ export type Topic3Block =
   | { id: string; kind: "sequence"; poi: string[]; estimatedMinutes: number; props: DecisionSequenceProps }
   | { id: string; kind: "hotspot"; poi: string[]; estimatedMinutes: number; props: HotspotSceneProps }
   | { id: string; kind: "staged"; poi: string[]; estimatedMinutes: number; props: StagedScenarioProps }
-  | { id: string; kind: "recap"; poi: string[]; estimatedMinutes: number; props: RecapAccordionProps };
+  | { id: string; kind: "recap"; poi: string[]; estimatedMinutes: number; props: RecapAccordionProps }
+  | { id: string; kind: "learn"; poi: string[]; estimatedMinutes: number; props: LessonScreenProps };
 
 export const TOPIC3_BLOCKS: Topic3Block[] = [
+  {
+    id: "T3-L00",
+    kind: "learn",
+    poi: ["Topic 3 introduction"],
+    estimatedMinutes: 2,
+    props: {
+      eyebrow: "Topic 3 — Right-of-Way",
+      title: "Who Goes First — And When Should You Wait?",
+      previewPoints: [
+        "Determine who should proceed at common intersections, controlled and uncontrolled",
+        "Make safer left-turn decisions and enter roads from driveways and private roads",
+        "Navigate T-intersections, roundabouts, and freeway entries",
+        "Respond to work zones, railroad crossings, and emergency vehicles",
+        "Share the road with school buses, pedestrians, and motorcyclists",
+        "Protect yourself when another driver makes a mistake",
+      ],
+      sections: [
+        {
+          heading: "Every Day, In Just a Few Seconds",
+          body: [
+            "Every day, drivers make right-of-way decisions at intersections, driveways, crosswalks, railroad crossings, highway entrances, and around emergency vehicles. Most of these decisions happen in only a few seconds.",
+            "Knowing the rule is important. Recognizing when another person might not follow the rule is just as important — that's what keeps a legally correct decision from becoming a crash.",
+          ],
+        },
+      ],
+      ruleCard: {
+        title: "EASY WAY PRINCIPLE",
+        lines: [
+          "Knowing who should go first helps traffic move safely.",
+          "Knowing when to wait can prevent a crash.",
+        ],
+      },
+    },
+  },
   {
     id: "T3-B00",
     kind: "decision",
     poi: ["4.1.3.1(F)", "4.1.3.1(G)"],
     estimatedMinutes: 2.5,
     props: {
-      eyebrow: "Right-of-Way — Opening Scenario",
+      eyebrow: "Right-of-Way — Opening Scenario (Just Your Best Guess)",
       visual: SCENE_OPENING,
-      prompt: "You both reach the intersection at about the same time. What do you do?",
+      prompt:
+        "You both reach the intersection at about the same time — no light, no stop sign. Who should go first? Not sure yet? That's okay — make your best guess. We'll learn the rule next.",
       choices: [
         {
           text: "Go first because you're traveling straight.",
@@ -111,26 +148,87 @@ export const TOPIC3_BLOCKS: Topic3Block[] = [
     },
   },
   {
+    id: "T3-L01",
+    kind: "learn",
+    poi: ["4.1.3.1(A)", "4.1.3.1(B)", "4.1.3.1(C)"],
+    estimatedMinutes: 3.5,
+    props: {
+      eyebrow: "Chapter 1 — What You'll Learn",
+      title: "The Right-of-Way System",
+      previewPoints: [
+        "What \"right-of-way\" actually means — and what it doesn't",
+        "The difference between controlled and uncontrolled intersections",
+        "Who yields at an all-way stop, including when two drivers arrive together",
+      ],
+      sections: [
+        {
+          heading: "Right-of-Way Decisions Happen Fast",
+          body: [
+            "You just made a quick call on an uncontrolled intersection — maybe you guessed right, maybe you didn't. That's exactly the point: these decisions happen in seconds, out on the road. This chapter teaches you the actual rule, so you're recognizing the situation instead of guessing at it.",
+          ],
+        },
+        {
+          heading: "Right-of-Way Is a Rule, Not Something You Win",
+          body: [
+            "Right-of-way describes which road user should proceed and which should yield in a given situation. It's not something you earn by moving faster, being bigger, or asserting yourself.",
+            "Having the right-of-way also doesn't mean forcing another driver, pedestrian, or motorcyclist out of the way. Two separate questions matter: who should legally proceed, and is it actually safe to proceed right now? If another driver fails to yield, avoiding the collision matters more than proving you were right.",
+          ],
+        },
+        {
+          heading: "Controlled vs. Uncontrolled Intersections",
+          body: [
+            "A controlled intersection uses a traffic-control device — a signal, a STOP sign, a YIELD sign — to tell drivers exactly how to proceed.",
+            "An uncontrolled intersection has none of those. Right-of-way rules themselves decide who goes first, which is exactly why they're worth knowing cold.",
+          ],
+        },
+        {
+          heading: "Uncontrolled Intersections: Yield to the Right",
+          body: [
+            "When two vehicles reach an uncontrolled intersection at about the same time, the driver on the left yields to the vehicle on the right. Going straight or arriving a split-second earlier doesn't change that.",
+          ],
+        },
+        {
+          heading: "All-Way Stops: Arrival Order, Then Left Yields to Right",
+          body: [
+            "At an all-way stop, every driver stops completely first. After that, the first vehicle to stop normally proceeds first — arrival order controls.",
+            "If two vehicles stop at essentially the same time, the same left-yields-to-right rule applies. Wanting to turn left doesn't change any of it.",
+          ],
+        },
+      ],
+      instructorTip:
+        "Don't watch only the other vehicle — watch its wheels. A vehicle beginning to roll tells you the driver isn't yielding the way you expected.",
+      commonMistakes: [
+        "Assuming right-of-way has to be claimed or defended instead of yielded when someone else moves first.",
+        "Believing that going straight automatically gives you priority over cross traffic.",
+        "Treating \"first to move\" as the same thing as \"first to arrive\" at an all-way stop.",
+      ],
+    },
+  },
+  {
     id: "T3-B01",
     kind: "compare",
     poi: ["4.1.3.1(A)"],
     estimatedMinutes: 3,
     props: {
-      eyebrow: "What Right-of-Way Really Means",
+      eyebrow: "What Should Happen vs. What Actually Happens",
       prompt:
-        "Right-of-way is a legal system for deciding who goes first — not something to defend at all costs. Compare what the law expects with what actually keeps you safe.",
+        "Right-of-way rules create predictable traffic movement — but they don't guarantee everyone follows them. Compare the two.",
       tabs: [
         {
-          label: "What's Legally Expected",
+          label: "What Should Happen",
           caption:
-            "Right-of-way means the lawful priority to proceed before another road user. When the rules say it's your turn, you may go.",
+            "Vehicle B yields the right-of-way. Vehicle A proceeds through the intersection. This is what the rule expects — predictable, in order, no guesswork.",
         },
         {
-          label: "The Safest Decision",
+          label: "What Actually Happens",
           caption:
-            "A driver may technically have the right-of-way and still need to yield anyway. If another driver starts to go when they shouldn't, slowing down and letting them pass is the safer call — even though you were \"right.\" Knowing the law helps you predict traffic; defensive driving covers you when someone else breaks it.",
+            "Vehicle B starts moving anyway, even though it should yield. Should Vehicle A keep going just because it has priority? No — avoiding the collision matters more than proving you were right. Defensive driving is what protects you when another driver does something unpredictable.",
         },
       ],
+      ruleCard: {
+        title: "RIGHT-OF-WAY",
+        lines: ["Know the rule.", "Check the situation.", "Proceed only when it's safe."],
+      },
     },
   },
   {
@@ -199,6 +297,55 @@ export const TOPIC3_BLOCKS: Topic3Block[] = [
             { text: "No — the normal all-way-stop rules still apply.", correct: true, feedback: "Correct. A left turn doesn't change who has the right-of-way — it's still decided by arrival order, or by yielding to the vehicle on the right when arrival is simultaneous." },
           ],
         },
+      ],
+    },
+  },
+  {
+    id: "T3-L02",
+    kind: "learn",
+    poi: ["4.1.3.1(C)"],
+    estimatedMinutes: 3.5,
+    props: {
+      eyebrow: "Chapter 2 — What You'll Learn",
+      title: "Turns, Entries & Intersections That Aren't What They Look Like",
+      previewPoints: [
+        "When a left-turning driver actually has to yield",
+        "What you're responsible for when entering from a driveway",
+        "How to tell who yields at a T-intersection — and why looks are deceiving",
+        "Why lane counts and pavement type don't change the rule",
+      ],
+      sections: [
+        {
+          heading: "Left Turns: Yield to Oncoming Traffic First",
+          body: [
+            "A left-turning driver yields to oncoming traffic already in or approaching the intersection. A green light doesn't mean \"turn immediately\" — it means you may proceed once the way is actually clear.",
+            "Motorcycles get exactly the same right-of-way as any other vehicle here. But a motorcycle's smaller profile makes its speed and distance genuinely harder to judge, so it's worth a second look before you commit to the turn.",
+          ],
+        },
+        {
+          heading: "Entering From a Driveway: Nothing Protects You Automatically",
+          body: [
+            "A driveway, alley, or private road has no stop sign or signal protecting you. Before entering the roadway, check pedestrians on the sidewalk and traffic approaching from both directions — left, then front, then right, then left again.",
+          ],
+        },
+        {
+          heading: "T-Intersections: The Through Road Keeps Priority",
+          body: [
+            "At a T-intersection, traffic on the continuous through roadway has the right-of-way. A driver on the road that ends at the T yields before entering — no matter which road looks wider, busier, or newer. Look at the actual configuration and any signs or signals, not appearance.",
+          ],
+        },
+        {
+          heading: "Different Lane Counts and Pavement Don't Create New Rules",
+          body: [
+            "A two-lane road meeting a four-lane road doesn't automatically give the bigger road priority, and a paved road meeting a gravel road works the same way. If it's controlled, follow the sign or signal. If it's uncontrolled, the standard right-of-way rules — not the road's size or surface — decide who goes.",
+          ],
+        },
+      ],
+      instructorTip: "Look once for traffic. Look again for motorcycles and bicycles.",
+      commonMistakes: [
+        "Turning left because the light is green, without checking that oncoming traffic is actually clear.",
+        "Misjudging how close and how fast an oncoming motorcycle really is.",
+        "Assuming the wider or busier-looking road has right-of-way at a T-intersection.",
       ],
     },
   },
@@ -311,6 +458,49 @@ export const TOPIC3_BLOCKS: Topic3Block[] = [
           caption:
             "A paved road meeting a gravel or unpaved road works the same way — the surface itself doesn't grant right-of-way. Obey any traffic-control device, and where there isn't one, apply the standard right-of-way rules.",
         },
+      ],
+    },
+  },
+  {
+    id: "T3-L03",
+    kind: "learn",
+    poi: ["4.1.3.1(C)"],
+    estimatedMinutes: 3,
+    props: {
+      eyebrow: "Chapter 3 — What You'll Learn",
+      title: "Roundabouts, Freeway Merges & Work Zones",
+      previewPoints: [
+        "Who has priority inside a roundabout — and what actually creates a safe gap",
+        "Whose job it is to merge safely onto a freeway",
+        "Why a flagger can override the painted lane markings in a work zone",
+      ],
+      sections: [
+        {
+          heading: "Roundabouts: Yield to What's Already Circulating",
+          body: [
+            "As you approach a roundabout, slow down and get ready to yield — traffic already circulating inside has the right-of-way over anyone entering.",
+            "Enter only when there's an actual safe gap in that circulating traffic. Reaching the roundabout first, or signaling your intent, doesn't create a gap or force circulating traffic to make room for you.",
+            "Once inside, hold your lane and keep scanning. Signal before your exit and watch for pedestrians crossing the exit leg — circulating doesn't cancel your duty to them.",
+          ],
+        },
+        {
+          heading: "Freeway Entry: The Entering Driver Adjusts",
+          body: [
+            "Traffic already on the highway generally keeps its lane and speed. The entering driver is responsible for finding a safe gap and merging into it.",
+            "A turn signal only communicates intent — it doesn't obligate anyone on the highway to open a gap for you.",
+          ],
+        },
+        {
+          heading: "Work Zones: The Flagger Controls, Not the Old Markings",
+          body: [
+            "In a work zone, temporary traffic control — flaggers, cones, temporary signs, lane shifts — governs the roadway, even when it contradicts the permanent pavement markings. An authorized flagger's instruction is what controls right now.",
+          ],
+        },
+      ],
+      commonMistakes: [
+        "Entering a roundabout because you signaled or arrived first, without an actual gap in circulating traffic.",
+        "Assuming highway traffic has to slow down or move over for a merging vehicle.",
+        "Following the painted lane markings instead of a flagger's instructions in a work zone.",
       ],
     },
   },
@@ -435,6 +625,48 @@ export const TOPIC3_BLOCKS: Topic3Block[] = [
     },
   },
   {
+    id: "T3-L04",
+    kind: "learn",
+    poi: ["4.1.3.1(C)", "4.1.3.1(D)", "4.1.3.1(E)"],
+    estimatedMinutes: 3.5,
+    props: {
+      eyebrow: "Chapter 4 — What You'll Learn",
+      title: "Railroad Crossings and Emergency Vehicles",
+      previewPoints: [
+        "What a lowered gate or active signal actually requires",
+        "The one rule that prevents getting stuck on the tracks",
+        "What to do for an approaching emergency vehicle — and a stopped one",
+        "Texas's Move Over or Slow Down law, in plain terms",
+      ],
+      sections: [
+        {
+          heading: "A Lowered Gate or Active Signal Means Stop — No Exceptions",
+          body: [
+            "A lowered gate or active flashing signal at a railroad crossing means stop and stay stopped. Never go around a lowered gate — a train can be closer and faster than it appears, and a gate down isn't a judgment call.",
+            "Even with no train visible, never enter a crossing unless you can see there's enough room to completely clear it. A train can't stop quickly or steer around you — if traffic ahead would leave you stuck on the tracks, wait before the crossing, not on it.",
+          ],
+        },
+        {
+          heading: "An Emergency Vehicle Approaching You",
+          body: [
+            "When an emergency vehicle approaches from behind with lights and siren active, pull toward the right edge of the roadway and yield until it passes. Don't speed up to clear the way, and don't assume it will maneuver around you.",
+          ],
+        },
+        {
+          heading: "Texas's Move Over or Slow Down Law",
+          body: [
+            "This is a different situation: a police, fire, ambulance, tow, utility, or TxDOT vehicle stopped on the shoulder with warning lights active. When it's safe, move out of the lane closest to the vehicle. If you can't change lanes, the law requires you to slow down instead. A horn doesn't satisfy this requirement.",
+          ],
+        },
+      ],
+      commonMistakes: [
+        "Driving around a lowered gate because no train is visible yet.",
+        "Entering a crossing without confirming there's room on the other side to fully clear it.",
+        "Assuming the Move Over or Slow Down law only applies to fire trucks.",
+      ],
+    },
+  },
+  {
     id: "T3-B11",
     kind: "sequence",
     poi: ["4.1.3.1(C)"],
@@ -498,6 +730,48 @@ export const TOPIC3_BLOCKS: Topic3Block[] = [
             { text: "Just honk to let them know you see them.", correct: false, feedback: "A horn doesn't satisfy the legal requirement — you need to actually move over a lane when safe, or slow down as the law requires." },
           ],
         },
+      ],
+    },
+  },
+  {
+    id: "T3-L05",
+    kind: "learn",
+    poi: ["4.1.3.1(A)", "4.1.3.1(D)"],
+    estimatedMinutes: 3,
+    props: {
+      eyebrow: "Chapter 5 — What You'll Learn",
+      title: "Sharing the Road: Motorcyclists, Pedestrians & School Buses",
+      previewPoints: [
+        "Why motorcyclists are easy to misjudge, even though they have equal right-of-way",
+        "When a green light does — and doesn't — override a pedestrian's right to cross",
+        "How the school bus stop-arm rule changes based on the road itself",
+      ],
+      sections: [
+        {
+          heading: "Motorcyclists Get Equal Right-of-Way — But Are Easy to Misjudge",
+          body: [
+            "Motorcyclists have exactly the same right-of-way protections as any other vehicle. The risk isn't the law — it's that a motorcycle's smaller profile makes its speed and distance genuinely harder to judge. Look, look again, and turn only when you're sure it's actually safe.",
+          ],
+        },
+        {
+          heading: "Pedestrians: A Green Light Doesn't Cancel Your Duty",
+          body: [
+            "A driver must yield to a pedestrian lawfully in a crosswalk, marked or unmarked — whether turning or going straight. A green light doesn't cancel that duty if a pedestrian is already in your path. Yield until they're clear, then proceed.",
+          ],
+        },
+        {
+          heading: "School Buses: The Rule Depends on the Roadway",
+          body: [
+            "When a school bus stops with red lights flashing and its stop arm extended, traffic in both directions must stop — on a two-lane undivided road, and even where there's a center turn lane, since that's not a physical barrier.",
+            "The exception is a roadway with a real physical median or other intervening space. There, only traffic on the bus's side has to stop.",
+          ],
+        },
+      ],
+      instructorTip: "Before a left turn, look twice for motorcycles and bicycles.",
+      commonMistakes: [
+        "Judging a motorcycle as \"far enough away\" without a second look.",
+        "Proceeding on a green light without checking that the crosswalk is actually clear.",
+        "Treating a center turn lane as if it were a physical median for school-bus purposes.",
       ],
     },
   },
@@ -588,6 +862,43 @@ export const TOPIC3_BLOCKS: Topic3Block[] = [
           caption:
             "A real physical median or intervening space separates the roadways. Traffic on the bus's side must stop — opposing traffic on the far side of the barrier does not.",
         },
+      ],
+    },
+  },
+  {
+    id: "T3-L06",
+    kind: "learn",
+    poi: ["4.1.3.1(F)", "4.1.3.1(G)"],
+    estimatedMinutes: 2.5,
+    props: {
+      eyebrow: "Chapter 6 — What You'll Learn",
+      title: "Put It All Together: The S.A.F.E. Framework",
+      previewPoints: [
+        "A simple framework for applying everything you've learned in real time",
+        "Why anticipating a mistake matters even when you're doing everything right",
+      ],
+      sections: [
+        {
+          heading: "You Already Know the Rules — Now Apply Them Together",
+          body: [
+            "Every right-of-way situation in this topic comes down to the same underlying skill: knowing who has priority, and staying ready in case someone else gets it wrong. The activities in this chapter mix concepts together the way real driving does.",
+          ],
+        },
+        {
+          heading: "S.A.F.E. — An Easy Way Teaching Framework",
+          body: [
+            "SEE: actively scan the whole scene — other vehicles, pedestrians, and any traffic-control devices — not just the car ahead of you.",
+            "ANTICIPATE: expect the realistic mistake another road user might make, instead of assuming everyone will follow the rules perfectly.",
+            "FIND SPACE: keep enough following and side distance that someone else's mistake doesn't become your crash.",
+            "EXECUTE SAFELY: apply what you saw and anticipated — don't just react at the last second.",
+            "S.A.F.E. is an Easy Way teaching framework to help the ideas stick — it isn't Texas law or a TDLR/DPS term.",
+          ],
+        },
+      ],
+      commonMistakes: [
+        "Watching only the vehicle directly ahead instead of scanning the whole scene.",
+        "Assuming every other driver and pedestrian will follow the rules perfectly.",
+        "Following the rules yourself but leaving no margin for someone else's mistake.",
       ],
     },
   },

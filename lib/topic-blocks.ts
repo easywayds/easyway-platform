@@ -14,9 +14,13 @@ import { prisma } from "@/lib/prisma";
 // read-only elements."
 export const REQUIRED_BLOCKS: Record<number, string[]> = {
   3: [
-    "T3-B00", "T3-B01", "T3-B02", "T3-B03", "T3-B04", "T3-B05", "T3-B06", "T3-B07",
-    "T3-B08", "T3-B09", "T3-B10", "T3-B11", "T3-B12", "T3-B13", "T3-B14", "T3-B15",
-    "T3-B16", "T3-B17",
+    "T3-L00",
+    "T3-B00", "T3-L01", "T3-B01", "T3-B02", "T3-B03",
+    "T3-L02", "T3-B04", "T3-B05", "T3-B06", "T3-B07",
+    "T3-L03", "T3-B08", "T3-B09", "T3-B10",
+    "T3-L04", "T3-B11", "T3-B12",
+    "T3-L05", "T3-B13", "T3-B14", "T3-B15",
+    "T3-L06", "T3-B16", "T3-B17",
   ],
 };
 

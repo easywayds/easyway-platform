@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import styles from "./course.module.css";
+import RuleCard, { type RuleCardProps } from "./RuleCard";
 
 export type SceneTab = {
   label: string;
@@ -13,6 +14,7 @@ export type CompareScenesProps = {
   eyebrow?: string;
   prompt: string;
   tabs: SceneTab[];
+  ruleCard?: RuleCardProps;
   onComplete?: () => void;
 };
 
@@ -20,7 +22,7 @@ export type CompareScenesProps = {
 // meaningful interaction here is actually looking at every scene, not just
 // picking one — completion fires once every tab has been opened at least
 // once, whichever order the student explores them in.
-export default function CompareScenes({ eyebrow, prompt, tabs, onComplete }: CompareScenesProps) {
+export default function CompareScenes({ eyebrow, prompt, tabs, ruleCard, onComplete }: CompareScenesProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [visited, setVisited] = useState<Set<number>>(new Set([0]));
   const firedRef = useRef(false);
@@ -82,6 +84,11 @@ export default function CompareScenes({ eyebrow, prompt, tabs, onComplete }: Com
         <p style={{ fontSize: 12.5, color: "var(--navy-soft)", marginTop: 10 }}>
           Tap through all {tabs.length} to continue.
         </p>
+      )}
+      {ruleCard && visited.size === tabs.length && (
+        <div style={{ marginTop: 16 }}>
+          <RuleCard {...ruleCard} />
+        </div>
       )}
     </div>
   );

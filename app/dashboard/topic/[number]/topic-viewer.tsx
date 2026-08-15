@@ -10,6 +10,7 @@ import DecisionSequence from "@/components/course/DecisionSequence";
 import HotspotScene from "@/components/course/HotspotScene";
 import StagedScenario from "@/components/course/StagedScenario";
 import RecapAccordion from "@/components/course/RecapAccordion";
+import LessonScreen from "@/components/course/LessonScreen";
 import { TOPIC3_BLOCKS, TOPIC3_CHAPTERS, TOPIC3_PRACTICE_BLOCK_IDS, type Topic3Block } from "@/lib/topic3-blocks";
 import courseStyles from "@/components/course/course.module.css";
 import styles from "./stepper.module.css";
@@ -59,6 +60,8 @@ function practiceTitle(block: Topic3Block): string {
       return block.props.eyebrow ?? block.props.stages[0]?.label ?? block.id;
     case "recap":
       return block.props.eyebrow ?? block.id;
+    case "learn":
+      return block.props.eyebrow ?? block.props.title;
   }
 }
 
@@ -346,22 +349,25 @@ export default function TopicViewer({
           {screen.kind === "interactive" && (
             <div className={`${courseStyles.root} ${courseStyles.card}`}>
               {screen.block.kind === "decision" && (
-                <DecisionChallenge {...screen.block.props} onComplete={() => handleBlockComplete(screen.block.id)} />
+                <DecisionChallenge key={screen.block.id} {...screen.block.props} onComplete={() => handleBlockComplete(screen.block.id)} />
               )}
               {screen.block.kind === "compare" && (
-                <CompareScenes {...screen.block.props} onComplete={() => handleBlockComplete(screen.block.id)} />
+                <CompareScenes key={screen.block.id} {...screen.block.props} onComplete={() => handleBlockComplete(screen.block.id)} />
               )}
               {screen.block.kind === "sequence" && (
-                <DecisionSequence {...screen.block.props} onComplete={() => handleBlockComplete(screen.block.id)} />
+                <DecisionSequence key={screen.block.id} {...screen.block.props} onComplete={() => handleBlockComplete(screen.block.id)} />
               )}
               {screen.block.kind === "hotspot" && (
-                <HotspotScene {...screen.block.props} onComplete={() => handleBlockComplete(screen.block.id)} />
+                <HotspotScene key={screen.block.id} {...screen.block.props} onComplete={() => handleBlockComplete(screen.block.id)} />
               )}
               {screen.block.kind === "staged" && (
-                <StagedScenario {...screen.block.props} onComplete={() => handleBlockComplete(screen.block.id)} />
+                <StagedScenario key={screen.block.id} {...screen.block.props} onComplete={() => handleBlockComplete(screen.block.id)} />
               )}
               {screen.block.kind === "recap" && (
-                <RecapAccordion {...screen.block.props} onComplete={() => handleBlockComplete(screen.block.id)} />
+                <RecapAccordion key={screen.block.id} {...screen.block.props} onComplete={() => handleBlockComplete(screen.block.id)} />
+              )}
+              {screen.block.kind === "learn" && (
+                <LessonScreen key={screen.block.id} {...screen.block.props} onComplete={() => handleBlockComplete(screen.block.id)} />
               )}
             </div>
           )}

@@ -378,6 +378,115 @@
   margin-bottom: 6px;
 }
 
+/* --- Lesson / LEARN screen --- */
+.lessonTitle {
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0 0 18px;
+  color: var(--navy);
+}
+
+.previewBox {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 0 0 20px;
+}
+
+.previewLabel {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--yellow-deep);
+  margin: 0 0 8px;
+}
+
+.previewList {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--navy-soft);
+}
+
+.previewList li {
+  margin-bottom: 4px;
+}
+
+.learnSection {
+  margin-bottom: 18px;
+}
+
+.learnSectionHeading {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 6px;
+}
+
+.learnSectionBody {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--navy);
+  margin: 0 0 8px;
+}
+
+.tipBox {
+  background: #eef2fb;
+  border: 1px solid #ccd6ee;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin: 0 0 18px;
+}
+
+.tipLabel {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin: 0 0 4px;
+}
+
+.tipBody {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--navy-soft);
+  margin: 0;
+}
+
+.mistakeBox {
+  background: #fff7e0;
+  border: 1px solid #f0dca0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin: 0 0 4px;
+}
+
+.mistakeLabel {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #6b4c00;
+  margin: 0 0 8px;
+}
+
+.mistakeBox ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #6b4c00;
+}
+
+.mistakeBox li {
+  margin-bottom: 4px;
+}
+
 /* --- Practice / keep-going screen --- */
 .practiceGrid {
   display: grid;
