@@ -22,6 +22,15 @@ export const REQUIRED_BLOCKS: Record<number, string[]> = {
     "T3-L05", "T3-B13", "T3-B14", "T3-B15",
     "T3-L06", "T3-B16", "T3-B17",
   ],
+  4: [
+    "T4-L00",
+    "T4-B00", "T4-L01", "T4-B01",
+    "T4-L02", "T4-B02", "T4-B03", "T4-B04",
+    "T4-L03", "T4-B05", "T4-B06", "T4-B07",
+    "T4-L04", "T4-B08", "T4-B09", "T4-B10",
+    "T4-L05", "T4-B11", "T4-B12", "T4-B13", "T4-B14",
+    "T4-L06", "T4-B15", "T4-B16", "T4-B17",
+  ],
 };
 
 // Every valid block id for a topic, required or not — this is what
@@ -32,6 +41,7 @@ export const REQUIRED_BLOCKS: Record<number, string[]> = {
 // through and completes, but which isn't required for Topic 4 to unlock.
 export const ALL_BLOCKS: Record<number, string[]> = {
   3: [...REQUIRED_BLOCKS[3], "T3-B18"],
+  4: [...REQUIRED_BLOCKS[4], "T4-B18"],
 };
 
 export function getRequiredBlocks(topicNumber: number): string[] {

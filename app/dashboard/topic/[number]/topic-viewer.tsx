@@ -12,6 +12,7 @@ import StagedScenario from "@/components/course/StagedScenario";
 import RecapAccordion from "@/components/course/RecapAccordion";
 import LessonScreen from "@/components/course/LessonScreen";
 import { TOPIC3_BLOCKS, TOPIC3_CHAPTERS, TOPIC3_PRACTICE_BLOCK_IDS, type Topic3Block } from "@/lib/topic3-blocks";
+import { TOPIC4_BLOCKS, TOPIC4_CHAPTERS, TOPIC4_PRACTICE_BLOCK_IDS, type Topic4Block } from "@/lib/topic4-blocks";
 import courseStyles from "@/components/course/course.module.css";
 import styles from "./stepper.module.css";
 
@@ -33,22 +34,39 @@ type QuizQuestion = {
 
 type Screen =
   | { kind: "content"; block: ContentBlockData }
-  | { kind: "interactive"; block: Topic3Block }
+  | { kind: "interactive"; block: Topic3Block | Topic4Block }
   | { kind: "quiz"; question: QuizQuestion; index: number; total: number }
   | { kind: "quizResult" }
   | { kind: "complete" };
 
 const HEARTBEAT_INTERVAL_MS = 15000;
 
-function chapterFor(blockId: string): { title: string; index: number } | null {
-  const idx = TOPIC3_CHAPTERS.findIndex((c) => c.blockIds.includes(blockId));
+// Per-topic interactive-lesson data — every topic besides 3 and 4 is
+// completely unaffected (these maps only resolve for those two topic
+// numbers; everything else falls back to the plain content-array flow).
+const TOPIC_BLOCKS: Record<number, (Topic3Block | Topic4Block)[]> = {
+  3: TOPIC3_BLOCKS,
+  4: TOPIC4_BLOCKS,
+};
+const TOPIC_CHAPTERS: Record<number, { title: string; blockIds: string[] }[]> = {
+  3: TOPIC3_CHAPTERS,
+  4: TOPIC4_CHAPTERS,
+};
+const TOPIC_PRACTICE_IDS: Record<number, string[]> = {
+  3: TOPIC3_PRACTICE_BLOCK_IDS,
+  4: TOPIC4_PRACTICE_BLOCK_IDS,
+};
+
+function chapterFor(blockId: string, topicNumber: number): { title: string; index: number } | null {
+  const chapters = TOPIC_CHAPTERS[topicNumber] ?? [];
+  const idx = chapters.findIndex((c) => c.blockIds.includes(blockId));
   if (idx === -1) return null;
-  return { title: TOPIC3_CHAPTERS[idx].title, index: idx };
+  return { title: chapters[idx].title, index: idx };
 }
 
 // Sequence/staged blocks don't have a top-level "eyebrow" (each round or
 // stage has its own instead), so the practice hub needs a per-kind label.
-function practiceTitle(block: Topic3Block): string {
+function practiceTitle(block: Topic3Block | Topic4Block): string {
   switch (block.kind) {
     case "decision":
     case "compare":
@@ -96,14 +114,15 @@ export default function TopicViewer({
   // normal Continue flow advancing through the rest of the sequence.
   const [practiceReturnIndex, setPracticeReturnIndex] = useState<number | null>(null);
 
-  // Topic 3 pilots the Easy Way Interactive Lesson Standard v1.0 — its
-  // curriculum data (lib/topic3-blocks.ts) is static, not per-student, so
-  // it's imported directly here rather than threaded through as a prop.
-  // Every other topic is completely unaffected (TOPIC3_BLOCKS only
-  // resolves to screens when topic.number === 3). Topic 3's `content` rows
-  // are empty in the database — all its instructional content now flows
-  // through the interactive blocks instead.
-  const interactiveBlocks = topic.number === 3 ? TOPIC3_BLOCKS : [];
+  // Topics 3 and 4 use the Easy Way Interactive Lesson Standard v1.0 —
+  // their curriculum data (lib/topic3-blocks.ts, lib/topic4-blocks.ts) is
+  // static, not per-student, so it's imported directly here rather than
+  // threaded through as a prop. Every other topic is completely
+  // unaffected. Topics 3 and 4's `content` rows are empty in the
+  // database — all their instructional content flows through the
+  // interactive blocks instead.
+  const interactiveBlocks = TOPIC_BLOCKS[topic.number] ?? [];
+  const practiceIds = TOPIC_PRACTICE_IDS[topic.number] ?? [];
 
   const screens: Screen[] = [
     ...interactiveBlocks.map((block): Screen => ({ kind: "interactive", block })),
@@ -289,13 +308,14 @@ export default function TopicViewer({
     (screen.kind === "complete" && !isComplete);
 
   const pct = Math.min(100, Math.round((current / (screens.length - 1)) * 100));
-  const chapter = onInteractiveScreen ? chapterFor(screen.block.id) : null;
+  const chapters = TOPIC_CHAPTERS[topic.number] ?? [];
+  const chapter = onInteractiveScreen ? chapterFor(screen.block.id, topic.number) : null;
 
   // Reaching the final screen already implies every required block and the
   // quiz are done (each step along the way gates Continue on that) — so
-  // for Topic 3, "not complete yet" here can only mean time. Show the
-  // practice hub instead of a plain wait message.
-  const showPracticeHub = topic.number === 3 && screen.kind === "complete" && !isComplete;
+  // for an interactive-lesson topic, "not complete yet" here can only mean
+  // time. Show the practice hub instead of a plain wait message.
+  const showPracticeHub = practiceIds.length > 0 && screen.kind === "complete" && !isComplete;
 
   return (
     <div className={styles.root}>
@@ -315,7 +335,7 @@ export default function TopicViewer({
           </div>
           <div className={styles.progressCaption}>
             {chapter
-              ? `Chapter ${chapter.index + 1} of ${TOPIC3_CHAPTERS.length} — ${chapter.title}`
+              ? `Chapter ${chapter.index + 1} of ${chapters.length} — ${chapter.title}`
               : current < screens.length - 1
                 ? `Screen ${current + 1} of ${screens.length - 1}`
                 : "Complete"}
@@ -431,13 +451,13 @@ export default function TopicViewer({
             <div className={`${courseStyles.root} ${courseStyles.card}`}>
               <p className={courseStyles.eyebrow}>Keep Practicing — You're Almost There</p>
               <p className={courseStyles.prompt} style={{ fontWeight: 500 }}>
-                You've completed the core Topic 3 activities. Use the practice challenges below to
-                strengthen your right-of-way decisions while completing the required instructional
+                You've completed the core activities for this topic. Use the practice challenges below
+                to reinforce what you've learned while completing the required instructional
                 time — {minutesLogged} of {topic.minMinutes} minutes logged so far.
               </p>
               <div className={courseStyles.practiceGrid}>
-                {TOPIC3_PRACTICE_BLOCK_IDS.map((blockId) => {
-                  const block = TOPIC3_BLOCKS.find((b) => b.id === blockId);
+                {practiceIds.map((blockId) => {
+                  const block = interactiveBlocks.find((b) => b.id === blockId);
                   if (!block) return null;
                   return (
                     <button
