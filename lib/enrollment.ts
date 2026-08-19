@@ -14,9 +14,22 @@ export async function getSchoolSettings() {
 }
 
 export async function getOrCreateActiveEnrollment(studentId: string) {
+  // A paid enrollment always wins, regardless of status — issuing a
+  // certificate flips status to "completed" (see lib/certificate-pool.ts),
+  // and that must never make a finished, paid enrollment invisible here.
+  // Without this, every visit after certification would silently spin up
+  // a fresh unpaid enrollment and show the student a "pay again" wall.
   let enrollment = await prisma.enrollment.findFirst({
-    where: { studentId, status: "active" },
+    where: { studentId, paidAt: { not: null } },
+    orderBy: { startedAt: "desc" },
   });
+
+  if (!enrollment) {
+    enrollment = await prisma.enrollment.findFirst({
+      where: { studentId, status: "active" },
+      orderBy: { startedAt: "desc" },
+    });
+  }
 
   if (!enrollment) {
     enrollment = await prisma.enrollment.create({
