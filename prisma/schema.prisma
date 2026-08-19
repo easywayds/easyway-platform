@@ -55,6 +55,7 @@ model Student {
   sex          String
   phone        String?
   createdAt    DateTime @default(now())
+  lastLoginAt  DateTime?
 
   enrollments Enrollment[]
 

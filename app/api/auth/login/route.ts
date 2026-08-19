@@ -35,6 +35,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: INVALID_CREDENTIALS }, { status: 401 });
   }
 
+  await prisma.student.update({
+    where: { id: student.id },
+    data: { lastLoginAt: new Date() },
+  });
+
   const token = await createSessionToken({ sub: student.id, email: student.email });
 
   const res = NextResponse.json({
