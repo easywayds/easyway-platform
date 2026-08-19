@@ -83,26 +83,28 @@ function practiceTitle(block: Topic3Block | Topic4Block): string {
   }
 }
 
-// Topics 3/4's interactive blocks are individually tracked server-side
-// (completedBlockIds), so a returning student can resume right where they
+// Every topic's screens — interactive blocks (topics 3-4) and/or plain
+// content screens (every topic) — are individually tracked server-side via
+// completedBlockIds, so a returning student can resume right where they
 // left off instead of re-clicking through everything from screen one.
-// Flat-content topics (1, 2, 5-8) have no per-screen tracking today, so
-// there's nothing reliable to resume to — they keep starting at 0.
 function computeInitialScreenIndex(
   interactiveBlocks: (Topic3Block | Topic4Block)[],
+  content: ContentBlockData[],
   quiz: QuizQuestion[],
   completedBlockIds: string[],
   quizAlreadyCompleted: boolean
 ): number {
-  if (interactiveBlocks.length === 0) return 0;
   const completed = new Set(completedBlockIds);
-  const firstIncomplete = interactiveBlocks.findIndex((b) => !completed.has(b.id));
-  if (firstIncomplete !== -1) return firstIncomplete;
-  // Every interactive block is done. Content is always empty for these
-  // topics, so the quiz starts immediately after the last block.
-  if (quiz.length > 0 && !quizAlreadyCompleted) return interactiveBlocks.length;
+  const firstIncompleteInteractive = interactiveBlocks.findIndex((b) => !completed.has(b.id));
+  if (firstIncompleteInteractive !== -1) return firstIncompleteInteractive;
+  // Every interactive block is done (or this topic has none) — check content.
+  const firstIncompleteContent = content.findIndex((c) => !completed.has(c.id));
+  if (firstIncompleteContent !== -1) return interactiveBlocks.length + firstIncompleteContent;
+  // Every block and content screen is done — the quiz starts right after.
+  const afterAll = interactiveBlocks.length + content.length;
+  if (quiz.length > 0 && !quizAlreadyCompleted) return afterAll;
   // Everything is done — land on the final "complete" screen.
-  return interactiveBlocks.length + quiz.length + (quiz.length > 0 ? 1 : 0);
+  return afterAll + quiz.length + (quiz.length > 0 ? 1 : 0);
 }
 
 export default function TopicViewer({
@@ -126,7 +128,13 @@ export default function TopicViewer({
   const sendingRef = useRef(false);
 
   const [current, setCurrent] = useState(() =>
-    computeInitialScreenIndex(TOPIC_BLOCKS[topic.number] ?? [], quiz, initialCompletedBlockIds, quizAlreadyCompleted)
+    computeInitialScreenIndex(
+      TOPIC_BLOCKS[topic.number] ?? [],
+      content,
+      quiz,
+      initialCompletedBlockIds,
+      quizAlreadyCompleted
+    )
   );
   const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({});
   // Seeded from the server so a mid-topic refresh doesn't force the student
@@ -303,6 +311,13 @@ export default function TopicViewer({
         router.push("/dashboard");
       }
       return;
+    }
+    // Record plain content screens as a resume marker too — same
+    // mechanism as interactive blocks, just not required for completion
+    // (areRequiredBlocksComplete only gates on topics with a real block
+    // catalog, so this never blocks anything for topics 1, 2, 5-8).
+    if (screen.kind === "content" && !completedBlockIds.has(screen.block.id)) {
+      handleBlockComplete(screen.block.id);
     }
     setCurrent((c) => Math.min(screens.length - 1, c + 1));
     window.scrollTo(0, 0);

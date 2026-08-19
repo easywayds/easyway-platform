@@ -10,12 +10,14 @@ const Schema = z.object({
   blockId: z.string().min(1),
 });
 
-// Records that a student actually completed one interactive lesson block
-// (made a decision, answered a scenario) — a durable server-side fact, not
-// something inferred from elapsed time. If every required block for a
-// topic is now complete and its time threshold is already met, this also
-// flips the topic to "complete" — mirroring what the heartbeat route does
-// when time finishes last.
+// Records that a student actually reached one lesson block — either an
+// interactive decision/scenario (topics 3-4) or, for the plain flat-content
+// topics, a content screen they clicked past. A durable server-side fact,
+// not something inferred from elapsed time, so a returning student can
+// resume where they left off instead of restarting the topic. If every
+// required block for a topic is now complete and its time threshold is
+// already met, this also flips the topic to "complete" — mirroring what
+// the heartbeat route does when time finishes last.
 export async function POST(req: NextRequest) {
   const token = req.cookies.get(SESSION_COOKIE)?.value;
   const session = token ? await verifySessionToken(token) : null;
@@ -30,17 +32,28 @@ export async function POST(req: NextRequest) {
   }
   const { topicNumber, blockId } = parsed.data;
 
-  const validBlocks = getAllBlocks(topicNumber);
-  if (!validBlocks.includes(blockId)) {
-    return NextResponse.json({ error: "Unknown block for this topic." }, { status: 400 });
-  }
-
-  const enrollment = await getOrCreateActiveEnrollment(session.sub);
-
   const topic = await prisma.topic.findUnique({ where: { number: topicNumber } });
   if (!topic) {
     return NextResponse.json({ error: "Topic not found" }, { status: 404 });
   }
+
+  // Topics 3-4 have a defined interactive-block catalog to validate
+  // against. Every other topic has no such catalog — instead, the id must
+  // be a real TopicContent row belonging to this topic, so a resume marker
+  // can't be spoofed with an arbitrary string.
+  const validBlocks = getAllBlocks(topicNumber);
+  if (validBlocks.length > 0) {
+    if (!validBlocks.includes(blockId)) {
+      return NextResponse.json({ error: "Unknown block for this topic." }, { status: 400 });
+    }
+  } else {
+    const contentRow = await prisma.topicContent.findFirst({ where: { id: blockId, topicId: topic.id } });
+    if (!contentRow) {
+      return NextResponse.json({ error: "Unknown block for this topic." }, { status: 400 });
+    }
+  }
+
+  const enrollment = await getOrCreateActiveEnrollment(session.sub);
 
   const topics = await getTopicsWithProgress(enrollment.id, Boolean(enrollment.paidAt));
   const current = topics.find((t) => t.number === topicNumber);

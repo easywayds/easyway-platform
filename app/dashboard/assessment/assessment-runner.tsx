@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import CertificateDownloadButton from "@/components/CertificateDownloadButton";
 
 type Question = {
   id: string;
@@ -111,19 +112,9 @@ export default function AssessmentRunner({
                 <p style={{ color: "#666" }}>
                   Certificate No. {result.certificateNumber} has been issued.
                 </p>
-                <a
-                  href="/api/certificate/download"
-                  className="primary"
-                  style={{
-                    display: "inline-block",
-                    marginTop: 16,
-                    width: "auto",
-                    padding: "10px 20px",
-                    textDecoration: "none",
-                  }}
-                >
-                  Download your certificate
-                </a>
+                <div style={{ marginTop: 16 }}>
+                  <CertificateDownloadButton className="primary" />
+                </div>
               </>
             ) : (
               <p style={{ color: "#666" }}>

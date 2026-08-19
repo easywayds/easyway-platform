@@ -7,6 +7,7 @@ import { getOrCreateActiveEnrollment, getTopicsWithProgress } from "@/lib/enroll
 import { getCoursePriceUsd } from "@/lib/square";
 import LogoutButton from "./logout-button";
 import PayButton from "./pay-button";
+import CertificateDownloadButton from "@/components/CertificateDownloadButton";
 import type { Enrollment } from "@prisma/client";
 
 // Always live, per-student data — never statically prerendered.
@@ -105,18 +106,7 @@ export default async function DashboardPage() {
         <div className="topic-content-placeholder" style={{ marginTop: 24, borderStyle: "solid" }}>
           <p style={{ fontWeight: 600, marginTop: 0 }}>Course complete 🎉</p>
           <p>Your certificate has been issued.</p>
-          <a
-            href="/api/certificate/download"
-            className="primary"
-            style={{
-              display: "inline-block",
-              width: "auto",
-              padding: "8px 16px",
-              textDecoration: "none",
-            }}
-          >
-            Download certificate
-          </a>
+          <CertificateDownloadButton className="primary" />
         </div>
       )}
 
