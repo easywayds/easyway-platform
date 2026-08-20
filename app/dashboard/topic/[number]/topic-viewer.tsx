@@ -14,6 +14,7 @@ import LessonScreen from "@/components/course/LessonScreen";
 import VideoLesson from "@/components/course/VideoLesson";
 import RiskStack from "@/components/course/RiskStack";
 import { TOPIC1_BLOCKS, TOPIC1_CHAPTERS, TOPIC1_PRACTICE_BLOCK_IDS, type Topic1Block } from "@/lib/topic1-blocks";
+import { TOPIC2_BLOCKS, TOPIC2_CHAPTERS, TOPIC2_PRACTICE_BLOCK_IDS, type Topic2Block } from "@/lib/topic2-blocks";
 import { TOPIC3_BLOCKS, TOPIC3_CHAPTERS, TOPIC3_PRACTICE_BLOCK_IDS, type Topic3Block } from "@/lib/topic3-blocks";
 import { TOPIC4_BLOCKS, TOPIC4_CHAPTERS, TOPIC4_PRACTICE_BLOCK_IDS, type Topic4Block } from "@/lib/topic4-blocks";
 import { TOPIC5_BLOCKS, TOPIC5_CHAPTERS, TOPIC5_PRACTICE_BLOCK_IDS, type Topic5Block } from "@/lib/topic5-blocks";
@@ -41,18 +42,19 @@ type QuizQuestion = {
 
 type Screen =
   | { kind: "content"; block: ContentBlockData }
-  | { kind: "interactive"; block: Topic1Block | Topic3Block | Topic4Block | Topic5Block | Topic6Block | Topic7Block | Topic8Block }
+  | { kind: "interactive"; block: Topic1Block | Topic2Block | Topic3Block | Topic4Block | Topic5Block | Topic6Block | Topic7Block | Topic8Block }
   | { kind: "quiz"; question: QuizQuestion; index: number; total: number }
   | { kind: "quizResult" }
   | { kind: "complete" };
 
 const HEARTBEAT_INTERVAL_MS = 15000;
 
-// Per-topic interactive-lesson data — every topic besides 1, 3, 4, 5, 6, 7,
-// and 8 is completely unaffected (these maps only resolve for those topic
+// Per-topic interactive-lesson data — every topic besides 1, 2, 3, 4, 5, 6,
+// 7, and 8 is completely unaffected (these maps only resolve for those topic
 // numbers; everything else falls back to the plain content-array flow).
-const TOPIC_BLOCKS: Record<number, (Topic1Block | Topic3Block | Topic4Block | Topic5Block | Topic6Block | Topic7Block | Topic8Block)[]> = {
+const TOPIC_BLOCKS: Record<number, (Topic1Block | Topic2Block | Topic3Block | Topic4Block | Topic5Block | Topic6Block | Topic7Block | Topic8Block)[]> = {
   1: TOPIC1_BLOCKS,
+  2: TOPIC2_BLOCKS,
   3: TOPIC3_BLOCKS,
   4: TOPIC4_BLOCKS,
   5: TOPIC5_BLOCKS,
@@ -62,6 +64,7 @@ const TOPIC_BLOCKS: Record<number, (Topic1Block | Topic3Block | Topic4Block | To
 };
 const TOPIC_CHAPTERS: Record<number, { title: string; blockIds: string[] }[]> = {
   1: TOPIC1_CHAPTERS,
+  2: TOPIC2_CHAPTERS,
   3: TOPIC3_CHAPTERS,
   4: TOPIC4_CHAPTERS,
   5: TOPIC5_CHAPTERS,
@@ -71,6 +74,7 @@ const TOPIC_CHAPTERS: Record<number, { title: string; blockIds: string[] }[]> = 
 };
 const TOPIC_PRACTICE_IDS: Record<number, string[]> = {
   1: TOPIC1_PRACTICE_BLOCK_IDS,
+  2: TOPIC2_PRACTICE_BLOCK_IDS,
   3: TOPIC3_PRACTICE_BLOCK_IDS,
   4: TOPIC4_PRACTICE_BLOCK_IDS,
   5: TOPIC5_PRACTICE_BLOCK_IDS,
@@ -88,7 +92,7 @@ function chapterFor(blockId: string, topicNumber: number): { title: string; inde
 
 // Sequence/staged blocks don't have a top-level "eyebrow" (each round or
 // stage has its own instead), so the practice hub needs a per-kind label.
-function practiceTitle(block: Topic1Block | Topic3Block | Topic4Block | Topic5Block | Topic6Block | Topic7Block | Topic8Block): string {
+function practiceTitle(block: Topic1Block | Topic2Block | Topic3Block | Topic4Block | Topic5Block | Topic6Block | Topic7Block | Topic8Block): string {
   switch (block.kind) {
     case "decision":
     case "compare":
@@ -113,7 +117,7 @@ function practiceTitle(block: Topic1Block | Topic3Block | Topic4Block | Topic5Bl
 // completedBlockIds, so a returning student can resume right where they
 // left off instead of re-clicking through everything from screen one.
 function computeInitialScreenIndex(
-  interactiveBlocks: (Topic1Block | Topic3Block | Topic4Block | Topic5Block | Topic6Block | Topic7Block | Topic8Block)[],
+  interactiveBlocks: (Topic1Block | Topic2Block | Topic3Block | Topic4Block | Topic5Block | Topic6Block | Topic7Block | Topic8Block)[],
   content: ContentBlockData[],
   quiz: QuizQuestion[],
   completedBlockIds: string[],

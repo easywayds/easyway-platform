@@ -24,6 +24,16 @@ export const REQUIRED_BLOCKS: Record<number, string[]> = {
     "T1-L07",
     "T1-L08", "T1-B18",
   ],
+  2: [
+    "T2-B00", "T2-B01",
+    "T2-B03", "T2-B04", "T2-B06",
+    "T2-B08", "T2-B09", "T2-B11", "T2-B13",
+    "T2-B14", "T2-B17",
+    "T2-B19", "T2-B21", "T2-B22",
+    "T2-B24", "T2-B26",
+    "T2-B29", "T2-B31",
+    "T2-B34", "T2-B35",
+  ],
   3: [
     "T3-L00",
     "T3-B00", "T3-L01", "T3-B01", "T3-B02", "T3-B03",
@@ -90,6 +100,10 @@ export const ALL_BLOCKS: Record<number, string[]> = {
   1: [
     ...REQUIRED_BLOCKS[1],
     "T1-B02", "T1-B04", "T1-B04b", "T1-B07", "T1-B09", "T1-B10", "T1-B12", "T1-B15", "T1-B16", "T1-B17",
+  ],
+  2: [
+    ...REQUIRED_BLOCKS[2],
+    "T2-B02", "T2-B04b", "T2-B05", "T2-B07", "T2-B10", "T2-B12", "T2-B16", "T2-B18", "T2-B20", "T2-B23", "T2-B27", "T2-B28", "T2-B32", "T2-B33",
   ],
   3: [...REQUIRED_BLOCKS[3], "T3-B18"],
   4: [...REQUIRED_BLOCKS[4], "T4-B18"],
