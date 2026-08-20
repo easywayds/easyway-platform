@@ -14,6 +14,7 @@ import LessonScreen from "@/components/course/LessonScreen";
 import { TOPIC3_BLOCKS, TOPIC3_CHAPTERS, TOPIC3_PRACTICE_BLOCK_IDS, type Topic3Block } from "@/lib/topic3-blocks";
 import { TOPIC4_BLOCKS, TOPIC4_CHAPTERS, TOPIC4_PRACTICE_BLOCK_IDS, type Topic4Block } from "@/lib/topic4-blocks";
 import { TOPIC5_BLOCKS, TOPIC5_CHAPTERS, TOPIC5_PRACTICE_BLOCK_IDS, type Topic5Block } from "@/lib/topic5-blocks";
+import { TOPIC6_BLOCKS, TOPIC6_CHAPTERS, TOPIC6_PRACTICE_BLOCK_IDS, type Topic6Block } from "@/lib/topic6-blocks";
 import courseStyles from "@/components/course/course.module.css";
 import styles from "./stepper.module.css";
 
@@ -35,30 +36,33 @@ type QuizQuestion = {
 
 type Screen =
   | { kind: "content"; block: ContentBlockData }
-  | { kind: "interactive"; block: Topic3Block | Topic4Block | Topic5Block }
+  | { kind: "interactive"; block: Topic3Block | Topic4Block | Topic5Block | Topic6Block }
   | { kind: "quiz"; question: QuizQuestion; index: number; total: number }
   | { kind: "quizResult" }
   | { kind: "complete" };
 
 const HEARTBEAT_INTERVAL_MS = 15000;
 
-// Per-topic interactive-lesson data — every topic besides 3, 4, and 5 is
-// completely unaffected (these maps only resolve for those topic numbers;
-// everything else falls back to the plain content-array flow).
-const TOPIC_BLOCKS: Record<number, (Topic3Block | Topic4Block | Topic5Block)[]> = {
+// Per-topic interactive-lesson data — every topic besides 3, 4, 5, and 6
+// is completely unaffected (these maps only resolve for those topic
+// numbers; everything else falls back to the plain content-array flow).
+const TOPIC_BLOCKS: Record<number, (Topic3Block | Topic4Block | Topic5Block | Topic6Block)[]> = {
   3: TOPIC3_BLOCKS,
   4: TOPIC4_BLOCKS,
   5: TOPIC5_BLOCKS,
+  6: TOPIC6_BLOCKS,
 };
 const TOPIC_CHAPTERS: Record<number, { title: string; blockIds: string[] }[]> = {
   3: TOPIC3_CHAPTERS,
   4: TOPIC4_CHAPTERS,
   5: TOPIC5_CHAPTERS,
+  6: TOPIC6_CHAPTERS,
 };
 const TOPIC_PRACTICE_IDS: Record<number, string[]> = {
   3: TOPIC3_PRACTICE_BLOCK_IDS,
   4: TOPIC4_PRACTICE_BLOCK_IDS,
   5: TOPIC5_PRACTICE_BLOCK_IDS,
+  6: TOPIC6_PRACTICE_BLOCK_IDS,
 };
 
 function chapterFor(blockId: string, topicNumber: number): { title: string; index: number } | null {
@@ -70,7 +74,7 @@ function chapterFor(blockId: string, topicNumber: number): { title: string; inde
 
 // Sequence/staged blocks don't have a top-level "eyebrow" (each round or
 // stage has its own instead), so the practice hub needs a per-kind label.
-function practiceTitle(block: Topic3Block | Topic4Block | Topic5Block): string {
+function practiceTitle(block: Topic3Block | Topic4Block | Topic5Block | Topic6Block): string {
   switch (block.kind) {
     case "decision":
     case "compare":
@@ -92,7 +96,7 @@ function practiceTitle(block: Topic3Block | Topic4Block | Topic5Block): string {
 // completedBlockIds, so a returning student can resume right where they
 // left off instead of re-clicking through everything from screen one.
 function computeInitialScreenIndex(
-  interactiveBlocks: (Topic3Block | Topic4Block | Topic5Block)[],
+  interactiveBlocks: (Topic3Block | Topic4Block | Topic5Block | Topic6Block)[],
   content: ContentBlockData[],
   quiz: QuizQuestion[],
   completedBlockIds: string[],
