@@ -13,6 +13,17 @@ import { prisma } from "@/lib/prisma";
 // covered, not new progression, matching "don't require decorative/
 // read-only elements."
 export const REQUIRED_BLOCKS: Record<number, string[]> = {
+  1: [
+    "T1-B00",
+    "T1-L01", "T1-B01",
+    "T1-L02", "T1-B03",
+    "T1-L03", "T1-B05", "T1-B06",
+    "T1-L04", "T1-B08",
+    "T1-L05", "T1-B11",
+    "T1-L06", "T1-B13", "T1-B14",
+    "T1-L07",
+    "T1-L08", "T1-B18",
+  ],
   3: [
     "T3-L00",
     "T3-B00", "T3-L01", "T3-B01", "T3-B02", "T3-B03",
@@ -76,6 +87,10 @@ export const REQUIRED_BLOCKS: Record<number, string[]> = {
 // overall completion — e.g. B18 (recap), which the student still steps
 // through and completes, but which isn't required for Topic 4 to unlock.
 export const ALL_BLOCKS: Record<number, string[]> = {
+  1: [
+    ...REQUIRED_BLOCKS[1],
+    "T1-B02", "T1-B04", "T1-B04b", "T1-B07", "T1-B09", "T1-B10", "T1-B12", "T1-B15", "T1-B16", "T1-B17",
+  ],
   3: [...REQUIRED_BLOCKS[3], "T3-B18"],
   4: [...REQUIRED_BLOCKS[4], "T4-B18"],
   5: [...REQUIRED_BLOCKS[5], "T5-B26"],

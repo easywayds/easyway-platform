@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { VISUALS } from "@/lib/visuals-map";
 
 const TOPIC_TITLES = [
-  "Course Introduction",
+  "Welcome to Easy Way",
   "Your License to Drive",
   "Right-of-Way",
   "Traffic Control Devices",
