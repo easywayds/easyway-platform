@@ -11,10 +11,12 @@ import HotspotScene from "@/components/course/HotspotScene";
 import StagedScenario from "@/components/course/StagedScenario";
 import RecapAccordion from "@/components/course/RecapAccordion";
 import LessonScreen from "@/components/course/LessonScreen";
+import VideoLesson from "@/components/course/VideoLesson";
 import { TOPIC3_BLOCKS, TOPIC3_CHAPTERS, TOPIC3_PRACTICE_BLOCK_IDS, type Topic3Block } from "@/lib/topic3-blocks";
 import { TOPIC4_BLOCKS, TOPIC4_CHAPTERS, TOPIC4_PRACTICE_BLOCK_IDS, type Topic4Block } from "@/lib/topic4-blocks";
 import { TOPIC5_BLOCKS, TOPIC5_CHAPTERS, TOPIC5_PRACTICE_BLOCK_IDS, type Topic5Block } from "@/lib/topic5-blocks";
 import { TOPIC6_BLOCKS, TOPIC6_CHAPTERS, TOPIC6_PRACTICE_BLOCK_IDS, type Topic6Block } from "@/lib/topic6-blocks";
+import { TOPIC7_BLOCKS, TOPIC7_CHAPTERS, TOPIC7_PRACTICE_BLOCK_IDS, type Topic7Block } from "@/lib/topic7-blocks";
 import courseStyles from "@/components/course/course.module.css";
 import styles from "./stepper.module.css";
 
@@ -36,33 +38,36 @@ type QuizQuestion = {
 
 type Screen =
   | { kind: "content"; block: ContentBlockData }
-  | { kind: "interactive"; block: Topic3Block | Topic4Block | Topic5Block | Topic6Block }
+  | { kind: "interactive"; block: Topic3Block | Topic4Block | Topic5Block | Topic6Block | Topic7Block }
   | { kind: "quiz"; question: QuizQuestion; index: number; total: number }
   | { kind: "quizResult" }
   | { kind: "complete" };
 
 const HEARTBEAT_INTERVAL_MS = 15000;
 
-// Per-topic interactive-lesson data — every topic besides 3, 4, 5, and 6
+// Per-topic interactive-lesson data — every topic besides 3, 4, 5, 6, and 7
 // is completely unaffected (these maps only resolve for those topic
 // numbers; everything else falls back to the plain content-array flow).
-const TOPIC_BLOCKS: Record<number, (Topic3Block | Topic4Block | Topic5Block | Topic6Block)[]> = {
+const TOPIC_BLOCKS: Record<number, (Topic3Block | Topic4Block | Topic5Block | Topic6Block | Topic7Block)[]> = {
   3: TOPIC3_BLOCKS,
   4: TOPIC4_BLOCKS,
   5: TOPIC5_BLOCKS,
   6: TOPIC6_BLOCKS,
+  7: TOPIC7_BLOCKS,
 };
 const TOPIC_CHAPTERS: Record<number, { title: string; blockIds: string[] }[]> = {
   3: TOPIC3_CHAPTERS,
   4: TOPIC4_CHAPTERS,
   5: TOPIC5_CHAPTERS,
   6: TOPIC6_CHAPTERS,
+  7: TOPIC7_CHAPTERS,
 };
 const TOPIC_PRACTICE_IDS: Record<number, string[]> = {
   3: TOPIC3_PRACTICE_BLOCK_IDS,
   4: TOPIC4_PRACTICE_BLOCK_IDS,
   5: TOPIC5_PRACTICE_BLOCK_IDS,
   6: TOPIC6_PRACTICE_BLOCK_IDS,
+  7: TOPIC7_PRACTICE_BLOCK_IDS,
 };
 
 function chapterFor(blockId: string, topicNumber: number): { title: string; index: number } | null {
@@ -74,7 +79,7 @@ function chapterFor(blockId: string, topicNumber: number): { title: string; inde
 
 // Sequence/staged blocks don't have a top-level "eyebrow" (each round or
 // stage has its own instead), so the practice hub needs a per-kind label.
-function practiceTitle(block: Topic3Block | Topic4Block | Topic5Block | Topic6Block): string {
+function practiceTitle(block: Topic3Block | Topic4Block | Topic5Block | Topic6Block | Topic7Block): string {
   switch (block.kind) {
     case "decision":
     case "compare":
@@ -87,6 +92,7 @@ function practiceTitle(block: Topic3Block | Topic4Block | Topic5Block | Topic6Bl
     case "recap":
       return block.props.eyebrow ?? block.id;
     case "learn":
+    case "video":
       return block.props.eyebrow ?? block.props.title;
   }
 }
@@ -96,7 +102,7 @@ function practiceTitle(block: Topic3Block | Topic4Block | Topic5Block | Topic6Bl
 // completedBlockIds, so a returning student can resume right where they
 // left off instead of re-clicking through everything from screen one.
 function computeInitialScreenIndex(
-  interactiveBlocks: (Topic3Block | Topic4Block | Topic5Block | Topic6Block)[],
+  interactiveBlocks: (Topic3Block | Topic4Block | Topic5Block | Topic6Block | Topic7Block)[],
   content: ContentBlockData[],
   quiz: QuizQuestion[],
   completedBlockIds: string[],
@@ -436,6 +442,9 @@ export default function TopicViewer({
               )}
               {screen.block.kind === "learn" && (
                 <LessonScreen key={screen.block.id} {...screen.block.props} onComplete={() => handleBlockComplete(screen.block.id)} />
+              )}
+              {screen.block.kind === "video" && (
+                <VideoLesson key={screen.block.id} {...screen.block.props} onComplete={() => handleBlockComplete(screen.block.id)} />
               )}
             </div>
           )}

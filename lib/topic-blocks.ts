@@ -49,6 +49,15 @@ export const REQUIRED_BLOCKS: Record<number, string[]> = {
     "T6-L07", "T6-B11", "T6-B12", "T6-B13", "T6-B14",
     "T6-L08", "T6-B15", "T6-B16", "T6-B17", "T6-B18", "T6-B19", "T6-B20", "T6-B21", "T6-B22",
   ],
+  7: [
+    "T7-L00",
+    "T7-B00", "T7-L01", "T7-B01", "T7-B02",
+    "T7-L02", "T7-B03", "T7-B04", "T7-B05", "T7-B06", "T7-B07",
+    "T7-L03", "T7-B08", "T7-B09", "T7-B10", "T7-B11",
+    "T7-L04", "T7-B12", "T7-B13", "T7-L05", "T7-B14", "T7-B15", "T7-B16",
+    "T7-L06", "T7-B17", "T7-B18", "T7-B19", "T7-L07", "T7-B20", "T7-B21", "T7-B22",
+    "T7-L08", "T7-B23", "T7-B24", "T7-B25", "T7-B26", "T7-L09", "T7-B27", "T7-B28", "T7-B29",
+  ],
 };
 
 // Every valid block id for a topic, required or not — this is what
@@ -62,6 +71,7 @@ export const ALL_BLOCKS: Record<number, string[]> = {
   4: [...REQUIRED_BLOCKS[4], "T4-B18"],
   5: [...REQUIRED_BLOCKS[5], "T5-B26"],
   6: [...REQUIRED_BLOCKS[6], "T6-B23"],
+  7: [...REQUIRED_BLOCKS[7], "T7-B30"],
 };
 
 export function getRequiredBlocks(topicNumber: number): string[] {
